@@ -1,0 +1,20 @@
+%% Verilog definition for the listings package.
+\lstdefinelanguage{Verilog}
+{
+	basicstyle={\small},
+	columns=fullflexible,
+	fontadjust = true,
+	xleftmargin=1cm,
+	morekeywords = { input, output, inout },
+	morekeywords = { parameter, wire, reg, integer },
+	morekeywords = { initial, always, posedge, negedge },
+	morekeywords = { assign, deassign, disable },
+	morekeywords = { and, nand, or, nor, xor, xnor, buf, not },
+	morekeywords = { case, casex, casez, default, endcase, if, else },
+	morekeywords = { function, endfunction, task, endtask, table, endtable },
+	morekeywords = { begin, end, module, endmodule },
+	sensitive = true,
+	morecomment = [l]{//},
+	morecomment = [s]{/*}{*/},
+	tabsize = 4,
+}

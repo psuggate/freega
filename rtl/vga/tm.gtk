@@ -1,0 +1,17 @@
+[size] 1432 824
+[pos] -1 -1
+*-15.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+@28
+text_mode_tb.clock
+text_mode_tb.reset
+@200
+-
+@28
+text_mode_tb.de
+text_mode_tb.vsync
+text_mode_tb.hsync
+@200
+-
+@22
+text_mode_tb.TM0.col[6:0]
+text_mode_tb.TM0.row[4:0]

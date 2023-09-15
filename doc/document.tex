@@ -1,0 +1,179 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{glossary}
+\usepackage{fancybox}
+\usepackage[ps2pdf, bookmarks=true]{hyperref}
+
+% \oddsidemargin -0.04cm   % read Lamport p.163
+% \evensidemargin -0.04cm
+% \textwidth 16.59cm
+% \textheight 21.94cm
+
+% \renewcommand{\baselinestretch}{2.0}
+\renewcommand{\baselinestretch}{1.5}
+\topmargin -0.5cm        % read Lamport p.163
+\oddsidemargin 0.5cm   % read Lamport p.163
+\textwidth 15cm
+\textheight 23cm
+
+
+% Title Page
+\title{OpenVGA: An Open-Source PCI Graphics Adapter}
+
+\author{Patrick Suggate}
+
+% Bring in the listings style of Verilog (in the file Verilog_Def.tex)
+\input{Verilog_Def}
+\lstset{language=Verilog}
+\lstset{breaklines=true}
+\lstset{basicstyle=\ttfamily}
+
+\makeglossary
+
+\begin{document}
+\maketitle
+
+	
+\abstract{This thesis describes the development of OpenVGA, an open-source
+graphics adapter. OpenVGA uses programmable logic for its core functionality, and
+features a processor logic core for data processing tasks. A novel
+transport-triggered processor architecture, and a more traditional RISC
+processor, were designed and evaluated for the data processing tasks within
+OpenVGA.
+ 
+OpenVGA is a free and open-source hardware project. The PCB artwork and the
+source code, written in Verilog, Assembly, Python, and C/C++, can be freely
+distributed and modified in accordance to the conditions of the GPL. OpenVGA was
+designed to use a two-layer PCB and readily-available, low-cost ICs. The hardware
+is therefore easy to fabricate by individuals wishing to participate in future
+development.
+ 
+The project produced many Wishbone-compliant logic cores including: a small,
+fast, 16-bit TTA processor which operates up to 190~MHz when synthesised for a
+Spartan-3 FPGA; a 16-bit RISC processor that operates at up to 140~MHz; a data
+cache which has a dual-clock, 2-way set-associative architecture and operates at
+\texttt{>}150 MHz; a small, fast PCI-to-Wishbone bridge that supports multiple
+clock domains, by using asynchronous FIFOs; a VGA and DVI compatible
+display-redraw logic core; and a SDRAM controller that operates at up to 120 MHz.
+The Wishbone-interconnect standard allows all the logic cores to be used within
+other open-source projects too.
+ 
+The TTA16 processor is significantly faster than existing FPGA processor cores.
+The RISC16 processor also has very good performance when compared with existing
+FPGA processors. These results show that open-source, FPGA-based, graphics
+adapters are feasible, and in particular that TTA processors can be used as
+high-performance, small-footprint general-purpose processors within FPGAs.}
+
+
+\chapter*{Acknowledgements\markboth{Acknowledgements}{Acknowledgements}}
+
+This thesis would have been impossible without the help and support of many
+people. I would like to thank my supervisor, Dr. Tim Molteno, for all his time
+and enthusiasm. He contributed considerable effort and advice to keep the OpenVGA
+project on-track.
+
+I would also like to thank Dr. Neil Thomson for encouraging me to return to
+university and undertake postgraduate studies. Also a thank you to all of the
+other University of Otago Department of Physics staff and postgraduate students.
+
+This project used many components developed by the open-source community and
+without these OpenVGA would also have been impossible. Two pieces of software
+were especially important for OpenVGA development, Icarus Verilog, developed by
+Stephen Williams, and the GtkWave waveform viewer, with the project's development
+led by Tony Bybell.
+
+
+
+\tableofcontents
+\listoftables
+\listoffigures
+
+% Glossary. All definitions not located elsewhere are within `defs.tex'.
+\printglossary
+\include{defs}
+
+
+\newcommand\mmodule[6] %
+{
+\begin{center}
+\shadowbox{
+\begin{tabular}{l r r r}%
+\textbf{Module:}	& \multicolumn{3}{l}{\begin{minipage}[t]{0.7\linewidth}#2\end{minipage}}\\%
+\textbf{Description:}	& \multicolumn{3}{l}{\begin{minipage}[t]{0.7\linewidth}\raggedright#3\end{minipage}}\\%
+\textbf{Related Files:}	& \multicolumn{3}{l}{\begin{minipage}[t]{0.7\linewidth}\raggedright#4\end{minipage}}\\%
+\textbf{Testing Files:}	& \multicolumn{3}{l}{\begin{minipage}[t]{0.7\linewidth}\raggedright#5\end{minipage}}\\%
+\textbf{Author:}	& #1 & \multicolumn{2}{r}{\textbf{License:} #6}\\%
+\end{tabular}
+}
+\end{center}
+}
+
+\newcommand\ldescript[3]{
+\textbf{#1:} & \multicolumn{3}{l}{
+		\begin{minipage}[t]{#2\linewidth}\raggedright#3\end{minipage}
+    }
+}
+
+\newcommand\filedescript[6] %
+{
+\begin{center} \shadowbox{
+	\begin{tabular}{l r r r}%
+		\ldescript{File}{0.7}{#2}	\\
+		\ldescript{Description}{0.7}{#3}	\\
+		\ldescript{Related Files}{0.7}{#4}	\\
+		\ldescript{Testing Files}{0.7}{#5}	\\
+		\textbf{Author:}	& #1 & \multicolumn{2}{r}{\textbf{License:} #6}\\
+	\end{tabular}
+}	\end{center}
+}
+
+\newcommand\bigdescript[2] %
+{
+\begin{minipage}{#1\linewidth}#2\end{minipage}
+}
+
+
+\newcommand\regdescript[4] %
+{
+	\shadowbox{
+		\begin{tabular}{l r r r}%
+%         	\multicolumn{4}{l}{\textbf{TTA16 Registers and Aliases}}	\\
+			Functional Unit Name:	& \multicolumn{3}{l}{
+				\begin{minipage}[t]{0.4\linewidth}\texttt{#1}\end{minipage}}\\%
+			Trigger register(s) and aliases:	& \multicolumn{3}{l}{
+				\begin{minipage}[t]{0.4\linewidth}\texttt{#2}\end{minipage}}\\%
+			Operand register(s) and aliases:	& \multicolumn{3}{l}{
+				\begin{minipage}[t]{0.3\linewidth}\texttt{#3}\end{minipage}}\\%
+			Result Register(s):	& \multicolumn{3}{l}{
+				\begin{minipage}[t]{0.3\linewidth}\texttt{#4}\end{minipage}}\\%
+		\end{tabular}
+	}
+}
+
+
+\include{intro}
+\include{background}
+\include{openvga}
+
+% Three chapters on the internal architecture.
+\include{cpu}
+\include{memory}
+\include{io}
+
+% Errata, progress
+\include{conclusions}
+
+
+\bibliographystyle{plain}
+\bibliography{thesis_bib}
+
+\appendix
+\include{appendices}
+\include{wishbone}
+\include{tta_prog}
+\include{risc_prog}
+
+
+\end{document}

@@ -1,0 +1,97 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+include "g"
+include "arrows"
+include "components.box"
+include "connect.box"
+
+bypass = Window["fig"][
+	// Place registers:
+	id_a	= .Put[dff, (-35, 20)]
+	id_b	= .Put[dff, (-35, -20)]
+	ex_reg	= .Put[dff, (25, 0)]
+	ma_reg	= .Put[dff, (80, 0)]
+	immed	= .Put[dff, (-80, 20)]
+	
+	// Input MUXes:
+	mux_a	= .Put[mux4to1, (-50, id_a.Get["d"].y)]
+	mux_b	= .Put[mux4to1, (-50, id_b.Get["d"].y)]
+	
+	// FUs:
+	rf0	= .Put[rf, (-80, -20)]
+	alu0	= .Put[alu, (-5, ex_reg.Get["d"].y)]
+	mu	= .Put[mem, (55, ex_reg.Get["q"].y)]
+	
+	// Place output:
+	to_rf	= .Put[sig_out, (100, ma_reg.Get["q"].y)]
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 1*scale;
+	c0	= .ConHVH[w, PointList[id_a.Get["q"], alu0.Get["a"]]]
+	c1	= .ConHVH[w, PointList[id_b.Get["q"], alu0.Get["b"]]]
+	c2	= .Line[w, alu0.Get["x"], ex_reg.Get["d"], line.sharp]
+	c3	= .Line[w, ex_reg.Get["q"], arrow_triangle, mu.Get["in"], line.sharp]
+	c4	= .Line[w, mu.Get["out"], ma_reg.Get["d"], line.sharp]
+	c20	= .Line[w, ma_reg.Get["q"], to_rf.Get["in"], line.sharp]
+
+	// Connect RF to the input muxes.
+	ls0	= PointList[rf0.Get["r0"], mux_b.Get["b"]]	// RF0 to MUX_A
+	j2	= ls0.Get[1.2]
+	c9	= .ConHV[w, PointList[rf0.Get["r0"], j2]]
+	c10	= .ConVH[w, PointList[j2, mux_a.Get["a"]]]
+	
+	ls1	= PointList[rf0.Get["r1"], mux_b.Get["b"]]	// RF1 to MUX_A
+	j5	= ls0.Get[1.35]
+	c16	= .ConHV[w, PointList[rf0.Get["r1"], j5]]
+	c17	= .ConVH[w, PointList[j5, mux_b.Get["a"]]]
+	
+	// Connect Immed to input muxes.
+	ls2	= PointList[immed.Get["q"], (mux_a.Get["d"].x, immed.Get["q"].y)]
+	c21	= .Line[w, immed.Get["q"], ls2.Get[1.5], line.sharp]
+	j7	= .Put[junc, ls2.Get[1.5]]
+	c11	= .ConVH[w, PointList[ls2.Get[1.5], mux_a.Get["b"]]]	// Immed -> MUX_B(b)
+	c12	= .ConVH[w, PointList[ls2.Get[1.5], mux_b.Get["b"]]]	// Immed -> MUX_B(b)
+	
+	c13	= .Line[w, mux_a.Get["out"], id_a.Get["d"], line.sharp]	// MUX_A -> ID_A
+	c6	= .Line[w, mux_b.Get["out"], id_b.Get["d"], line.sharp]
+
+	
+	// Junctions:
+	j0	= c3.Get[1.5]
+	j3	= c20.Get[1.5]
+	j1	= (-55, -40)
+	j4	= (-58, -43)
+	j5	= (-55, mux_b.Get["d"].y)
+	j6	= (-58, mux_b.Get["c"].y)
+	\ .Put[junc, j0]	// ALU bypass path
+	\ .Put[junc, j3]	// Mem bypass path
+	\ .Put[junc, j5]	// ALU bypass path
+	\ .Put[junc, j6]	// Mem bypass path
+	c7	= .ConVH[w, PointList[j0, j1]]
+	c8	= .ConVH[w, PointList[j1, mux_b.Get["d"]]]	// ALU bypass -> MUX_B(d)
+	c18	= .ConVH[w, PointList[j5, mux_a.Get["d"]]]	// ALU bypass -> MUX_A(d)
+	c14	= .ConVH[w, PointList[j3, j4]]
+	c15	= .ConVH[w, PointList[j4, mux_b.Get["c"]]]	// Mem bypass -> MUX_B(c)
+	c19	= .ConVH[w, PointList[j6, mux_a.Get["c"]]]	// Mem bypass -> MUX_B(c)
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 16*scale], color.black,
+		"RF", rf0.Get["label"];
+		"Immed", immed.Get["bot"];
+		"ID_A", id_a.Get["bot"];
+		"ID_B", id_b.Get["bot"];
+		"EX", ex_reg.Get["bot"];
+		"MA", ma_reg.Get["bot"];
+		"Memory", mu.Get["bot"];
+	]
+	
+	.Save["eps", "risc16_bypass.eps"]
+]
+
+//GUI[bypass]

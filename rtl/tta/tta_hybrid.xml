@@ -1,0 +1,125 @@
+<architecture name="tta_hybrid">
+	<parse_flags separator=","/>
+	<processor_model>
+		<data width="18"/>
+		<pc width="10" program_output_min_size="512" type="base2"/>
+		<instruction width="32"/>
+	</processor_model>
+	<reg_model>
+		<ext_field id="rf" max="15" start="16" width="4"/>
+		<ext_field id="immediate" max="4095" start="20" width="12"/>
+		
+		<ext_field id="branch" max="1023" start="20" width="12"/>
+	</reg_model>
+	<token_maps>
+	</token_maps>
+	<instruction_model>
+		<instruction name="dp0">
+			<option>
+				<part start="0" width="3">
+					<value name="com" value="0"/>
+					<value name="IMMEDIATE" value="1" ext_field="immediate"/>
+					<value name="RREG" value="2" ext_field="rf"/>
+					<value name="inc" value="3"/>
+					<value name="memh" value="4"/>
+					<value name="diff" value="5"/>
+					<value name="plo" value="6"/>
+					<value name="bits" value="7"/>
+				</part>
+				<token value="->"/>
+				<part start="3" width="3">
+					<value name="nop" value="0"/>
+					<value name="mul" value="1"/>
+					<value name="memh" value="2"/>
+					<value name="inc" value="3"/>
+					<value name="not" value="4"/>
+					<value name="and" value="5"/>
+					<value name="or" value="6"/>
+					<value name="xor" value="7"/>
+				</part>
+			</option>
+			<option>
+				<part start="0" width="6">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+		<instruction name="dp1">
+			<option>
+				<part start="6" width="3">
+					<value name="com" value="0"/>
+					<value name="IMMEDIATE" value="1" ext_field="immediate"/>
+					<value name="RREG" value="2" ext_field="rf"/>
+					<value name="inc" value="3"/>
+					<value name="meml" value="4"/>
+					<value name="diff" value="5"/>
+					<value name="crd" value="6"/>
+					<value name="pc" value="7"/>
+				</part>
+				<token value="->"/>
+				<part start="9" width="4">
+					<value name="nop" value="0"/>
+					<value name="pc" value="1"/>
+					<value name="pcz" value="2"/>
+					<value name="pcnz" value="3"/>
+					<value name="wad" value="4"/>
+					<value name="rad" value="5"/>
+					<value name="cri" value="6"/>
+					<value name="crd" value="7"/>
+					
+					<value name="RREG" value="8" ext_field="rf"/>
+					<value name="rfz" value="9"/>
+					<value name="rfnz" value="10"/>
+					<value name="meml" value="11"/>
+					<value name="sub" value="12"/>
+					
+					<value name="leds" value="15"/>
+				</part>
+			</option>
+			<option>
+				<part start="6" width="7">
+					<value name="bra" value="9"/>
+					<value name="bz" value="17"/>
+					<value name="bnz" value="25"/>
+				</part>
+				<part start="0" width="0">
+					<value name="LABEL" value="0" ext_field="branch"/>
+				</part>
+			</option>
+			<option>
+				<part start="6" width="7">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+		<instruction name="comr">
+			<option>
+				<part start="13" width="3">
+					<value name="com" value="0"/>
+					<value name="IMMEDIATE" value="1" ext_field="immediate"/>
+					<value name="RREG" value="2" ext_field="rf"/>
+					<value name="diff" value="3"/>
+					<value name="meml" value="4"/>
+					<value name="bits" value="5"/>
+					<value name="plo" value="6"/>
+					<value name="phi" value="7"/>
+				</part>
+				<token value="->"/>
+				<part start="0" width="0">
+					<value name="com" value="0"/>
+				</part>
+			</option>
+			<option>
+				<part start="13" width="3">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+	</instruction_model>
+	<timing_model>
+		<bus name="diff" latency="1"/>
+		<bus name="inc" latency="1"/>
+		<bus name="plo" latency="1"/>
+		<bus name="phi" latency="1"/>
+	</timing_model>
+</architecture>

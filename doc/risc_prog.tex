@@ -1,0 +1,386 @@
+\chapter{RISC16 Assembly Language Programming Guide}
+\label{RISCPROG}
+
+RISC16 is a simple 16-bit RISC processor and this appendix is an introductory
+programming guide for it. Contained in this guide are some code fragments and
+simple routines, and an explanation of the RISC16 registers and instructions.
+Related topics that are covered in significant detail in the TTA16 programming
+guide (see Appendix~\ref{TTA_Programming}) will be covered only briefly here.
+
+
+\section{Tools: The RISC16 Assembler}
+
+\filedescript{Patrick Suggate}{r16asm.py}{A simple RISC16
+assembler.}{/src/r16asm.py, /src/CodeCleaner.py, /src/AsmParse.py,
+/src/Emit.py}{/src/fw\_risc16/*.S}{GPL}
+
+% \begin{tabular}{l l}
+% \textbf{Name:}			& r16asm.py	\\
+% \textbf{Related Files:}	& /tools/r16asm.py, /tools/CodeCleaner.py,	\\
+% 						& /tools/AsmParse.py, /tools/Emit.py	\\
+% \textbf{Testing Files:}	& /src/fw\_risc16/*.S	\\
+% \end{tabular}
+
+An assembler, written in Python, is used to assemble RISC16 assembly files. Since
+the RISC16 has just one execution thread, and some special instructions, the TTA
+assembler was not ideal for RISC16 . The biggest problem was using the
+\textit{i12} instruction with labels (for long jumps). This was solved with
+\textit{r16asm} as it can evaluate Python mathematical expressions involving
+bitwise operators, arithmetic operators, numbers, and named constants.
+
+Example assembler usage:
+\begin{verbatim}
+
+        r16asm.py in_file.S -o out_file.out
+\end{verbatim}
+And then to make a \texttt{.v} file to include in synthesis:
+\begin{verbatim}
+
+        out2v.py -n 1 -s 0 out_file.out risc_asm.v
+\end{verbatim}
+
+
+\section{Instruction Format Overview}
+
+Most RISC16 instructions are of a typical two-operand RISC form, though there are
+several single-operand and three-operand instructions too. The supported RISC16
+instruction formats are listed in Figure~\ref{RISCPROG_Instruction_Formats}.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=12cm]{diagrams/risc16_instr.eps}
+\caption[RISC16 instruction formats]{RISC16 instruction formats.}
+\label{RISCPROG_Instruction_Formats}
+\end{center}
+\end{figure}
+
+The following is an \texttt{rr}-format, (see
+Figure~\ref{RISCPROG_Instruction_Formats}) subtract instruction where \texttt{r0}
+gets the value of \texttt{r0} minus \texttt{r2}:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{sub r0, r2}
+\end{minipage}
+\end{center}
+
+The destination register (in this case \texttt{r0}) precedes the source registers
+and immediate constants in the operand list of RISC16 instructions. The
+two-operand RISC16 instructions use the first operand as a source and
+destination.
+
+This is an example of a three operand (\texttt{rri}-format) instruction:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{subi r0, r0, 1}
+\end{minipage}
+\end{center}
+
+With this format, all three operands are specified, even though \texttt{r0}
+repeated in this case (it is typically different and is encoded in a separate
+bit-field). This instruction subtract \texttt{1}, a 4-bit, signed immediate
+constant, from \texttt{r0}. This is equivalent to a decrement of \texttt{r0}, and
+it has short-hand version that is also accepted by the assembler:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{dec r0}
+\end{minipage}
+\end{center}
+
+This instruction has exactly the same function and encoding as the preceding
+\texttt{subi} example and this is just a convenient short-hand form. There is
+also a corresponding \texttt{inc} mnemonic, which increments a register, as well.
+
+Most ALU operations do not have a three operand form so to use immediate
+constants, there is another instruction format, \texttt{ri}:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{sub r0, 1}
+\end{minipage}
+\end{center}
+
+The result, stored in \texttt{r0}, is \texttt{1} minus \texttt{r0}. Note that
+this is the reverse order to \texttt{subi}. This allowed a negate short-hand
+instruction to be easily implemented too, simply subtract the desired register
+from zero.
+
+If immediate constants are required that are greater than can be stored as a
+signed, 4-bit number (-8 to 7), an instruction prefix can be used:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{i12 0x123}	\\
+\texttt{sub r0, 0x4}
+\end{minipage}
+\end{center}
+
+This instruction sequence uses the 16-bit value 0x1234 (the `0x' is to indicate
+that the following value is represented as hexadecimal) as the immediate
+constant. This immediate prefix can be used with all \texttt{rri} instructions,
+like \texttt{subi}, and \texttt{ri} instructions, like the \texttt{sub} example
+above.
+
+Conditional jump instructions are of the form:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{jxx	somewhere}
+\end{minipage}
+\end{center}
+
+The \texttt{jxx} represents any one of the eight supported jump types
+(see~\ref{RISCPROG_Jumps}). The \texttt{somewhere} is a destination address
+(within the instruction SRAM), and it can be a number, a label, or a simple
+mathematical expression (which can contain labels as these will be evaluated).
+
+Load and store instructions are of type \texttt{rri} and have several syntaxes.
+An example of the syntax used later in this appendix is:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{lw.d r0, [r1-3]}
+\end{minipage}
+\end{center}
+
+The mnemonic \texttt{lw.d} means \texttt{l}oad-\texttt{w}ord, using the
+\texttt{d} memory segment\footnote{There are two segment registers, \texttt{d}
+and \texttt{s}. Their names were chosen to represent either \texttt{s}ource and
+\texttt{d}estination segments, or \texttt{s}tack and \texttt{d}ata segment
+registers, depending on the situation. This is purely a way to remember their
+names, and make code more readable, as these registers function identically.}.
+The square brackets following \texttt{r0} are simply to help the programmer
+remember that the second and third operands are used to calculate a memory
+address, from which a 16-bit word is loaded. The same instruction syntax of
+\texttt{subi} can be used instead if desired, as these instructions share the
+same encoding. The same load instruction could then be rewritten as:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{lw.d r0, r1, 3}
+\end{minipage}
+\end{center}
+
+Note that the sign has changed, but this is exactly the same operation. This is
+because the ALU performs a subtract to calculate the memory address for load and
+store instructions. This has to be remembered when using the \texttt{i12}
+instruction prefix as well.
+
+
+\subsection{RISC16 Registers}
+
+RISC16 has 16 general purpose registers. While they all are functionally
+identical, by convention several of the registers have function. There is no
+hardware restriction on which registers can be used, it is simply meant to
+increase interoperability between assembly routines.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c | c | l}
+Name& Free to	& Usage \\
+	& Modify?	&		\\
+\hline
+r0	& Y	& Parameter 0 for function calls \\
+r1	& Y	& Parameter 1 for function calls \\
+r2	& Y	& Parameter 1 for function calls \\
+r3	& Y	& Parameter 3 for function calls \\
+\hline
+r4-r11	& B	& Backup before modifying, restore afterwards \\
+\hline
+r12	&	N	& Stack Segment \\
+r13	&	N	& Zero Register \\
+r14 &	N	& Stack Pointer \\
+r15	&	N	& Link Register	\\
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\subsection{ALU Instructions}
+
+The general form of RISC16 arithmetic instructions is two input values, one
+always a register, and the other a register or immediate, and a destination
+register. For most arithmetic instructions (except \texttt{subi} and
+\texttt{subic}) the destination register has to be one of the source registers as
+well.
+
+The list of available ALU instructions is shown in Table~\ref{RISCPROG_ALU}.
+Many of these instructions have two forms, one which modifies the processor
+condition-code flags, and one that does not. It is usually as simple as appending
+a \texttt{c} to the end of an ALU instruction to cause it to modify the flags.
+Bitwise operations only set the Zero Flag, and subtract-based operations
+(\texttt{sub, sbb, inc, dec, subi,} and \texttt{neg}) only set the Negative Flag
+(NF) and Borrow Flag (BF). The \texttt{cmp} instruction modifies all of these
+three flags\footnote{The \texttt{cmp} instruction performs both an XOR and a
+subtract on the operands.}.
+
+Some example ALU instructions:
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\begin{tabular}{l l}
+\tt neg	& \tt r0	\\
+\tt and	& \tt r1, -4	\\
+\tt cmp	& \tt r2, 0x2	\\
+\tt cmp	& \tt r3, r15	\\
+\tt incc& \tt r4	\\
+\tt subi& \tt r5, r6, 0	\\
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l l l l}
+\multicolumn{1}{c}{Normal} & \multicolumn{1}{c}{Set Flags} &
+	Encoding & Description \\
+	\hline
+	\tt subi & \tt subic&	\tt rri	& Subtract, 3-operand format	\\
+	\tt inc & \tt incc	&	\tt rri	& Increment	\\
+	\tt dec & \tt decc	&	\tt rri	& Decrement	\\
+	\tt sub & \tt subc	&	\tt rr, ri	& Subtract	\\
+	\tt sbb & \tt sbbc	&	\tt rr, ri	& Subtract using the borrow flag	\\
+	\tt neg & \tt negc	&	\tt ri	& Negate	\\
+	\tt N/A	& \tt cmp	&	\tt rr, ri	& Compare	\\
+	\tt and & \tt andc	&	\tt rr, ri	& Bitwise logical AND	\\
+	\tt nand & \tt nandc&	\tt rr, ri	& Bitwise logical NAND	\\
+	\tt or & \tt orc	&	\tt rr, ri	& Bitwise logical OR	\\
+	\tt xor & \tt xorc	&	\tt rr, ri	& Bitwise logical XOR	\\
+	\tt mull & \tt N/A	&	\tt rr, ri	& Multiply, store low 16-bits	\\
+	\tt mulh & \tt N/A	&	\tt rr, ri	& Multiply, store high 16-bits	\\
+	
+\end{tabular}
+\end{center}
+\caption[ALU instructions that can optionally set condition codes]{RISC16 ALU
+instructions that can optionally set condition code flags.}
+\label{RISCPROG_ALU}
+\end{table}
+
+
+\subsection{Processor Condition Code Flags}
+RISC16 has three processor state flags which are set by the ALU. These are
+borrow, negative, and zero flags (BF, NF, ZF). When an instruction has an
+additional \texttt{c} appended to the instruction mnemonic the processor
+condition codes are then to be modified by that instruction. The processor flags
+are used with conditional jumps.
+
+
+\subsection{Multiply Instructions}
+Only 16-bit unsigned multiplication is directly supported, producing a 32-bit
+product. Only either the upper or lower 16-bits of the 32-bit product can be
+written back to the RF, not both. The \texttt{mull} instructions stores the lower
+16-bits of the product in the destination register, the \texttt{mulh} stores the
+upper 16-bits. The following assembly fragment is an example of the syntax:
+
+\begin{center}
+\begin{minipage}{0.5\linewidth}
+\texttt{mull r0, 0x4}
+\end{minipage}
+\end{center}
+
+
+\subsection{Program Flow Control}
+\label{RISCPROG_Flow_Control}
+
+RISC16 takes three cycles to perform a jump or branch, but unconditional branches
+typically use the \texttt{i12} instruction, adding one more clock cycle. This is
+to set the upper bits for the branch address. This approach does not give a
+significant performance penalty since conditional branching is far more common
+than unconditional jumps~\cite{mcfarland2003md}.
+
+Conditional jumps have the 10-bit destination address encoded into the
+instruction word, requiring just one instruction. Register indirect branches
+takes just one instruction as well, since the entire destination address is
+stored in a register. All of the supported jump and branch operations are listed
+in Table~\ref{RISCPROG_Jumps}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l l l}
+\multicolumn{1}{c}{Mnemonic} & Encoding & Description \\
+	\hline
+	\tt jnz	&	\tt bx	& Jump if ZF not set	\\
+	\tt jz	&	\tt bx	& Jump if ZF set	\\
+	\tt jl	&	\tt bx	& Jump if NF set	\\
+	\tt jg	&	\tt bx	& Jump if NF not set	\\
+	\tt jb	&	\tt bx	& Jump if BF set	\\
+	\tt jbe	&	\tt bx	& Jump if BF and ZF set	\\
+	\tt ja	&	\tt bx	& Jump if BF not set	\\
+	\tt jae	&	\tt bx	& Jump if BF not set and ZF set	\\
+	\tt br	&	\tt ri, rr	& Unconditional branch	\\
+	\tt brl	&	\tt ri, rr	& Branch with link	\\
+\end{tabular}
+\end{center}
+\caption[RISC16 branch and jump instructions]{RISC16 branch and jump
+instructions.}
+\label{RISCPROG_Jumps}
+\end{table}
+
+
+\section{Loads and Stores}
+
+RISC16 has a minimalist FU that initiates transfers over the Wishbone bus, either
+data loads or stores\footnote{Since the processor operates at much higher
+frequencies than the system Wishbone bus, a data cache is used which also
+functions as a synchroniser. It additionally changes the data width from 16-bits,
+of RISC16, to 32-bits, of the system bus, and vice versa as well.}. Main memory
+is accessed through a data cache connected between the processor and the system
+Wishbone bus.
+
+There are two instructions for initiating Wishbone bus operations, load word and
+store word (`lw' and `sw' respectively). Each of these instructions causes the
+processor to stall until an acknowledge is received from the Wishbone bus. This
+potentially wastes cycles, but the trade-off is that data forwarding is not
+needed for memory operations, so no dependency checking logic is needed either.
+
+The ALU, specifically the subtract FU, is used to calculate the final address
+from the supplied arguments. The format is always register minus an immediate,
+but this can be zero (or the zero register which is \texttt{r13} by definition).
+Since the ALU operation is subtraction, immediate operands have to be negated
+when calculating the address. Listing~\ref{RISCPROG_Memcpy} contains examples of
+these instructions.
+
+The ALU bypass register is used for sending data to the wishbone bus. The only
+valid source for this bypass register is \texttt{RS}, and there is no data
+forwarding provided by hardware for this register either. Any potential data
+hazards that are detected will result in pipeline interlocking.
+
+
+\subsection{Memory Segment Registers}
+RISC16 has two parameterisable, each up to 16-bits in width, MSRs (Memory Segment
+Registers) to allow memory addresses greater than 16-bits wide to be supported.
+The memory segment value is concatenated with the memory pointer value to give a
+total width of upto 32-bits, and with two bytes per address, this means up to 8
+GB is addressable with this architecture.
+
+The two MSRs are called the Data Segment (DS) and the Stack Segment (SS)
+registers which indicates their possible uses, though no such limit upon such use
+is incorporated within the hardware. When performing large block copies, for
+example, they both could be used as data registers.
+
+By default, though this is set by the assembler/convention, not by the hardware,
+the DS is used with load and store instructions. To use SS, instead of DS, the
+suffix `.sf' is appended to the load/store instruction.
+
+
+\subsection{OpenVGA MMIO Device Segments}
+RISC16 and TTA16 are interchangeable when synthesising OpenVGA, and all
+peripherals external to the processor are therefore identical. The MMIO devices
+are the same for both RISC16 and TTA16 . For a complete list of MMIO devices, see
+Appendix~\ref{TTA_Programming}, and the \textit{memcpy} listing later in this
+section demonstrates how to access MMIO devices (see
+Figure~\ref{RISCPROG_Memcpy}).
+
+
+\section{Programming Example: `memcpy'}
+\label{RISCPROG_Memcpy}
+This code has the same functionality as the TTA16 assembly code in
+Listing~\ref{TTAPROG_TTA16_memcpy}. The routine copies a block of memory from the
+source to the destination. The DMA is used to improve memory throughput as it
+allows the memory controller to operate in 32-bit wide, burst-mode reducing the
+cycles lost due to multiple memory access-latency penalties.
+
+\footnotesize
+\verbatiminput{source/r16_memcpy.tex}
+\normalsize

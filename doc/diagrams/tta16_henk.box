@@ -1,0 +1,186 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+include "g"
+include "arrows"
+include "components.box"
+include "connect.box"
+
+tta_node	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.grey, .a=0.5]
+	wd	= 8;	ht	= 55;
+	t	= .Poly[	(-wd, -ht)*scale, (-wd, ht)*scale,
+				(wd, ht)*scale, (wd, -ht)*scale
+	]
+	\ .Hot[	"top", t.Get[2.5], "bot", t.Get[4.5]]
+]
+
+
+tta_legend	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	wd	= 30;	ht	= 75;
+	t	= .Poly[(-wd/2, -ht/2), (-wd/2, ht/2), (wd/2, ht/2), (wd/2, -ht/2)]
+	
+	w	= 2*scale
+	Color[color.black]
+	\ .Line[w, t.Get[(1.56, -0.03)], t.Get[(1.56, -0.08)]]
+	\ .Line[w, t.Get[(1.44, -0.055)], arrow_triangle, t.Get[(1.36, -0.055)]]
+	\ .Put[junc, t.Get[(1.20, -0.055)]]
+	
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.grey, .a=0.5]
+	r	= .Poly[t.Get[(1.68, -0.03)], t.Get[(1.78, -0.03)],
+			t.Get[(1.78, -0.08)], t.Get[(1.68, -0.08)]
+	]
+	
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 16*scale], color.black,
+		"Legend:", t.Get[(1.9, -0.13)];
+		.Font["Helvetica", 12*scale], color.black,
+		"- Register", t.Get[(1.73, -0.17)];
+		"- Transport", t.Get[(1.56, -0.17)];
+		"- Register Direction", t.Get[(1.40, -0.235)];
+		"(R/W)", t.Get[(1.33, -0.17)];
+		"- Connection to", t.Get[(1.20, -0.20)];
+		"   Transport", t.Get[(1.13, -0.18)];
+	]
+]
+
+
+tta16_henk	= Window[][
+	px	= PointList[(-100, 0), (100, 0)]
+	py	= PointList[(0, -50), (0, 50)]
+	
+	// Transports:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+	tr_st	= 1.05; tr_end	= 1.65;
+	tr0	= .Line[w, (px.Get[tr_st].x, -9), (px.Get[tr_end].x, -9)]
+	tr1	= .Line[w, (px.Get[tr_st].x, -3), (px.Get[tr_end].x, -3)]
+	tr2	= .Line[w, (px.Get[tr_st].x, 3), (px.Get[tr_end].x, 3)]
+	tr3	= .Line[w, (px.Get[tr_st].x, 9), (px.Get[tr_end].x, 9)]
+	
+	// FUs:
+	pc	= .Put[dff, (tr0.Get[1.05].x, py.Get[1.8].y)]
+	rf0	= .Put[rf, (tr0.Get[1.35].x, py.Get[1.8].y)]
+	imm	= .Put[dff, (tr0.Get[1.95].x, py.Get[1.8].y)]
+	bits	= .Put[binary, (tr0.Get[1.65].x, py.Get[1.8].y)]
+	
+	mul	= .Put[mult, (tr0.Get[1.82].x, py.Get[1.2].y)]
+	mu	= .Put[mem, (tr0.Get[1.2].x, py.Get[1.2].y)]
+	sub	= .Put[subtract, (tr0.Get[1.5].x, py.Get[1.2].y)]
+	
+	// Transport nodes:
+	n_pc_i	= .Put[tta_node, (tr0.Get[1.07].x, 0)]
+	n_pc_o	= .Put[tta_node, (tr0.Get[1.03].x, 0)]
+	\ .Put[junc, tr0.Get[1.03]]
+	\ .Put[junc, tr2.Get[1.07]]
+	
+	
+	n_rf_i	= .Put[tta_node, (tr0.Get[1.37].x, 0)]
+	n_rf_o	= .Put[tta_node, (tr0.Get[1.33].x, 0)]
+	\ .Put[junc, tr0.Get[1.37]]
+	\ .Put[junc, tr1.Get[1.37]]
+	\ .Put[junc, tr2.Get[1.37]]
+	\ .Put[junc, tr3.Get[1.37]]
+	\ .Put[junc, tr2.Get[1.33]]
+	
+	n_mul_a	= .Put[tta_node, (tr0.Get[1.76].x, 0)]
+	n_mul_b	= .Put[tta_node, (tr0.Get[1.80].x, 0)]
+	n_mul_x	= .Put[tta_node, (tr0.Get[1.84].x, 0)]
+	n_mul_y	= .Put[tta_node, (tr0.Get[1.88].x, 0)]
+	\ .Put[junc, tr2.Get[1.76]]
+	\ .Put[junc, tr3.Get[1.80]]
+	\ .Put[junc, tr3.Get[1.84]]
+	\ .Put[junc, tr3.Get[1.88]]
+	
+	imm_n	= .Put[tta_node, (tr0.Get[1.95].x, 0)]
+	\ .Put[junc, tr0.Get[1.95]]
+	\ .Put[junc, tr1.Get[1.95]]
+	\ .Put[junc, tr3.Get[1.95]]
+	
+	n_sub_m	= .Put[tta_node, (tr0.Get[1.46].x, 0)]
+	n_sub_s	= .Put[tta_node, (tr0.Get[1.50].x, 0)]
+	n_sub_d	= .Put[tta_node, (tr0.Get[1.54].x, 0)]
+	\ .Put[junc, tr2.Get[1.46]]
+	\ .Put[junc, tr3.Get[1.50]]
+	\ .Put[junc, tr2.Get[1.54]]
+	\ .Put[junc, tr3.Get[1.54]]
+
+	n_mu_wa	= .Put[tta_node, (tr0.Get[1.14].x, 0)]
+	n_mu_wd	= .Put[tta_node, (tr0.Get[1.18].x, 0)]
+	n_mu_ra	= .Put[tta_node, (tr0.Get[1.22].x, 0)]
+	n_mu_rd	= .Put[tta_node, (tr0.Get[1.26].x, 0)]
+	\ .Put[junc, tr0.Get[1.14]]
+	\ .Put[junc, tr2.Get[1.18]]
+	\ .Put[junc, tr0.Get[1.22]]
+	\ .Put[junc, tr0.Get[1.26]]
+	\ .Put[junc, tr1.Get[1.26]]
+	\ .Put[junc, tr3.Get[1.26]]
+	
+	n_b_a	= .Put[tta_node, (tr0.Get[1.61].x, 0)]
+	n_b_b	= .Put[tta_node, (tr0.Get[1.65].x, 0)]
+	n_b_x	= .Put[tta_node, (tr0.Get[1.69].x, 0)]
+	\ .Put[junc, tr1.Get[1.61]]
+	\ .Put[junc, tr3.Get[1.65]]
+	\ .Put[junc, tr3.Get[1.69]]
+
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+	
+	c_ma	= .Line[w, n_mul_a.Get["bot"], arrow_triangle, (n_mul_a.Get["bot"].x, mul.Get["top"].y)]
+	c_mb	= .Line[w, n_mul_b.Get["bot"], arrow_triangle, (n_mul_b.Get["bot"].x, mul.Get["top"].y)]
+	c_mx	= .Line[w, (n_mul_x.Get["bot"].x, mul.Get["top"].y), arrow_triangle, n_mul_x.Get["bot"]]
+	c_my	= .Line[w, (n_mul_y.Get["bot"].x, mul.Get["top"].y), arrow_triangle, n_mul_y.Get["bot"]]
+	
+	c_ba	= .Line[w, n_b_a.Get["top"], arrow_triangle, (n_b_a.Get["top"].x, bits.Get["bot"].y)]
+	c_bb	= .Line[w, n_b_b.Get["top"], arrow_triangle, bits.Get["bot"]]
+	c_bx	= .Line[w, (n_b_x.Get["top"].x, bits.Get["bot"].y), arrow_triangle, n_b_x.Get["top"]]
+	
+	c_mwa	= .Line[w, n_mu_wa.Get["bot"], arrow_triangle, (n_mu_wa.Get["bot"].x, mu.Get["top"].y)]
+	c_mwd	= .Line[w, n_mu_wd.Get["bot"], arrow_triangle, (n_mu_wd.Get["bot"].x, mu.Get["top"].y)]
+	c_mra	= .Line[w, n_mu_ra.Get["bot"], arrow_triangle, (n_mu_ra.Get["bot"].x, mu.Get["top"].y)]
+	c_mrd	= .Line[w, (n_mu_rd.Get["bot"].x, mu.Get["top"].y), arrow_triangle, n_mu_rd.Get["bot"]]
+	
+	c_pci	= .Line[w, (n_pc_i.Get["top"].x, pc.Get["bot"].y), arrow_triangle, n_pc_i.Get["top"]]
+	c_pco	= .Line[w, n_pc_o.Get["top"], arrow_triangle, (n_pc_o.Get["top"].x, pc.Get["bot"].y)]
+	
+	c_imm	= .Line[w, imm.Get["bot"], arrow_triangle, imm_n.Get["top"]]
+	
+	c_rfi	= .Line[w, (n_rf_i.Get["top"].x, rf0.Get["bot"].y), arrow_triangle, n_rf_i.Get["top"]]
+	c_rfo	= .Line[w, n_rf_o.Get["top"], arrow_triangle, (n_rf_o.Get["top"].x, rf0.Get["bot"].y)]
+	
+	c_sm	= .Line[w, n_sub_m.Get["bot"], arrow_triangle, (n_sub_m.Get["bot"].x, sub.Get["top"].y)]
+	c_ss	= .Line[w, n_sub_s.Get["bot"], arrow_triangle, sub.Get["top"]]
+	c_sd	= .Line[w, (n_sub_d.Get["bot"].x, sub.Get["top"].y), arrow_triangle, n_sub_d.Get["bot"]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"PC", pc.Get["top"];
+		"RF", rf0.Get["top"];
+		"Immed", imm.Get["top"];
+		"Mem", mu.Get["bot"];
+		"Sub", sub.Get["bot"];
+		"Bits", bits.Get["top"];
+		"&  ~&\n|    ^^", bits.Get["label"];
+		"Mult", mul.Get["bot"];
+	]
+	
+	// Legend:
+	// Legend:
+	leg	= .Put[tta_legend, px.Get[1.77]]
+	
+	\ .Show[(px.Get[1.05].x, py.Get[1.03].y), (px.Get[1.85].x, py.Get[1.96].y)]
+	.Save["eps", "tta16_henk.eps"]
+]
+
+
+//GUI[tta16_henk]

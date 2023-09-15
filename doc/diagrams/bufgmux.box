@@ -1,0 +1,62 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+include "g"
+include "arrows"
+include "components.box"
+include "connect.box"
+
+
+dcm	= Window[][
+	dx	= 120*scale;	dy	= 160*scale;
+	
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t	= .Poly[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
+	\ .Hot[	"top", t.Get[(2.5, 0.15)], "bot", t.Get[(4.5, 0.15)],
+		"in", t.Get[1.5], "a", t.Get[3.2], "b", t.Get[3.8]
+	]
+]
+
+
+bufgmux	= Window[][
+	dx	= 100;	dy	= 50;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	
+	// Primitives:
+	m	= .Put[mux2to1, bx.Get[1.70]]
+	d	= .Put[dcm, bx.Get[1.4]]
+	
+	// I/O:
+	c50	= .Put[sig_in, bx.Get[1.15]]
+	src	= .Put[sig_in, bx.Get[1.15]+by.Get[1.9]]
+	gck	= .Put[sig_out, bx.Get[1.80]]
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+	\ .ConHVH[w, PointList[d.Get["a"], m.Get["a"]]]
+	\ .ConHVH[w, PointList[d.Get["b"], m.Get["b"]]]
+	\ .Line[w, m.Get["out"], gck.Get["in"]]
+	\ .Line[w, c50.Get["out"], d.Get["in"]]
+	\ .ConHV[w, PointList[src.Get["out"], m.Get["s"]]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"DCM", d.Get["bot"];
+		"CLK0", d.Get["a"], .From[(1.2, 0.5)];
+		"CLKFX", d.Get["b"], .From[(1.2, 0.5)];
+		"CLKIN", d.Get["in"], .From[(-0.2, 0.5)];
+		"clk50", c50.Get["out"], .From[(1.5, 0.5)];
+		"source", src.Get["out"], .From[(1.5, 0.5)];
+		"Pixel Clock", gck.Get["in"], .From[(-0.3, 0.5)];
+		"BUFGMUX", m.Get["label"], .From[(0.8, 2.5)];
+	]
+	.Show[bx.Get[1]+by.Get[1], bx.Get[2]+by.Get[2]]
+ 	.Save["eps", "bufgmux.eps"]
+]

@@ -1,0 +1,792 @@
+\chapter{Source Code}
+
+This appendix contains selected source code from the FreeGA project. Complete source is available online from 
+\begin{verbatim}
+http://www.physics.otago.ac.nz/px/research/electronics/freega
+\end{verbatim}
+
+\section{Verilog HDL}
+
+\begin{lstlisting}[language=Verilog]
+// a module
+module foo(input a, input b, output c);
+endmodule
+
+\end{lstlisting}
+
+\section{C Code}
+
+\subsection{Text-Mode to Raw Pixel Conversion}
+The following code converts ASCII character and attribute byte information into
+pixel data. This code forms the basis for the assembly versions implemented for
+RISC16 and TTA16.
+
+\begin{lstlisting}[language=C,label=C_Code_Text_Mode]
+typedef unsigned int	uint32_t;
+typedef unsigned short	uint16_t;
+typedef unsigned char	uint8_t;
+
+uint32_t*	fb;	// RGBA, 8-bit/component
+uint16_t*	tb;	// 8-bit ASCII char + 8-bit attribute
+uint8_t*	font;	// 8x16 pixel font
+uint32_t*	pal;	// 16 entry colour palette
+
+// Algorithms:
+// Character at a time:
+// - for each char in `tb' do:
+//  - look up fg + bg colours from pal
+//  - read a char from the `tb'
+//  - for each row in char do:
+//   - look up char row from font mem
+//   - for each pixel in char row do:
+//    - if pixel set, write fg colour to `fb'
+//    - else write bg colour to `fb'
+
+// FB-Row-At-A-Time:
+// - for each row in FB do:
+//  - calc offset into TB
+//  - read char from TB
+//  - look up fg + bg colours from pal
+//...
+
+// FB-Row-At-A-Time has the best SDRAM (+dcache) access behaviour?
+#define	PCOLS	640
+#define	PROWS	400
+#define	CCOLS	80
+#define	CROWS	25
+#define	TCOLS	8
+#define	TROWS	16
+
+
+void draw_char_row(uint16_t x, uint16_t y, uint8_t ch, uint8_t at)
+{
+	uint16_t	i, j;
+	uint8_t		r;
+	i	= (((uint16_t) ch) << 4) + (y & 0x0f);
+	r	= font[i];
+	for (j=0; j<8; j++) {
+		if (r & (uint8_t) 0x01)
+			fb[y*PCOLS+x+j]	= pal[at&0x0f];	// FG
+		else
+			fb[y*PCOLS+x+j]	= pal[at>>4];	// BG
+		r	>>= 1;
+	}
+}
+
+
+// This assumes width of 8 pixels/char and height of 16 pixels/char and 80
+// chars per row.
+void draw_row(uint16_t r)
+{
+	uint16_t	i, j, p, idx;
+	uint8_t	ch, at;
+
+	// Calc. index into TB from row.
+	idx	= (r>>4)*TCOLS;
+	for (i=0; i<PCOLS; i+=8) {
+		p	= tb[idx++];
+		ch	= p & 0xff;
+		at	= p >> 8;
+		draw_char_row(i, r, ch, at);
+	}
+}
+
+
+void update_fb()
+{
+	uint16_t	i;
+	for (i=0; i<PROWS; i++) {
+		draw_row(i);
+	}
+}
+\end{lstlisting}
+
+
+\subsection{FreeGA Kernel Module}
+
+\begin{lstlisting}[language=C]
+/***************************************************************************
+ *                                                                         *
+ *   freega.c - The kernel device driver module for FreeGA.                *
+ *                                                                         *
+ *   Copyright (C) 2006 by Patrick Suggate                                 *
+ *   patrick@physics.otago.ac.nz                                           *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/fs.h>
+#include <linux/init.h>
+
+#include <linux/pci.h>
+#include <linux/tty.h>
+
+#include <asm/uaccess.h>
+
+
+#define	FREEGA_VENDOR_ID	0x106d
+#define	FREEGA_DEVICE_ID	0x9500
+#define	FREEGA_NAME		"freega"
+
+#include "freega.h"
+
+
+MODULE_AUTHOR		("Patrick Suggate <patrick@physics.otago.ac.nz>");
+MODULE_DESCRIPTION	("FreeGA device driver.");
+MODULE_LICENSE		("GPL");
+MODULE_SUPPORTED_DEVICE	("freega");
+
+
+// Globals to do with FreeGA
+static int		freega_major	= 0;
+static int		freega_busy	= 0;
+static struct pci_dev*	freega_pdev	= NULL;
+static void*		freega_mm_addr	= NULL;	// First memory mapped region
+static unsigned long	freega_mm_len	= 0;
+//	static
+
+// Prototypes for file operations
+static int	freega_open	(struct inode*, struct file*);
+static int	freega_release	(struct inode*, struct file*);
+static ssize_t	freega_read	(struct file*, char*, size_t, loff_t*);
+static ssize_t	freega_write	(struct file*, const char*, size_t, loff_t*);
+
+
+static struct file_operations freega_fops = {
+	.read	= freega_read,
+	.write	= freega_write,
+	.open	= freega_open,
+	.release= freega_release
+};
+
+
+static int freega_open (struct inode* inodp, struct file* filp)
+{
+	if (freega_busy)
+		return -EBUSY;
+	
+	freega_busy++;
+	try_module_get (THIS_MODULE);	// Increment usage count
+//	printk (KERN_INFO "FreeGA opened.\n");
+	filp->f_pos = 0;
+	return 0;
+}
+
+
+static int freega_release (struct inode* inodp, struct file* filp)
+{
+	freega_busy--;
+	module_put (THIS_MODULE);	// Decrement usage count
+//	printk (KERN_INFO "FreeGA closed.\n");
+	
+	return 0;
+}
+
+/*! This implements the lseek system call. If it is left undefined, then default_llseek from fs/read_write.c is used instead. This updates the f_pos field as expected, and also may change the f_reada field and f_version field.
+*/
+// static loff_t (*llseek) (struct file *, loff_t, int);
+
+/*! This is used to implement the read system call and to support other occasions for reading files such a loading executables and reading the quotas file. It is expected to update the offset value (last argument) which is usually a pointer to the f_pos field in the file structure, except for the pread and pwrite system calls.
+\param off The offset for the read from the start of file
+\return The number of bytes read?
+*/
+static ssize_t freega_read (struct file* filp, char* buf, size_t len, loff_t* off)
+{
+	int	notsent;
+	
+//	printk (KERN_ALERT "Offset = %d\n", *off);
+	
+/*	if (len & 0x03) {
+		printk (KERN_ALERT "Reads have to be multiples of four bytes!\n");
+		return -EINVAL;
+	}
+	
+	if (*off & 0x03) {
+		printk (KERN_ALERT "FreeGA read offset (%d) must be a multiple of four bytes!\n", (int)*off);
+		return -EINVAL;
+	}
+	*/
+	if ((*off + len) > freega_mm_len) {
+		printk (KERN_ALERT "Cannot read past 4096 bytes!\n");
+		return -EINVAL;
+	}
+	
+	// printk (KERN_INFO "FreeGA reading.\n");
+	notsent	= copy_to_user (buf, freega_mm_addr + *off, len);
+	*off	+= len - notsent;
+	
+	return len - notsent;
+}
+
+
+static ssize_t freega_write (struct file* filp, const char* buf, size_t len, loff_t* off)
+{
+	int	notreceived;
+	
+/*	if (len & 0x03) {
+		printk (KERN_ALERT "FreeGA writes have to be multiples of four bytes!\n");
+		return -EINVAL;
+	}
+	
+	if (*off & 0x03) {
+		printk (KERN_ALERT "FreeGA write offset (%d) must be a multiple of four bytes!\n", (int)*off);
+		return -EINVAL;
+	}
+	*/
+	if ((len + *off) > freega_mm_len) {
+		printk (KERN_ALERT "FreeGA cannot write past 4096 bytes!\n");
+		return -EINVAL;
+	}
+	
+	// printk (KERN_INFO "FreeGA writing.\n");
+	notreceived = copy_from_user (freega_mm_addr + *off, buf, len);
+	*off	+= len - notreceived;
+	return len - notreceived;
+}
+
+
+//#ifdef __use_probe_for_freega
+// Look for a FreeGA on the PCI bus, and if found, enable it.
+static struct pci_dev* __init probe_for_freega (void)
+{
+	struct pci_dev *pdev = NULL;
+	
+	// Look for the FreeGA
+	pdev = pci_find_device (FREEGA_VENDOR_ID, FREEGA_DEVICE_ID, NULL);
+	
+	if(pdev) {
+		// Device found, enable it
+		if(pci_enable_device (pdev)) {
+			printk (KERN_ALERT "Could not enable FreeGA\n");
+			return NULL;
+		} else
+			printk (KERN_INFO "FreeGA enabled\n");
+	} else {
+		printk (KERN_ALERT "FreeGA not found\n");
+		return pdev;	// TODO: Is this OK?
+	}
+	
+	return pdev;
+}
+//#endif
+
+
+// Module initialisaton and cleanup routines.
+static int __init freega_init (void)
+{
+	unsigned long	mm_start, mm_end, mm_flags;
+	
+	// More normal is printk(), but there's less that can go wrong with 
+	// console_print(), so let's start simple.
+	console_print("Hello, world - this is the kernel speaking\n");
+	
+	if ( (freega_pdev = probe_for_freega ()) )
+	{
+		freega_major	= register_chrdev (0, FREEGA_NAME, &freega_fops);
+		
+		if (freega_major < 0)
+		{
+			printk (KERN_ALERT "Unable to register FreeGA!\n");
+			pci_disable_device (freega_pdev);
+			return freega_major;
+		}
+		
+		// TODO: Apparently UDEV can do this
+		// mknod ("/dev/freega", S_IFCHR, freega_major);
+		
+		printk (KERN_INFO "FreeGA major number is: %d\n", freega_major);
+		printk (KERN_INFO "Use: `mknod /dev/%s c %d 0'.\n", FREEGA_NAME, freega_major);
+		printk (KERN_INFO "Remove /dev/%s when finished.\n\n", FREEGA_NAME);
+		
+		mm_start	= pci_resource_start	(freega_pdev, 0);
+		mm_end		= pci_resource_end	(freega_pdev, 0);
+		freega_mm_len	= pci_resource_len	(freega_pdev, 0);
+		mm_flags	= pci_resource_flags	(freega_pdev, 0);
+		
+		if (mm_flags & IORESOURCE_MEM)
+			printk (KERN_INFO "FreeGA is memory-mapped.\n");
+		else {
+			printk (KERN_ALERT "FreeGA memory-mapping failed!\n");
+			goto cleanup0;
+		}
+		
+		if (pci_request_regions (freega_pdev, FREEGA_NAME)) {
+			printk (KERN_ALERT "FreeGA could not get requested memory mapped region!\n");
+			goto cleanup0;
+		}
+		
+		freega_mm_addr	= ioremap (mm_start, freega_mm_len);
+		if (!freega_mm_addr) {
+			printk (KERN_ALERT "FreeGA could not get re-map memory mapped region!\n");
+			goto cleanup1;
+		}
+		
+		printk (KERN_INFO "FreeGA mm_start = %lx\n", mm_start);
+		printk (KERN_INFO "FreeGA mm_len   = %lu\n", freega_mm_len);
+		printk (KERN_INFO "FreeGA mm_addr  = %lx\n", (unsigned long) freega_mm_addr);
+	}
+	
+	// Non-zero value means failure
+	return 0;
+	
+cleanup1:
+	pci_release_regions (freega_pdev);
+cleanup0:
+	pci_disable_device (freega_pdev);
+	unregister_chrdev (freega_major, FREEGA_NAME);
+	return -1;
+}
+
+
+static void __exit freega_exit (void)
+{
+	// Un-map the allocated memory and release FreeGA
+	iounmap (freega_mm_addr);
+	pci_release_regions (freega_pdev);
+	
+	// Disable the PCI device
+	unregister_chrdev (freega_major, FREEGA_NAME);
+	pci_disable_device (freega_pdev);
+	
+	printk (KERN_INFO "FreeGA Unregistering\n");
+}
+
+
+module_init (freega_init);
+module_exit (freega_exit);
+\end{lstlisting}
+\label{FreeGA_Module}
+
+
+\subsection{Cache Simulator Classes}
+\label{CODE_Cache}
+\begin{lstlisting}
+/*
+ * cache.h
+ *
+ *  Created on: 4/12/2008
+ *      Author: patrick
+ */
+
+#include "cache.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+// TODO: Parameterise write-thru behaviour.
+
+
+WBCache::WBCache(WBMem* mem)
+{
+	m	= mem;
+	// Two banks of tags and memory.
+	t0	= new Tag[CACHE_TAGNUM];
+	b0	= new uint16_t[CACHE_BANKSIZE];
+
+	t1	= new Tag[CACHE_TAGNUM];
+	b1	= new uint16_t[CACHE_BANKSIZE];
+
+	lru	= new bool[CACHE_TAGNUM];
+	for (int i=0; i<CACHE_TAGNUM; i++)
+		lru[i]	= false;
+
+	p_tag0	= 0;
+	p_idx0	= 0;
+	p_vld0	= false;
+
+	p_tag1	= 0;
+	p_idx1	= 0;
+	p_vld1	= false;
+
+	accesses= 0;
+	misses	= 0;
+	hits	= 0;
+	slow	= 0;
+	evicts	= 0;
+}
+
+
+WBCache::~WBCache(void)
+{
+	delete[] t0;
+	delete[] b0;
+	delete[] t1;
+	delete[] b1;
+}
+
+
+// Costing:
+// - A fast-hit only costs two CPU cycles, a slow-hit takes three.
+// - Due to refreshing and congestion, a single word fetch costs about 40
+//   cycles on average. A whole cache-line is fetched though, at 1/3 of the
+//   CPU clock rate, but at 32-bits/per transfer. An evict requires the
+//   contents of the cache to be written back first. If this is buffered,
+//   then there is probably no penalty in most situations.
+void WBCache::stats(void)
+{
+	float	rate	= (float)misses / (float)accesses * 1000.0f;
+	float	fast	= (float)(hits-slow) / (float)(hits) * 100.f;
+	printf("Cache Statistics:\n");
+	printf("Accesses:\t%lu\n", accesses+wrtc);
+#ifdef __use_write_thru
+	printf("Write Thrus:\t%lu\n", wrtc);
+	printf("Read Hits:\t%lu (%2.1f%%)\n", hits, (float)hits/(float)accesses*100.0f);
+#else
+	printf("Hits:\t\t%lu (%2.1f%%)\n", hits, (float)hits/(float)accesses*100.0f);
+#endif
+	printf("Fast Hits:\t%lu (%2.1f%%)\n", hits-slow, fast);
+	printf("Misses:\t\t%lu\t(evicts = %lu)\n", misses, evicts);
+	printf("Miss rate(per 1000):\t%3.1f\n\n", rate);
+#ifdef __use_write_buffer
+	uint64_t	wrthru_cost	= FAST_COST;
+#else
+	uint64_t	wrthru_cost	= AV_LATENCY*CPU_MULT;
+#endif
+	uint64_t cost	= (hits-slow)*FAST_COST +
+			  slow*SLOW_COST +
+			  wrthru_cost*wrtc +
+			  (misses + __evict_cost*evicts)*(SLOW_COST+AV_LATENCY-1+CACHE_LINESIZE/4*CPU_MULT);
+	printf("Total CPU memory access cycles:\t%lu (Av: %1.1f/op)\n\n\n", cost, (float)cost / (float)(accesses+wrtc));
+}
+
+
+// 1/ Check cache
+// 2/ If hit:	return data
+//    Else:	Fetch cacheline
+//		return data
+//
+uint16_t WBCache::read(int a)
+{
+	uint32_t	tag	= CACHE_TDATA(a);
+	uint32_t	idx	= CACHE_TIDX(a);
+	uint32_t	off	= CACHE_TOFF(a);
+	
+	hits++;
+	accesses++;
+
+#ifdef __use_rand_evict
+	bool	new_lru	= (rand()&0x1) ? true : false ;
+#else
+	bool	new_lru	= !lru[idx];
+#endif
+
+#ifdef __use_fast_path
+	if (p_tag0 == tag && p_idx0 == idx && p_vld0) {
+#ifndef __use_fifo_evict
+		lru[idx]	= true;
+#endif
+		return	b0[CACHE_ADDR(idx, off)];
+	}
+	if (p_tag1 == tag && p_idx1 == idx && p_vld1) {
+#ifndef __use_fifo_evict
+		lru[idx]	= false;
+#endif
+		return	b1[CACHE_ADDR(idx, off)];
+	}
+#endif	// __use_fast_path
+
+	slow++;
+
+	// Slower hit path.
+	if (t0[idx].hit(tag)) {
+		p_tag0	= tag;
+		p_idx0	= idx;
+		p_vld0	= true;
+#ifndef __use_fifo_evict
+		lru[idx]	= true;
+#endif
+		return	b0[CACHE_ADDR(idx, off)];
+	}
+
+	if (t1[idx].hit(tag)) {
+		p_tag1	= tag;
+		p_idx1	= idx;
+		p_vld1	= true;
+#ifndef __use_fifo_evict
+		lru[idx]	= false;
+#endif
+		return	b1[CACHE_ADDR(idx, off)];
+	}
+
+	hits--;
+	slow--;
+	misses++;
+
+	// Miss and fetch path.
+	// Is the old data dirty? If so evict.
+	if (lru[idx] && t1[idx].wrback())
+		evict(b1, &t1[idx], idx);
+	else if (!lru[idx] && t0[idx].wrback())
+		evict(b0, &t0[idx], idx);
+
+	uint16_t	rv;
+	if (lru[idx])	{
+		rv	= fetch(b1, &t1[idx], a);
+		p_tag1	= tag;
+		p_idx1	= idx;
+		p_vld1	= true;
+		lru[idx]= new_lru;
+	} else {
+		rv	= fetch(b0, &t0[idx], a);
+		p_tag0	= tag;
+		p_idx0	= idx;
+		p_vld0	= true;
+		lru[idx]= new_lru;
+	}
+
+	return	rv;
+}
+
+
+// Write through is simpler and avoids some coherency issues, but I suspect
+// that it will be a lot slower.
+void WBCache::write(int a, uint16_t dat)
+{
+	uint32_t	tag	= CACHE_TDATA(a);
+	uint32_t	idx	= CACHE_TIDX(a);
+	uint32_t	off	= CACHE_TOFF(a);
+
+#ifdef __use_write_thru
+	wrtc++;
+	m->putw(a<<1, dat);
+#else
+	hits++;
+	accesses++;
+#endif
+	
+#ifdef __use_rand_evict
+	bool	new_lru	= (rand()&0x1) ? true : false ;
+#else
+	bool	new_lru	= !lru[idx];
+#endif
+
+	// Fast hit path.
+#ifdef __use_fast_path
+	if (this->p_tag0 == tag && this->p_idx0 == idx && this->p_vld0) {
+		this->b0[CACHE_ADDR(idx, off)]	= dat;
+#ifndef __use_fifo_evict
+		lru[idx]	= true;
+#endif
+#ifndef __use_write_thru
+		this->t0[idx].mark();
+#endif
+		return;
+	}
+
+	if (this->p_tag1 == tag && this->p_idx1 == idx && this->p_vld1) {
+		this->b1[CACHE_ADDR(idx, off)]	= dat;
+#ifndef __use_fifo_evict
+		lru[idx]	= false;
+#endif
+#ifndef __use_write_thru
+		this->t1[idx].mark();
+#endif
+		return;
+	}
+#endif	// !__use_fast_path
+	
+#ifndef __use_write_thru
+	slow++;
+#endif
+	// Slower hit path.
+	if (this->t0[idx].hit(tag)) {
+		this->p_tag0	= tag;
+		this->p_idx0	= idx;
+		this->p_vld0	= true;
+#ifndef __use_fifo_evict
+		lru[idx]	= true;
+#endif
+		this->b0[CACHE_ADDR(idx, off)]	= dat;
+#ifndef __use_write_thru
+		this->t0[idx].mark();
+#endif
+		return;
+	}
+
+	if (this->t1[idx].hit(tag)) {
+		this->p_tag1	= tag;
+		this->p_idx1	= idx;
+		this->p_vld1	= true;
+#ifndef __use_fifo_evict
+		lru[idx]	= false;
+#endif
+		this->b1[CACHE_ADDR(idx, off)]	= dat;
+#ifndef __use_write_thru
+		this->t1[idx].mark();
+#endif
+		return;
+	}
+
+#ifndef __use_write_thru	// Stalls processor if no write buffer, so count as miss.
+	hits--;
+	slow--;
+	misses++;	// Write-backs can miss too
+	
+	// Miss and fetch path.
+	// Is the old data dirty? If so evict.
+	if (lru[idx] && t1[idx].wrback())
+		this->evict(this->b1, &this->t1[idx], idx);
+	else if (!lru[idx] && t0[idx].wrback())
+		this->evict(this->b0, &this->t0[idx], idx);
+
+	if (lru[idx])	{
+		fetch(b1, &t1[idx], a);
+		this->t1[idx].mark();
+		b1[CACHE_ADDR(idx, off)]	= dat;
+		p_tag1	= tag;
+		p_idx1	= idx;
+		p_vld1	= true;
+		lru[idx]= new_lru;
+	} else {
+		fetch(b0, &t0[idx], a);
+		this->t0[idx].mark();
+		b0[CACHE_ADDR(idx, off)]	= dat;
+		p_tag0	= tag;
+		p_idx0	= idx;
+		p_vld0	= true;
+		lru[idx]= new_lru;
+	}
+#endif
+}	// write
+
+
+void WBCache::evict(uint16_t* b, Tag* t, int idx)
+{
+	int	a	= CACHE_ADDR(idx, 0);
+	uint32_t	d;
+	evicts++;
+
+	for (int i=0; i<CACHE_LINESIZE/4; i++) {
+		d	= (uint32_t)b[a];
+		d	|= ((uint32_t)b[a+1])<<16;
+		uint32_t	adr	= CACHE_MEMADDR(t->tag(), a);
+		this->m->putl(adr, d);
+		a	+= 2;
+	}
+	t->invld();
+}
+
+
+uint16_t WBCache::fetch(uint16_t* b, Tag* t, int adr)
+{
+	uint32_t	d, a;
+	int	p	= CACHE_ADDR(CACHE_TIDX(adr), 0);
+	a	= (adr & ~CACHE_OFFMASK) << 1;
+
+	for (int i=0; i<CACHE_LINESIZE/4; i++) {
+		d	= this->m->getl(a);	// Convert word address to byte address
+		b[p++]	= (uint16_t)d;
+		b[p++]	= (uint16_t)(d>>16);
+		a	+= 4;
+	}
+	t->set(CACHE_TDATA(adr));
+	return	b[CACHE_ENTRY(adr)];
+}
+
+
+// Assume DWord alignment of `p'.
+uint32_t WBCachedMem::getl(int p)
+{
+	uint32_t	d;
+	d	= c->read(p>>1);
+	d	|= ((uint32_t)c->read((p>>1)+1))<<16;
+
+	return	d;
+}
+
+
+uint8_t WBCachedMem::getb(int p)
+{
+	uint16_t	d;
+	d	= c->read(p>>1);
+	if (p&0x1)	return	(uint8_t)(d >> 8);
+	else		return	(uint8_t)d;
+}
+
+
+// Assume DWord alignment of `p'.
+uint32_t WBCachedMem::putl(int p, uint32_t v)
+{
+	c->write(p>>1, (uint16_t)v);
+	c->write((p>>1)+1, (uint16_t)(v>>16));
+	return	v;
+}
+
+
+// No byte access, so read before write.
+uint8_t WBCachedMem::putb(int p, uint8_t v)
+{
+	uint16_t	t	= c->read(p>>1);
+	if (p&0x1)	c->write(p>>1, (t&0x00ff) | ((uint16_t)v<<8));
+	else		c->write(p>>1, (t&0xff00) | (uint16_t)v);
+	return	v;
+}
+
+
+void WBCachedMem::push(int n)
+{
+	for (; n>0; n--)
+		this->c->write(sp-->>1, rand());
+}
+
+
+void WBCachedMem::pop(int n)
+{
+	for (; n>0; n--)
+		this->c->read(sp++>>1);
+}
+
+
+void dump_defines(void)
+{
+	printf("OFFMASK\t = %x\n", CACHE_OFFMASK);
+	printf("IDXMASK\t = %x\n", CACHE_IDXMASK);
+	printf("DATAMASK\t = %x\n", CACHE_DATAMASK);
+
+	printf("LINESIZE\t = %d\n", CACHE_LINESIZE);
+	printf("TAGNUM\t = %d\n", CACHE_TAGNUM);
+}
+
+
+void WBCachedMem::stats(void)
+{
+	uint64_t	r, w;
+	
+	printf("\nCache Properties:\n");
+	printf("\tCache Size:\t\t%6d\n", CACHE_MEMSIZE);
+	printf("\tTags per Bank:\t\t%6d\n", CACHE_TAGNUM);
+	printf("\tSet associativity:\t 2-way\n");
+	printf("\tLine (Block) Size:\t%6d\n", CACHE_LINESIZE);
+#ifdef	__use_write_thru
+	printf("\tWrite Policy:\t\t  thru\n\n");
+#else
+	printf("\tWrite Policy:\t\t  back\n\n");
+#endif
+	
+	printf("Memory Statistics:\n");
+	printf("Reads:\t\t%lu\n", r=m->num_reads());
+	printf("Writes:\t\t%lu\n", w=m->num_writes());
+	printf("Total:\t\t\t%lu\n\n", r+w);
+	
+	c->stats();
+}
+\end{lstlisting}
+
+\section{TTA Assembly}
+
+

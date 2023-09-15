@@ -1,0 +1,42 @@
+// Use C++ highlighter.
+
+include "g"
+
+mywidth	= 0.5
+scale	= 0.2
+
+fpga	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t	= .Poly[(-20,0),(0,20),(20,0),(0,-20)]
+]
+
+freega_simple	= Window[][
+	dx	= 120;	dy	= 100;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
+	
+	// PCB
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.green]
+	t	= .Poly[bb.Get[1], bb.Get[2], bb.Get[3], bb.Get[4], bb.Get[4.45],
+			bb.Get[(4.45, -0.083)], bb.Get[(4.47, -0.083)], bb.Get[4.47],
+			bb.Get[4.65], bb.Get[(4.65, -0.083)], bb.Get[(4.85, -0.083)],
+			bb.Get[(4.85, 0)]
+	]
+	
+	// PCI Fingers
+	// TODO: Use recursion?
+	
+	// FPGA
+	\ .Put[fpga, (6, 4)]
+	
+	// Connectors
+	
+	// Support ICs
+	
+ 	.Save["eps", "freega_simple.eps"]
+]
+
+// GUI[freega_simple]

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1052.3622"
+   height="744.09448"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="vga_overview.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2487"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.99315345"
+     inkscape:cx="526.18109"
+     inkscape:cy="372.04724"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1670"
+     inkscape:window-height="971"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       y="125.96121"
+       x="163.87872"
+       id="image2489"
+       height="506.65607"
+       width="679.18121"
+       sodipodi:absref="/home/patrick/physics/people/patrick/FreeGA/doc/images/ati_rage.jpeg"
+       xlink:href="ati_rage.jpeg" />
+    <path
+       sodipodi:type="arc"
+       id="path3191"
+       style="fill:#000000;stroke:none"
+       sodipodi:cx="630.33521"
+       sodipodi:cy="530.4472"
+       sodipodi:rx="1.5"
+       sodipodi:ry="1.5"
+       d="M 631.83521,530.4472 A 1.5,1.5 0 1 1 628.83521,530.4472 A 1.5,1.5 0 1 1 631.83521,530.4472 z" />
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 629.83011,530.44722 L 692.71211,593.32921 L 752.05857,593.32921"
+       id="path3193" />
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3203"
+       width="174.13158"
+       height="39.793789"
+       x="738.86377"
+       y="572.76904"
+       ry="5.6490183" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="861.42859"
+       y="583.38019"
+       id="text3213"><tspan
+         sodipodi:role="line"
+         id="tspan3215"
+         x="861.42859"
+         y="583.38019" /><tspan
+         sodipodi:role="line"
+         x="861.42859"
+         y="633.38019"
+         id="tspan3217" /></text>
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3219"
+       width="125.61275"
+       height="40.612755"
+       x="852.19366"
+       y="358.07382"
+       ry="5.7652769" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 852.14286,379.80877 L 699.28572,379.80877"
+       id="path3226" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3228"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,396.10971,80.164034)" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="915.19818"
+       y="383.9751"
+       id="text3240"><tspan
+         sodipodi:role="line"
+         x="915.19818"
+         y="383.9751"
+         id="tspan3244">VGA IC</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 770.24132,271.34309 L 770.24132,202.65272"
+       id="path3248" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3250"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,464.20817,-27.796567)" />
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3252"
+       width="125.61275"
+       height="40.612755"
+       x="706.92987"
+       y="162.1433"
+       ry="5.7652769" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="769.2312"
+       y="186.99535"
+       id="text3254"><tspan
+         sodipodi:role="line"
+         id="tspan3256"
+         x="769.2312"
+         y="186.99535">Power Supply</tspan></text>
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3258"
+       width="125.61275"
+       height="40.612755"
+       x="418.53131"
+       y="140.93008"
+       ry="5.7652769" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 478.30724,452.79372 L 478.30724,181.81635"
+       id="path3260" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3262"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,172.77916,149.4852)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3264"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,171.76901,93.926815)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3266"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,172.27409,28.266899)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3268"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,172.27409,-32.342254)" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="478.30722"
+       y="166.7923"
+       id="text3270"><tspan
+         sodipodi:role="line"
+         id="tspan3272"
+         x="478.30722"
+         y="166.7923">Video RAM</tspan></text>
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3274"
+       width="125.61275"
+       height="40.612755"
+       x="317.01099"
+       y="550.547"
+       ry="5.7652769" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 380.32244,546.26043 L 380.32244,425.23552"
+       id="path3276" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="379.81735"
+       y="577.41931"
+       id="text3278"><tspan
+         sodipodi:role="line"
+         id="tspan3280"
+         x="379.81735"
+         y="577.41931">VGA BIOS</tspan></text>
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3284"
+       width="123.19164"
+       height="91.224655"
+       x="40.934666"
+       y="392.65848"
+       ry="12.950006" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3294"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,74.28929,122.71616)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 225.02127,441.04872 L 164.39255,441.04872"
+       id="path3296" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3298"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,-74.708211,141.40399)" />
+    <rect
+       style="fill:#c0c0e0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3300"
+       width="125.61275"
+       height="40.612755"
+       x="47.805328"
+       y="243.96564"
+       ry="5.7652769" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="109.60155"
+       y="269.32278"
+       id="text3302"><tspan
+         sodipodi:role="line"
+         id="tspan3304"
+         x="109.60155"
+         y="269.32278">TV Out</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 220.83871,263.76695 L 175.14107,263.76695"
+       id="path3306" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3308"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,-79.253898,-36.88794)" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="99.68248"
+       y="422.89536"
+       id="text3310"><tspan
+         sodipodi:role="line"
+         x="99.68248"
+         y="422.89536"
+         id="tspan3314">Connector</tspan><tspan
+         sodipodi:role="line"
+         x="99.68248"
+         y="442.89536"
+         id="tspan3318">for a VGA</tspan><tspan
+         sodipodi:role="line"
+         x="99.68248"
+         y="462.89536"
+         id="tspan3322">Monitor</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2419"
+       sodipodi:cx="599.27301"
+       sodipodi:cy="586.76324"
+       sodipodi:rx="10.354064"
+       sodipodi:ry="10.354064"
+       d="M 609.62707,586.76324 A 10.354064,10.354064 0 1 1 588.91895,586.76324 A 10.354064,10.354064 0 1 1 609.62707,586.76324 z"
+       transform="matrix(0.510674,0,0,0.510674,323.00242,229.78735)" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="824.64594"
+       y="599.10181"
+       id="text3327"><tspan
+         sodipodi:role="line"
+         id="tspan3329"
+         x="824.64594"
+         y="599.10181">AGP Bus Connector</tspan></text>
+  </g>
+</svg>

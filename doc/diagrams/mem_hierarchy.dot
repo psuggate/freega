@@ -1,0 +1,11 @@
+digraph Mem_Hierarchy {
+	rankdir	= LR;		// Choose left/right orientation
+//	size	= "8,5";	// What does this do?
+	node	[shape	= box]; 
+	Processor		-> "Instruction\nSRAM"	-> Processor;
+	Processor		-> Cache	-> Processor;
+	Processor		-> DMA	-> SDRAM;
+	PCI		-> SDRAM	-> PCI;
+	SDRAM	-> Cache	-> SDRAM;
+	SDRAM	-> "Prefetch\nBuffer"	-> "Video\nRedraw";
+}

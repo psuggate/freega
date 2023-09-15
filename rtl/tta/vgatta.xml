@@ -1,0 +1,129 @@
+<architecture name="vgatta">
+	<parse_flags separator=","/>
+	<processor_model>
+		<data width="11"/>
+		<pc width="9" program_output_min_size="512" type="base2"/>
+		<instruction width="32"/>
+	</processor_model>
+	<reg_model>
+		<ext_bit_field id="rf0" max="15" bit_start="19" bit_width="4"/>
+		<ext_bit_field id="rfw" max="15" bit_start="15" bit_width="4"/>
+		
+		<ext_bit_field id="immediate" max="511" bit_start="23" bit_width="9"/>
+		
+		<ext_bit_field id="branch" max="511" bit_start="23" bit_width="9"/>
+	</reg_model>
+	<sufficies>
+	</sufficies>
+	<instruction_model>
+		<instruction name="alu0">
+			<option>
+				<part bit_start="0" bit_width="2">
+					<value name="com" value="0"/>
+					<value name="RREG" value="2" ext_bit_field="rf0"/>
+					<value name="inc" value="3"/>
+					<value name="IMMEDIATE" value="3" ext_bit_field="immediate"/>
+				</part>
+				<token value="->"/>
+				<part bit_start="2" bit_width="3">
+					<value name="and" value="0"/>
+					<value name="or" value="1"/>
+					<value name="xor" value="2"/>
+					<value name="dmux" value="3"/>
+					<value name="mul" value="4"/>
+					<value name="sub" value="5"/>
+					<value name="inc" value="6"/>
+					<value name="nop" value="7"/>
+				</part>
+			</option>
+			<option>
+				<part bit_start="0" bit_width="5">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+		<instruction name="alu1">
+			<option>
+				<part bit_start="5" bit_width="2">
+					<value name="RREG" value="1" ext_bit_field="rf0"/>
+					<value name="cmov" value="2"/>
+					<value name="IMMEDIATE" value="3" ext_bit_field="immediate"/>
+				</part>
+				<token value="->"/>
+				<part bit_start="7" bit_width="3">
+					<value name="cri" value="0"/>
+					<value name="mov" value="1"/>
+					<value name="store" value="2"/>
+					<value name="pc" value="3"/>
+					<value name="crd" value="4"/>
+					<value name="movnz" value="5"/>
+					<value name="pcz" value="6"/>
+					<value name="pcnz" value="7"/>
+				</part>
+			</option>
+			<option>
+				<part bit_start="5" bit_width="5">
+					<value name="bra" value="15"/>
+					<value name="bz" value="27"/>
+					<value name="bnz" value="31"/>
+				</part>
+				<part bit_start="0" bit_width="0">
+					<value name="LABEL" value="0" ext_bit_field="branch"/>
+				</part>
+			</option>
+			<option>
+				<part bit_start="5" bit_width="5">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+		<instruction name="comr">
+			<option>
+				<part bit_start="10" bit_width="3">
+					<value name="RREG" value="0" ext_bit_field="rf0"/>
+					<value name="bits" value="1"/>
+					<value name="plo" value="2"/>
+					<value name="phi" value="3"/>
+					<value name="mov" value="4"/>
+					<value name="diff" value="5"/>
+					<value name="dmux" value="6"/>
+					<value name="crd" value="7"/>
+				</part>
+				<token value="->"/>
+				<part bit_start="0" bit_width="0">
+					<value name="com" value="0"/>
+				</part>
+			</option>
+			<option>
+				<part bit_start="10" bit_width="3">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+		<instruction name="wrrf">
+			<option>
+				<part bit_start="13" bit_width="2">
+					<value name="com" value="0"/>
+					<value name="alu0" value="1"/>
+					<value name="load" value="2"/>
+					<value name="pc" value="3"/>
+				</part>
+				<token value="->"/>
+				<part bit_start="0" bit_width="0">
+					<value name="RREG" value="0" ext_bit_field="rfw"/>
+				</part>
+			</option>
+			<option>
+				<part bit_start="13" bit_width="2">
+					<value name="" value="0"/>
+				</part>
+			</option>
+		</instruction>
+	</instruction_model>
+	<timing_model>
+		<bus name="diff" latency="1"/>
+		<bus name="inc" latency="1"/>
+		<bus name="plo" latency="1"/>
+		<bus name="phi" latency="1"/>
+	</timing_model>
+</architecture>

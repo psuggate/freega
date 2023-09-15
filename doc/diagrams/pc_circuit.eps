@@ -1,0 +1,258 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: pc_circuit.eps
+%%Creator: Box g library
+%%BoundingBox: 0 0 284 171
+%%Magnification: 1.0000
+%%EndComments
+
+/congdict 14 dict def
+
+congdict /mtrx matrix put
+/cong {
+congdict begin
+  /yc exch def /xc exch def
+  /yb exch def /xb exch def
+  /ya exch def /xa exch def
+
+    /xu xb xc sub def /yu yb yc sub def
+    /xv xb xa sub def /yv yb ya sub def
+    /xo xa xu sub def /yo ya yu sub def
+
+    /savematrix mtrx currentmatrix def
+    [xu yu xv yv xo yo] concat
+    0 0 1 0 90 arc
+    savematrix setmatrix
+
+  end
+} def
+
+/circledict 12 dict def
+
+circledict /mtrx matrix put
+/circle {
+circledict begin
+  /yb exch def /xb exch def
+  /ya exch def /xa exch def
+  /yo exch def /xo exch def
+
+    /xu xa xo sub def /yu ya yo sub def
+    /xv xb xo sub def /yv yb yo sub def
+
+    /savematrix mtrx currentmatrix def
+    [xu yu xv yv xo yo] concat
+    1 0 moveto 0 0 1 0 360 arc
+    savematrix setmatrix
+
+  end
+} def
+
+/textdict 18 dict def
+textdict begin
+  /supx 0 def /supy 0.5 def /sups 0.5 def
+  /subx 0 def /suby 0.0 def /subs 0.5 def
+end
+/textparams {
+  /subs exch def /suby exch def /subx exch def
+  /sups exch def /supy exch def /supx exch def
+  /fromy exch def /fromx exch def
+} def
+/textbegin {
+  /yb exch def /xb exch def
+  /ya exch def /xa exch def
+  /yo exch def /xo exch def
+
+    matrix currentmatrix
+    /xu xa xo sub def /yu ya yo sub def
+    /xv xb xo sub def /yv yb yo sub def
+
+    [xu yu xv yv xo yo] concat
+    newpath 0 0 moveto matrix currentmatrix
+} def
+/textend {setmatrix} def
+/textdraw {true charpath} def
+/textcalc {setmatrix pathbbox newpath 2 index sub fromy mul exch
+           3 index sub fromx mul 4 1 roll add neg 3 1 roll add neg exch
+           translate 0 0 moveto} def
+/textsave {currentpoint matrix currentmatrix} def
+/textrestore {setmatrix exch pop currentpoint pop exch moveto} def
+/textsub {currentpoint translate subx suby translate subs dup scale 0 0 moveto} def
+/textsup {currentpoint translate supx supy translate sups dup scale 0 0 moveto} def
+/textnewline {0 -1 translate 0 0 moveto} def
+
+save
+newpath 0 171 moveto 0 0 lineto 284 0 lineto 284 171 lineto closepath clip newpath
+0.01 0.01 scale
+0 0 0 setrgbcolor
+  0 0 0 setrgbcolor
+  1 1 1 setrgbcolor
+ newpath 19559 4251 moveto 19559 9354 lineto 22960 9354 lineto 22960 4251 lineto 19559 4251 lineto closepath gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 19571 4889 moveto 19571 5655 lineto 20324 5272 lineto 19571 4889 lineto closepath gsave eofill grestore gsave 0 0 0 setrgbcolor 14.1732 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  0 0 0 setrgbcolor
+  /Helvetica findfont setfont
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  20069 8078 20636 8078 20069 8645 textbegin
+ (D) textdraw textcalc
+ (D) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  22450 8078 23017 8078 22450 8645 textbegin
+ (Q) textdraw textcalc
+ (Q) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  20222 6803 20789 6803 20222 7370 textbegin
+ (CE) textdraw textcalc
+ (CE) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  21259 4796 21826 4796 21259 5363 textbegin
+ (R) textdraw textcalc
+ (R) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  21259 8810 21826 8810 21259 9377 textbegin
+ (S) textdraw textcalc
+ (S) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 13039 5811 moveto 13039 10346 lineto 14173 9496 lineto 14173 6661 lineto 13039 5811 lineto closepath gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  0 0 0 setrgbcolor
+  /Helvetica findfont setfont
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  13583 8985 14263 8985 13583 9666 textbegin
+ (0) textdraw textcalc
+ (0) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  13583 7171 14263 7171 13583 7851 textbegin
+ (1) textdraw textcalc
+ (1) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 6803 8503 moveto 6803 13606 lineto 10204 13606 lineto 10204 8503 lineto 6803 8503 lineto closepath gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 4251 7171 4535 7171 4251 7455 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 4251 4903 4535 4903 4251 5187 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 4251 3486 4535 3486 4251 3770 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 4251 2069 4535 2069 4251 2352 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 4251 651 4535 651 4251 935 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  1 1 1 setrgbcolor
+ newpath 25228 8078 25511 8078 25228 8362 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  0 0 0 setrgbcolor
+ newpath 24094 8078 24321 8078 24094 8305 circle gsave eofill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 14173 8092 moveto 19559 8092 lineto 19559 8064 lineto 14173 8064 lineto 14173 8092 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 22960 8092 moveto 24944 8092 lineto 24944 8064 lineto 22960 8064 lineto 22960 8092 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 10204 11069 moveto 11607 11069 lineto 11607 11069 11636 11069 11636 11040 cong 11636 9000 lineto 13039 9000 lineto 13039 8971 lineto 11636 8971 lineto 11636 8971 11607 8971 11607 9000 cong 11607 11040 lineto 10204 11040 lineto 10204 11069 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 4535 7185 moveto 13039 7185 lineto 13039 7157 lineto 4535 7157 lineto 4535 7185 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 24080 8078 moveto 24080 16143 lineto 5102 16143 lineto 5102 16171 lineto 24080 16171 lineto 24080 16171 24108 16171 24108 16143 cong 24108 8078 lineto 24080 8078 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 5116 16157 moveto 5116 11069 lineto 6803 11069 lineto 6803 11040 lineto 5116 11040 lineto 5116 11040 5088 11040 5088 11069 cong 5088 16157 lineto 5116 16157 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 4535 4918 moveto 13592 4918 lineto 13592 6236 lineto 13620 6236 lineto 13620 4918 lineto 13620 4918 13620 4889 13592 4889 cong 4535 4889 lineto 4535 4918 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 4535 3500 moveto 15874 3500 lineto 15874 3472 lineto 4535 3472 lineto 4535 3500 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 15859 3486 moveto 15859 6788 lineto 15859 6788 15859 6817 15888 6817 cong 19559 6817 lineto 19559 6788 lineto 15888 6788 lineto 15888 3486 lineto 15859 3486 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 4535 2083 moveto 18141 2083 lineto 18141 2055 lineto 4535 2055 lineto 4535 2083 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 18127 2069 moveto 18127 5258 lineto 18127 5258 18127 5286 18155 5286 cong 19559 5286 lineto 19559 5258 lineto 18155 5258 lineto 18155 2069 lineto 18127 2069 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+ newpath 4535 666 moveto 21245 666 lineto 21245 4251 lineto 21274 4251 lineto 21274 666 lineto 21274 666 21274 637 21245 637 cong 4535 637 lineto 4535 666 lineto gsave fill grestore gsave 0 0 0 setrgbcolor 28.3465 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+  0 0 0 setrgbcolor
+  /Helvetica findfont setfont
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  21259 10374 22053 10374 21259 11168 textbegin
+ (PC) textdraw textcalc
+ (PC) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.5 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  8503 14626 9297 14626 8503 15420 textbegin
+ (COUNTER) textdraw textcalc
+ (COUNTER) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  1 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  14456 11055 15250 11055 14456 11848 textbegin
+ (MUX) textdraw textcalc
+ (MUX) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.8 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  3118 4903 3911 4903 3118 5697 textbegin
+ (LOAD) textdraw textcalc
+ (LOAD) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.8 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  3118 7171 3911 7171 3118 7965 textbegin
+ (DATA) textdraw textcalc
+ (DATA) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.8 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  3118 3486 3911 3486 3118 4280 textbegin
+ (ENABLE) textdraw textcalc
+ (ENABLE) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.8 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  3118 2069 3911 2069 3118 2862 textbegin
+ (CLOCK) textdraw textcalc
+ (CLOCK) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.8 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  3118 651 3911 651 3118 1445 textbegin
+ (RESET) textdraw textcalc
+ (RESET) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+textdict begin
+  0.2 0.5 0 0.5 0.5 0 -0.1 0.5 textparams
+  26362 8078 27155 8078 26362 8872 textbegin
+ (OUT) textdraw textcalc
+ (OUT) textdraw
+  textend
+end
+ gsave fill grestore gsave 0 0 0 setrgbcolor 5.66929 setlinewidth 1 setlinejoin 1 setlinecap stroke grestore
+
+restore
+showpage
+%%Trailer
+%EOF

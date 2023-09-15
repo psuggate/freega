@@ -1,0 +1,264 @@
+############################################################################
+#                                                                          #
+#    spartan3.ucf - The implementation constraints file for the Spartan    #
+#      III development board I am using.                                   #
+#                                                                          #
+#    Copyright (C) 2005 by patrick                                         #
+#    patrick@Slappy                                                        #
+#                                                                          #
+#    This program is free software; you can redistribute it and#or modify  #
+#    it under the terms of the GNU General Public License as published by  #
+#    the Free Software Foundation; either version 2 of the License, or     #
+#    (at your option) any later version.                                   #
+#                                                                          #
+#    This program is distributed in the hope that it will be useful,       #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+#    GNU General Public License for more details.                          #
+#                                                                          #
+#    You should have received a copy of the GNU General Public License     #
+#    along with this program; if not, write to the                         #
+#    Free Software Foundation, Inc.,                                       #
+#    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
+############################################################################
+
+##############################################
+# Remember to delete these when finished
+##############################################
+
+# NET "blink" LOC = "P11";
+# NET "reset" IOSTANDARD = "PCI33_3";
+# NET "reset" LOC = "L14";
+
+##############################################
+
+# Platform flash configuration pins used for accessing user data
+# NET "din_do" LOC = "M11";
+# NET "init_b" LOC = "N9";
+# NET "rclk" LOC = "A14";
+
+# On-board 50MHz oscillator
+NET "clk50" LOC = "P79";
+NET "clk50" IOSTANDARD = "PCI33_3";
+
+NET "clk50" TNM_NET = "clk50";
+TIMESPEC "TS_clk50" = PERIOD "clk50" 20 ns HIGH 50%;
+
+
+# Debugging LEDs
+NET "leds<0>"	LOC = "P86" | IOSTANDARD = "PCI33_3";
+NET "leds<1>"	LOC = "P85" | IOSTANDARD = "PCI33_3";
+
+
+##	DDR-SDRAM Pins
+#NET "ddr_ck"		LOC = "P45";
+#NET "ddr_ck_n"		LOC = "P44";
+#NET "ddr_cke"		LOC = "P46";
+
+#NET "ddr_cs_n"		LOC = "P3";
+#NET "ddr_ras_n"		LOC = "P5";
+#NET "ddr_cas_n"		LOC = "P7";
+#NET "ddr_we_n"		LOC = "P10";
+
+#NET "ddr_ba<0>"		LOC = "P2";
+#NET "ddr_ba<1>"		LOC = "P64";
+
+##NET "ddr_ba0"		LOC = "P2";
+##NET "ddr_ba1"		LOC = "P64";
+
+#NET "ddr_a<0>"		LOC = "P68";
+#NET "ddr_a<1>"		LOC = "P71";
+#NET "ddr_a<2>"		LOC = "P72";
+#NET "ddr_a<3>"		LOC = "P74";
+#NET "ddr_a<4>"		LOC = "P63";
+#NET "ddr_a<5>"		LOC = "P62";
+#NET "ddr_a<6>"		LOC = "P61";
+#NET "ddr_a<7>"		LOC = "P58";
+#NET "ddr_a<8>"		LOC = "P57";
+#NET "ddr_a<9>"		LOC = "P52";
+#NET "ddr_a<10>"		LOC = "P67";
+#NET "ddr_a<11>"		LOC = "P51";
+#NET "ddr_a<12>"		LOC = "P48";
+
+#NET "ddr_dm<0>"		LOC = "P26";
+#NET "ddr_dm<1>"		LOC = "P43";
+
+#NET "ddr_dqs<0>"	LOC = "P11";
+#NET "ddr_dqs<1>"	LOC = "P29";
+
+##NET "ddr_ldm"		LOC = "P26";
+##NET "ddr_udm"		LOC = "P43";
+
+##NET "ddr_ldqs"		LOC = "P11";
+##NET "ddr_udqs"		LOC = "P29";
+
+#NET "ddr_dq<0>"		LOC = "P24";
+#NET "ddr_dq<1>"		LOC = "P22";
+#NET "ddr_dq<2>"		LOC = "P21";
+#NET "ddr_dq<3>"		LOC = "P19";
+#NET "ddr_dq<4>"		LOC = "P18";
+#NET "ddr_dq<5>"		LOC = "P16";
+#NET "ddr_dq<6>"		LOC = "P15";
+#NET "ddr_dq<7>"		LOC = "P13";
+#NET "ddr_dq<8>"		LOC = "P31";
+#NET "ddr_dq<9>"		LOC = "P33";
+#NET "ddr_dq<10>"	LOC = "P34";
+#NET "ddr_dq<11>"	LOC = "P36";
+#NET "ddr_dq<12>"	LOC = "P37";
+#NET "ddr_dq<13>"	LOC = "P39";
+#NET "ddr_dq<14>"	LOC = "P40";
+#NET "ddr_dq<15>"	LOC = "P42";
+
+
+## FIXME: This is a nasty hack to fix the board layout bug.
+## TODO: Can WE# be moved out of an IOB to solve this problem?
+##NET "ddr_dqs<0>"	IOSTANDARD	= "LVCMOS25";
+
+#NET "ddr*"		IOSTANDARD	= "SSTL2_II";
+
+##NET	"ddr*"	IOSTANDARD	= "LVCMOS25" ;
+#NET	"ddr*"	SLEW	= "FAST" ;
+
+#NET	"ddr_dq<*>"	NODELAY ;
+
+#NET "clk75" TNM_NET = "clk75";
+##TIMESPEC "TS_ddr_ck" = PERIOD "mem_clk" 13.334 ns HIGH 50%;
+
+#INST "ddr_a<*>" TNM = "ddr_a_iobs" ;
+#INST "ddr_dq*" TNM = "ddr_dq_iobs" ;
+
+##TIMEGRP "ddr_a_iobs"	OFFSET = OUT 10 ns AFTER "clk50" ;
+##TIMEGRP "ddr_dq_iobs"	OFFSET = OUT 10 ns AFTER "clk50" ;
+#NET "ddr_dq<*>"	MAXDELAY = 0 ns ;
+#NET "ddr_a*"	MAXDELAY = 5 ns ;
+##TIMEGRP "ddr_dq_iobs"	MAXDELAY = 5 ns ;
+
+
+##INST "/PCI0/DDR0/CNTRL0/ddr_a<*>" TNM = "ddr_a_ffs" ;
+##TIMESPEC "TS_ddr_a_ffs" = FROM "ddr_a_ffs" TO "ddr_a_iobs" 5 ns ;
+
+##NET "ddr_*"	OFFSET = OUT 5 ns AFTER "clk75" ;
+##NET "ddr_*"	OFFSET = IN 4 ns BEFORE "clk75" ;
+##NET "ddr_*"	OFFSET = OUT 5 ns AFTER "ddr_ck" ;
+##NET "ddr_*"	OFFSET = IN 4 ns BEFORE "ddr_ck" ;
+
+
+# PCI pins (uses A1 and A2 above, so cant use both simultaneously)
+NET "pci_disable"  LOC = "P133";
+NET "pci_disable"  IOSTANDARD = "PCI33_3";
+
+NET "pci_clk" TNM_NET = "pci_clk";
+TIMESPEC "TS_clock" = PERIOD "pci_clk" 30 ns HIGH 50%;
+
+NET "pci_clk"      LOC = "P180";
+NET "pci_rst_n"    LOC = "P137";
+NET "pci_frame_n"  LOC = "P169";
+NET "pci_irdy_n"   LOC = "P171";
+NET "pci_trdy_n"   LOC = "P172";
+NET "pci_devsel_n" LOC = "P175";
+NET "pci_idsel"    LOC = "P152";
+NET "pci_par"      LOC = "P178";
+NET "pci_stop_n"   LOC = "P176";
+NET "pci_inta_n"   LOC = "P135";
+NET "pci_req_n"    LOC = "P139";
+NET "pci_gnt_n"    LOC = "P138";
+
+NET "pci_cbe_n<3>" LOC = "P150";
+NET "pci_cbe_n<2>" LOC = "P168";
+NET "pci_cbe_n<1>" LOC = "P181";
+NET "pci_cbe_n<0>" LOC = "P194";
+
+NET "pci_ad<31>" LOC = "P140";
+NET "pci_ad<30>" LOC = "P141";
+NET "pci_ad<29>" LOC = "P143";
+NET "pci_ad<28>" LOC = "P144";
+NET "pci_ad<27>" LOC = "P146";
+NET "pci_ad<26>" LOC = "P147";
+NET "pci_ad<25>" LOC = "P148";
+NET "pci_ad<24>" LOC = "P149";
+NET "pci_ad<23>" LOC = "P154";
+NET "pci_ad<22>" LOC = "P155";
+NET "pci_ad<21>" LOC = "P156";
+NET "pci_ad<20>" LOC = "P161";
+NET "pci_ad<19>" LOC = "P162";
+NET "pci_ad<18>" LOC = "P165";
+NET "pci_ad<17>" LOC = "P166";
+NET "pci_ad<16>" LOC = "P167";
+NET "pci_ad<15>" LOC = "P182";
+NET "pci_ad<14>" LOC = "P183";
+NET "pci_ad<13>" LOC = "P184";
+NET "pci_ad<12>" LOC = "P185";
+NET "pci_ad<11>" LOC = "P187";
+NET "pci_ad<10>" LOC = "P189";
+NET "pci_ad<9>"  LOC = "P190";
+NET "pci_ad<8>"  LOC = "P191";
+NET "pci_ad<7>"  LOC = "P196";
+NET "pci_ad<6>"  LOC = "P197";
+NET "pci_ad<5>"  LOC = "P198";
+NET "pci_ad<4>"  LOC = "P199";
+NET "pci_ad<3>"  LOC = "P200";
+NET "pci_ad<2>"  LOC = "P203";
+NET "pci_ad<1>"  LOC = "P204";
+NET "pci_ad<0>"  LOC = "P205";
+
+# Set PCI pins to 3.3V PCI
+NET "pci_clk"      IOSTANDARD = "PCI33_3";
+NET "pci_rst_n"    IOSTANDARD = "PCI33_3";
+NET "pci_frame_n"  IOSTANDARD = "PCI33_3";
+NET "pci_irdy_n"   IOSTANDARD = "PCI33_3";
+NET "pci_trdy_n"   IOSTANDARD = "PCI33_3";
+NET "pci_devsel_n" IOSTANDARD = "PCI33_3";
+NET "pci_idsel"    IOSTANDARD = "PCI33_3";
+NET "pci_inta_n"   IOSTANDARD = "PCI33_3";
+NET "pci_par"      IOSTANDARD = "PCI33_3";
+NET "pci_stop_n"   IOSTANDARD = "PCI33_3";
+NET "pci_req_n"    IOSTANDARD = "PCI33_3";
+NET "pci_gnt_n"    IOSTANDARD = "PCI33_3";
+
+NET "pci_cbe_n<0>" IOSTANDARD = "PCI33_3";
+NET "pci_cbe_n<1>" IOSTANDARD = "PCI33_3";
+NET "pci_cbe_n<2>" IOSTANDARD = "PCI33_3";
+NET "pci_cbe_n<3>" IOSTANDARD = "PCI33_3";
+
+NET "pci_ad<0>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<1>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<2>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<3>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<4>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<5>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<6>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<7>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<8>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<9>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<10>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<11>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<12>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<13>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<14>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<15>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<16>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<17>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<18>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<19>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<20>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<21>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<22>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<23>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<24>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<25>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<26>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<27>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<28>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<29>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<30>" IOSTANDARD = "PCI33_3";
+NET "pci_ad<31>" IOSTANDARD = "PCI33_3";
+
+# PCI Timing Constraints
+NET "pci_ad<*>"		OFFSET = OUT 11 ns AFTER "pci_clk" ;
+NET "pci_ad<*>"		OFFSET = IN 7 ns BEFORE "pci_clk" ;
+# NET "pci_cbe*"		OFFSET = IN 7 ns BEFORE "pci_clk" ;
+NET "pci_frame_n"	OFFSET = IN 7 ns BEFORE "pci_clk" ;
+NET "pci_irdy_n"	OFFSET = IN 7 ns BEFORE "pci_clk" ;
+NET "pci_trdy_n"	OFFSET = OUT 11 ns AFTER "pci_clk" ;
+NET "pci_devsel_n"	OFFSET = OUT 11 ns AFTER "pci_clk" ;
+NET "pci_idsel"		OFFSET = IN 7 ns BEFORE "pci_clk" ;

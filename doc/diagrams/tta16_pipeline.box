@@ -1,0 +1,55 @@
+// C++ highlighter.
+mywidth	= 0.5
+scale	= 0.2
+fwidth	= mywidth*0.2*scale
+
+include "g"
+include "arrows"
+
+pipe	= Window[][
+	dx	= 60;	dy	= 20;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
+	
+	w	= 2*scale;
+	
+	\ .Line[w, bb.Get[1], bb.Get[2], bb.Get[3], bb.Get[4], bb.Get[1]]
+	\ .Line[w, (-10, -10), (-10, 10)]
+	\ .Line[w, (10, -10), (10, 10)]
+	
+	\ .Text[.Font["Helvetica", 40*scale], color.black,
+		"F", (-20, 0);
+		"T", (0, 0);
+		"X", (20, 0);
+	]
+]
+
+tta16_pipeline	= Window[][
+	w	= 0.0;
+	Style[.Border[w, color.black]]
+	Color[color.grey, .a=0.5]
+	\ .Poly[(40, 0), (40, 60), (60, 60), (60, 0)]
+	
+	w	= 2.0*scale;
+	Color[color.black, .a=1.0]
+	\ .Put[pipe, (70, 10)]
+	\ .Put[pipe, (50, 30)]
+	\ .Put[pipe, (30, 50)]
+	
+	w	= 4.0*scale
+	\ .Line[w, (0, 10), arrow, (15, 10)]
+	
+	w	= 0.0
+	\ .Text[.Font["Helvetica", 40*scale], color.black,
+		"0", (10, 70); "1", (30, 70); "2", (50, 70); "3", (70, 70); "4", (90, 70);
+		"t =", (-11, 70);
+		"[pc]", (-10, 10);
+	]
+	
+	\ .Show[(-20, 0), (100, 75)]
+	\ .Save["eps", "tta16_pipeline.eps"]
+]
+
+
+//  GUI[tta16_pipeline]

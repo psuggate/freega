@@ -1,0 +1,19 @@
+digraph PCI_PCI_State_Machine {
+	rankdir	= LR;		// Choose left/right orientation
+	size	= "8,5";	// What does this do?
+	node [shape = doublecircle]; INITIALISE;
+	node [shape = circle]
+	INITIALISE	-> INITIALISE	[label = "!init_done"];
+	INITIALISE	-> IDLE	[label = "init_done"];
+	IDLE	-> IDLE;
+	IDLE	-> ACTIVE	[label = "wb_stb"];
+	ACTIVE	-> READ	[label = "!wb_we"];
+	ACTIVE	-> WRITE[label = "wb_we"];
+	READ	-> ACTIVE	[label = "!burst"];
+	WRITE	-> ACTIVE	[label = "!burst"];
+	ACTIVE	-> PRECHARGE	[label = "wb_end"];
+	PRECHARGE	-> IDLE	[label = "cmd_pre"];
+	IDLE	-> REFRESH	[label = "rfc_req"];
+	REFRESH	-> REFRESH	[label = "refresh"];
+	REFRESH	-> IDLE	[label = "!refresh"];
+}

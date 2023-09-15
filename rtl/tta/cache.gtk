@@ -1,0 +1,25 @@
+[size] 1432 824
+[pos] -1 -1
+*-15.000000 60000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+@28
+cacheL0_tb.clock
+cacheL0_tb.reset
+@200
+-
+@28
+cacheL0_tb.hit
+@22
+cacheL0_tb.pc[15:0]
+cacheL0_tb.instr[31:0]
+@28
+cacheL0_tb.fetch
+cacheL0_tb.CACHE0.fetch_oneshot
+cacheL0_tb.invld
+cacheL0_tb.CACHE0.state[2:0]
+@200
+-
+@28
+cacheL0_tb.ready
+@22
+cacheL0_tb.addr[3:0]
+cacheL0_tb.data[31:0]

@@ -1,0 +1,427 @@
+############################################################################
+#                                                                          #
+#    spartan3.ucf - The implementation constraints file for the Spartan    #
+#      III development board I am using.                                   #
+#                                                                          #
+#    Copyright (C) 2005 by patrick                                         #
+#    patrick@Slappy                                                        #
+#                                                                          #
+#    This program is free software; you can redistribute it and#or modify  #
+#    it under the terms of the GNU General Public License as published by  #
+#    the Free Software Foundation; either version 2 of the License, or     #
+#    (at your option) any later version.                                   #
+#                                                                          #
+#    This program is distributed in the hope that it will be useful,       #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+#    GNU General Public License for more details.                          #
+#                                                                          #
+#    You should have received a copy of the GNU General Public License     #
+#    along with this program; if not, write to the                         #
+#    Free Software Foundation, Inc.,                                       #
+#    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
+############################################################################
+
+##############################################
+# Remember to delete these when finished
+##############################################
+
+#NET "blink" LOC = "P11";
+NET "reset" IOSTANDARD = "PCI33_3";
+NET "reset" LOC = "L14";
+
+##############################################
+
+# Platform flash configuration pins used for accessing user data
+#NET "din_do" LOC = "M11";
+#NET "init_b" LOC = "N9";
+#NET "rclk" LOC = "A14";
+
+# On-board 50MHz oscillator
+NET "clk50" LOC = "T9";
+NET "clk50" IOSTANDARD = "PCI33_3";
+
+
+# VGA outputs
+NET "dvi_red" LOC = "R12";
+NET "dvi_green" LOC = "T12";
+NET "dvi_blue" LOC = "R11";
+NET "dvi_hsync" LOC = "R9";
+NET "dvi_vsync" LOC = "T10";
+NET "dvi_clock" LOC = "T3";	# Actually on B1
+NET "dvi_de" LOC = "C10";	# Actually on B1
+
+NET "dvi_red" IOSTANDARD = "PCI33_3";
+NET "dvi_green" IOSTANDARD = "PCI33_3";
+NET "dvi_blue" IOSTANDARD = "PCI33_3";
+NET "dvi_hsync" IOSTANDARD = "PCI33_3";
+NET "dvi_vsync" IOSTANDARD = "PCI33_3";
+NET "dvi_clock" IOSTANDARD = "PCI33_3";
+NET "dvi_de" IOSTANDARD = "PCI33_3";
+
+## State (00 = IDLE)
+#NET "state<0>" LOC = "E10";
+#NET "state<1>" LOC = "N11";
+#NET "state<0>" IOSTANDARD = "PCI33_3";
+#NET "state<1>" IOSTANDARD = "PCI33_3";
+
+## Dev-board SRAM pins
+#NET "sram_oe_n" LOC = "K4";
+#NET "sram_we_n" LOC = "G3";
+#NET "sram_ce1_n" LOC = "P7";
+#NET "sram_lb1_n" LOC = "P6";
+#NET "sram_ub1_n" LOC = "T4";
+#NET "sram_ce2_n" LOC = "N5";
+#NET "sram_lb2_n" LOC = "P5";
+#NET "sram_ub2_n" LOC = "R4";
+#NET "sram_addr<0>" LOC = "L5";
+#NET "sram_addr<1>" LOC = "N3";
+#NET "sram_addr<2>" LOC = "M4";
+#NET "sram_addr<3>" LOC = "M3";
+#NET "sram_addr<4>" LOC = "L4";
+#NET "sram_addr<5>" LOC = "G4";
+#NET "sram_addr<6>" LOC = "F3";
+#NET "sram_addr<7>" LOC = "F4";
+#NET "sram_addr<8>" LOC = "E3";
+#NET "sram_addr<9>" LOC = "E4";
+#NET "sram_addr<10>" LOC = "G5";
+#NET "sram_addr<11>" LOC = "H3";
+#NET "sram_addr<12>" LOC = "H4";
+#NET "sram_addr<13>" LOC = "J4";
+#NET "sram_addr<14>" LOC = "J3";
+#NET "sram_addr<15>" LOC = "K3";
+#NET "sram_addr<16>" LOC = "K5";
+#NET "sram_addr<17>" LOC = "L3";
+#NET "sram_io_1<0>" LOC = "N7";
+#NET "sram_io_1<1>" LOC = "T8";
+#NET "sram_io_1<2>" LOC = "R6";
+#NET "sram_io_1<3>" LOC = "T5";
+#NET "sram_io_1<4>" LOC = "R5";
+#NET "sram_io_1<5>" LOC = "C2";
+#NET "sram_io_1<6>" LOC = "C1";
+#NET "sram_io_1<7>" LOC = "B1";
+#NET "sram_io_1<8>" LOC = "D3";
+#NET "sram_io_1<9>" LOC = "P8";
+#NET "sram_io_1<10>" LOC = "F2";
+#NET "sram_io_1<11>" LOC = "H1";
+#NET "sram_io_1<12>" LOC = "J2";
+#NET "sram_io_1<13>" LOC = "L2";
+#NET "sram_io_1<14>" LOC = "P1";
+#NET "sram_io_1<15>" LOC = "R1";
+#NET "sram_io_2<16>" LOC = "P2";
+#NET "sram_io_2<17>" LOC = "N2";
+#NET "sram_io_2<18>" LOC = "M2";
+#NET "sram_io_2<19>" LOC = "K1";
+#NET "sram_io_2<20>" LOC = "J1";
+#NET "sram_io_2<21>" LOC = "G2";
+#NET "sram_io_2<22>" LOC = "E1";
+#NET "sram_io_2<23>" LOC = "D1";
+#NET "sram_io_2<24>" LOC = "D2";
+#NET "sram_io_2<25>" LOC = "E2";
+#NET "sram_io_2<26>" LOC = "G1";
+#NET "sram_io_2<27>" LOC = "F5";
+#NET "sram_io_2<28>" LOC = "C3";
+#NET "sram_io_2<29>" LOC = "K2";
+#NET "sram_io_2<30>" LOC = "M1";
+#NET "sram_io_2<31>" LOC = "N1";
+
+## Dev-board switches
+#NET "switches<0>" LOC = "F13";
+#NET "switches<1>" LOC = "K14";
+#NET "switches<2>" LOC = "J13";
+#NET "switches<3>" LOC = "J14";
+#NET "switches<4>" LOC = "H13";
+#NET "switches<5>" LOC = "H14";
+#NET "switches<6>" LOC = "G12";
+#NET "switches<7>" LOC = "F12";
+
+## Dev-board buttons
+#NET "buttons<0>" LOC = "M13";
+#NET "buttons<1>" LOC = "M14";
+#NET "buttons<2>" LOC = "L13";
+## buttons<3> is used as reset
+## NET "buttons<3>" LOC = "L14";
+
+# Dev-board LEDs
+NET "leds<0>" IOSTANDARD = "PCI33_3";
+NET "leds<1>" IOSTANDARD = "PCI33_3";
+NET "leds<2>" IOSTANDARD = "PCI33_3";
+NET "leds<3>" IOSTANDARD = "PCI33_3";
+NET "leds<4>" IOSTANDARD = "PCI33_3";
+NET "leds<5>" IOSTANDARD = "PCI33_3";
+NET "leds<6>" IOSTANDARD = "PCI33_3";
+NET "leds<7>" IOSTANDARD = "PCI33_3";
+NET "leds<0>" LOC = "K12";
+NET "leds<1>" LOC = "P14";
+NET "leds<2>" LOC = "L12";
+NET "leds<3>" LOC = "N14";
+NET "leds<4>" LOC = "P13";
+NET "leds<5>" LOC = "N12";
+NET "leds<6>" LOC = "P12";
+NET "leds<7>" LOC = "P11";
+
+## Dev-board edge connector A1
+#NET "a1<0>" LOC = "N7";
+#NET "a1<1>" LOC = "T8";
+#NET "a1<2>" LOC = "R6";
+#NET "a1<3>" LOC = "T5";
+#NET "a1<4>" LOC = "R5";
+#NET "a1<5>" LOC = "C2";
+#NET "a1<6>" LOC = "C1";
+#NET "a1<7>" LOC = "B1";
+
+## Dev-board edge connector B1
+#NET "b1<0>" LOC = "C10";
+#NET "b1<1>" LOC = "T3";
+#NET "b1<2>" LOC = "E10";
+#NET "b1<3>" LOC = "N11";
+#NET "b1<4>" LOC = "C11";
+#NET "b1<5>" LOC = "P10";
+#NET "b1<6>" LOC = "D11";
+#NET "b1<7>" LOC = "R10";
+#NET "b1<8>" LOC = "C12";
+#NET "b1<9>" LOC = "T7";
+#NET "b1<10>" LOC = "D12";
+#NET "b1<11>" LOC = "R7";
+#NET "b1<12>" LOC = "E11";
+#NET "b1<13>" LOC = "N6";
+#NET "b1<14>" LOC = "B16";
+#NET "b1<15>" LOC = "M6";
+#NET "b1<16>" LOC = "R3";
+#NET "b1<17>" LOC = "C15";
+#NET "b1<18>" LOC = "C16";
+#NET "b1<19>" LOC = "D15";
+#NET "b1<20>" LOC = "D16";
+#NET "b1<21>" LOC = "E15";
+#NET "b1<22>" LOC = "E16";
+#NET "b1<23>" LOC = "F15";
+#NET "b1<24>" LOC = "G15";
+#NET "b1<25>" LOC = "G16";
+#NET "b1<26>" LOC = "H15";
+#NET "b1<27>" LOC = "H16";
+#NET "b1<28>" LOC = "J16";
+#NET "b1<29>" LOC = "K16";
+#NET "b1<30>" LOC = "K15";
+#NET "b1<31>" LOC = "L15";
+
+## Dev-board edge connector A2
+#NET "a2<0>" LOC = "E6";
+#NET "a2<1>" LOC = "D5";
+#NET "a2<2>" LOC = "C5";
+#NET "a2<3>" LOC = "D6";
+#NET "a2<4>" LOC = "C6";
+#NET "a2<5>" LOC = "E7";
+#NET "a2<6>" LOC = "C7";
+#NET "a2<7>" LOC = "D7";
+#NET "a2<8>" LOC = "C8";
+#NET "a2<9>" LOC = "D8";
+#NET "a2<10>" LOC = "C9";
+#NET "a2<11>" LOC = "D10";
+#NET "a2<12>" LOC = "A3";
+#NET "a2<13>" LOC = "B4";
+#NET "a2<14>" LOC = "A4";
+#NET "a2<15>" LOC = "B5";
+#NET "a2<16>" LOC = "A5";
+#NET "a2<17>" LOC = "B6";
+#NET "a2<18>" LOC = "B7";
+#NET "a2<19>" LOC = "A7";
+#NET "a2<20>" LOC = "B8";
+#NET "a2<21>" LOC = "A8";
+#NET "a2<22>" LOC = "A9";
+#NET "a2<23>" LOC = "B10";
+#NET "a2<24>" LOC = "A10";
+#NET "a2<25>" LOC = "B11";
+#NET "a2<26>" LOC = "B12";
+#NET "a2<27>" LOC = "A12";
+#NET "a2<28>" LOC = "B13";
+#NET "a2<29>" LOC = "A13";
+#NET "a2<30>" LOC = "B14";
+#NET "a2<31>" LOC = "D9";
+
+## PCI pins (uses A1 and A2 above, so cant use both simultaneously)
+#NET "pci_disable" LOC = "E6";	#	A2-4
+#NET "pci_disable" IOSTANDARD = "PCI33_3";
+
+#NET "pci_clk" LOC = "D9";		#	A2-35
+#NET "pci_clk" IOSTANDARD = "PCI33_3";
+#NET "pci_clk" SLEW = "FAST";
+
+## Timing Constraints
+#NET "pci_clock" TNM_NET = "pci_clock";
+#TIMESPEC "TS_clock" = PERIOD "pci_clock" 30 ns HIGH 50 %;
+
+#OFFSET = IN 11 ns BEFORE "pci_clk"  ;
+#OFFSET = OUT 11 ns AFTER "pci_clk"  ;
+#TIMESPEC "TS_P2P" = FROM "PADS" TO "PADS" 11 ns;
+#NET "pci_trdy_n" OFFSET = OUT 6 ns AFTER "pci_clk" ;
+#NET "state<0>" OFFSET = OUT 6 ns AFTER "pci_clk" ;
+
+#NET "pci_rst_n" LOC = "N7";		#	A1-5
+#NET "pci_frame_n" LOC = "C9";	#	A2-14
+#NET "pci_irdy_n" LOC = "D10";	#	A2-15
+#NET "pci_trdy_n" LOC = "A3";	#	A2-16
+##INST "pci_trdy_n" IOB = TRUE;
+##INST "pci_trdy_n" KEEP = TRUE;
+#NET "pci_devsel_n" LOC = "B4";	#	A2-17
+##INST "pci_devsel_n" IOB = TRUE;
+##INST "pci_devsel_n" KEEP = TRUE;
+#NET "pci_idsel" LOC = "M10";	#	A1-22
+#NET "pci_par" LOC = "A4";		#	A2-18
+#NET "pci_stop_n" LOC = "A14";	#	A2-39
+#NET "pci_inta_n" LOC = "N8";	#	A1-4
+
+#NET "pci_rst_n" IOSTANDARD = "PCI33_3";
+#NET "pci_frame_n" IOSTANDARD = "PCI33_3";
+#NET "pci_irdy_n" IOSTANDARD = "PCI33_3";
+#NET "pci_trdy_n" IOSTANDARD = "PCI33_3";
+#NET "pci_devsel_n" IOSTANDARD = "PCI33_3";
+#NET "pci_idsel" IOSTANDARD = "PCI33_3";
+#NET "pci_inta_n" IOSTANDARD = "PCI33_3";
+#NET "pci_par" IOSTANDARD = "PCI33_3";
+#NET "pci_stop_n" IOSTANDARD = "PCI33_3";
+
+#NET "pci_ad<31>" LOC = "T8";	#	A1-7
+#NET "pci_ad<30>" LOC = "R6";	#	A1-9
+#NET "pci_ad<29>" LOC = "T5";	#	A1-11
+#NET "pci_ad<28>" LOC = "R5";	#	A1-13
+#NET "pci_ad<27>" LOC = "C2";	#	A1-15
+#NET "pci_ad<26>" LOC = "C1";	#	A1-17
+#NET "pci_ad<25>" LOC = "B1";	#	A1-19
+#NET "pci_ad<24>" LOC = "P9";	#	A1-20
+#NET "pci_ad<23>" LOC = "D5";	#	A2-5
+#NET "pci_ad<22>" LOC = "C5";	#	A2-6
+#NET "pci_ad<21>" LOC = "D6";	#	A2-7
+#NET "pci_ad<20>" LOC = "C6";	#	A2-8
+#NET "pci_ad<19>" LOC = "E7";	#	A2-9
+#NET "pci_ad<18>" LOC = "C7";	#	A2-10
+#NET "pci_ad<17>" LOC = "D7";	#	A2-11
+#NET "pci_ad<16>" LOC = "C8";	#	A2-12
+#NET "pci_ad<15>" LOC = "A5";	#	A2-20
+#NET "pci_ad<14>" LOC = "B6";	#	A2-21
+#NET "pci_ad<13>" LOC = "B7";	#	A2-22
+#NET "pci_ad<12>" LOC = "A7";	#	A2-23
+#NET "pci_ad<11>" LOC = "B8";	#	A2-24
+#NET "pci_ad<10>" LOC = "A8";	#	A2-25
+#NET "pci_ad<9>" LOC = "A9";		#	A2-26
+#NET "pci_ad<8>" LOC = "B10";	#	A2-27
+#NET "pci_ad<7>" LOC = "B11";	#	A2-29
+#NET "pci_ad<6>" LOC = "B12";	#	A2-30
+#NET "pci_ad<5>" LOC = "A12";	#	A2-31
+#NET "pci_ad<4>" LOC = "B13";	#	A2-32
+#NET "pci_ad<3>" LOC = "A13";	#	A2-33
+#NET "pci_ad<2>" LOC = "B14";	#	A2-34
+#NET "pci_ad<1>" LOC = "N9";		#	A2-38
+#NET "pci_ad<0>" LOC = "M11";	#	A2-40
+
+## Set PCI pins to 3.3V PCI
+#NET "pci_ad<0>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<1>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<2>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<3>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<4>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<5>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<6>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<7>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<8>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<9>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<10>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<11>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<12>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<13>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<14>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<15>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<16>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<17>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<18>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<19>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<20>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<21>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<22>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<23>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<24>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<25>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<26>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<27>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<28>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<29>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<30>" IOSTANDARD = "PCI33_3";
+#NET "pci_ad<31>" IOSTANDARD = "PCI33_3";
+
+
+#NET "pci_cbe_n<3>" LOC = "M7";	#	A1-21
+#NET "pci_cbe_n<2>" LOC = "D8";	#	A2-13
+#NET "pci_cbe_n<1>" LOC = "B5";	#	A2-19
+#NET "pci_cbe_n<0>" LOC = "A10";	#	A2-28
+
+#NET "pci_cbe_n<0>" IOSTANDARD = "PCI33_3";
+#NET "pci_cbe_n<1>" IOSTANDARD = "PCI33_3";
+#NET "pci_cbe_n<2>" IOSTANDARD = "PCI33_3";
+#NET "pci_cbe_n<3>" IOSTANDARD = "PCI33_3";
+
+#NET "pci_rst_n" SLEW = "FAST";
+#NET "pci_frame_n" SLEW = "FAST";
+#NET "pci_irdy_n" SLEW = "FAST";
+#NET "pci_trdy_n" SLEW = "FAST";
+#NET "pci_devsel_n" SLEW = "FAST";
+#NET "pci_idsel" SLEW = "FAST";
+#NET "pci_inta_n" SLEW = "FAST";
+#NET "pci_par" SLEW = "FAST";
+#NET "pci_stop_n" SLEW = "FAST";
+
+#NET "pci_ad<0>" SLEW = "FAST";
+#NET "pci_ad<1>" SLEW = "FAST";
+#NET "pci_ad<2>" SLEW = "FAST";
+#NET "pci_ad<3>" SLEW = "FAST";
+#NET "pci_ad<4>" SLEW = "FAST";
+#NET "pci_ad<5>" SLEW = "FAST";
+#NET "pci_ad<6>" SLEW = "FAST";
+#NET "pci_ad<7>" SLEW = "FAST";
+#NET "pci_ad<8>" SLEW = "FAST";
+#NET "pci_ad<9>" SLEW = "FAST";
+#NET "pci_ad<10>" SLEW = "FAST";
+#NET "pci_ad<11>" SLEW = "FAST";
+#NET "pci_ad<12>" SLEW = "FAST";
+#NET "pci_ad<13>" SLEW = "FAST";
+#NET "pci_ad<14>" SLEW = "FAST";
+#NET "pci_ad<15>" SLEW = "FAST";
+#NET "pci_ad<16>" SLEW = "FAST";
+#NET "pci_ad<17>" SLEW = "FAST";
+#NET "pci_ad<18>" SLEW = "FAST";
+#NET "pci_ad<19>" SLEW = "FAST";
+#NET "pci_ad<20>" SLEW = "FAST";
+#NET "pci_ad<21>" SLEW = "FAST";
+#NET "pci_ad<22>" SLEW = "FAST";
+#NET "pci_ad<23>" SLEW = "FAST";
+#NET "pci_ad<24>" SLEW = "FAST";
+#NET "pci_ad<25>" SLEW = "FAST";
+#NET "pci_ad<26>" SLEW = "FAST";
+#NET "pci_ad<27>" SLEW = "FAST";
+#NET "pci_ad<28>" SLEW = "FAST";
+#NET "pci_ad<29>" SLEW = "FAST";
+#NET "pci_ad<30>" SLEW = "FAST";
+#NET "pci_ad<31>" SLEW = "FAST";
+
+#NET "pci_cbe_n<0>" SLEW = "FAST";
+#NET "pci_cbe_n<1>" SLEW = "FAST";
+#NET "pci_cbe_n<2>" SLEW = "FAST";
+#NET "pci_cbe_n<3>" SLEW = "FAST";
+
+#NET "dvi_red" SLEW = "FAST";
+#NET "dvi_green" SLEW = "FAST";
+#NET "dvi_blue" SLEW = "FAST";
+#NET "dvi_hsync" SLEW = "FAST";
+#NET "dvi_vsync" SLEW = "FAST";
+#NET "dvi_clock" SLEW = "FAST";
+#NET "dvi_de" SLEW = "FAST";
+
+#NET "state<0>" SLEW = "FAST";
+#NET "state<1>" SLEW = "FAST";
+
+#NET "leds<0>" SLEW = "FAST";
+#NET "leds<1>" SLEW = "FAST";
+#NET "leds<2>" SLEW = "FAST";
+#NET "leds<3>" SLEW = "FAST";
+#NET "leds<4>" SLEW = "FAST";
+#NET "leds<5>" SLEW = "FAST";
+#NET "leds<6>" SLEW = "FAST";
+#NET "leds<7>" SLEW = "FAST";

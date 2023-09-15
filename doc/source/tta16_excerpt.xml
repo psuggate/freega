@@ -1,0 +1,17 @@
+<option>
+	<token value="\"/>
+	<part start="30" width="2">
+		<value name="RREG" value="2" ext_field="rs0"/>
+	</part>
+	<token value="->"/>
+	<part start="27" width="3">
+		<value name="nil" value="0"/>
+		<value name="bra" value="1"/>
+		<value name="rad" value="2"/>
+		<value name="wad" value="3"/>
+		<value name="jb" value="4"/>
+		<value name="jnb" value="5"/>
+		<value name="jz" value="6"/>
+		<value name="jnz" value="7"/>
+	</part>
+</option>

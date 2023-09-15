@@ -1,0 +1,73 @@
+// Use a C++ highlighter.
+
+mywidth	= 0.5
+scale	= 0.2
+fwidth	= mywidth*0.2*scale
+
+include "g"
+
+tta16_instr	= Window[][
+	dx	= 160;	dy	= 16;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
+	
+	w	= 2*scale;
+	
+	instr	= .Line[w, (-dx/2, -dy/2), (-dx/2, 0), (dx/2, 0), (dx/2, -dy/2), (-dx/2, -dy/2)]
+	i	= -dx/2.0+5.0
+	nicks	= .Line[w/2, (i, 0), (i, -1), (i, 0), For[(i+=5.0) < bx.Get[2].x]]
+	
+	b	= -dx/2.0 + 5.0*5.0
+	sab	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	b	+= 5.0*5.0
+	sbb	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	b	+= 5.0*4.0
+	scb	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	b	+= 5.0*3.0
+	comb	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	b	+= 5.0*4.0
+	rf0b	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	b	+= 5.0*3.0
+	rf1b	= .Line[w, (b, 0), (b, by.Get[1].y)]
+	
+	i	= -dx/2.0 + 10.0
+	san	= .Line[w/2, (i, by.Get[1].y), (i, by.Get[1].y+1), (i, by.Get[1].y)]
+	i	+= 25.0
+	sbn	= .Line[w/2, (i, by.Get[1].y), (i, by.Get[1].y+1), (i, by.Get[1].y)]
+	i	+= 25.0
+	scn	= .Line[w/2, (i, by.Get[1].y), (i, by.Get[1].y+1), (i, by.Get[1].y)]
+	i	+= 30.0
+	srfn	= .Line[w/2, (i, by.Get[1].y), (i, by.Get[1].y+1), (i, by.Get[1].y)]
+	i	+= 35.0
+	ssn	= .Line[w/2, (i, by.Get[1].y), (i, by.Get[1].y+1), (i, by.Get[1].y)]
+	
+	\ .Text[.Font["Helvetica", 16*scale], color.black,
+		"31", bb.Get[(4.984375, -0.075)];
+		"26", bb.Get[(4.828125, -0.075)];
+		"21", bb.Get[(4.671875, -0.075)];
+		"17", bb.Get[(4.546875, -0.075)];
+		"14", bb.Get[(4.453125, -0.075)];
+		"10", bb.Get[(4.328125, -0.075)];
+		"7", bb.Get[(4.234375, -0.075)];
+		"0", bb.Get[(4.015625, -0.075)];
+		
+		"SRC0", bb.Get[(4.96875, -0.025)];
+		"DST0", bb.Get[(4.890625, -0.025)];
+		"SRC1", bb.Get[(4.8125, -0.025)];
+		"DST1", bb.Get[(4.734375, -0.025)];
+		"SRC2", bb.Get[(4.65625, -0.025)];
+		"DST2", bb.Get[(4.59375, -0.025)];
+		"COM", bb.Get[(4.515625, -0.025)];
+		"B", bb.Get[(4.453125, -0.025)];
+		"REG0", bb.Get[(4.390625, -0.025)];
+		"REG1", bb.Get[(4.296875, -0.025)];
+		"S", bb.Get[(4.234375, -0.025)];
+		"IMMED", bb.Get[(4.109375, -0.025)];
+	]
+	
+	\ .Show[bb.Get[1], bb.Get[3]]
+	\ .Save["eps", "tta16_instr.eps"]
+]
+
+// GUI[tta16_instr]

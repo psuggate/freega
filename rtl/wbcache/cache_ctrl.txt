@@ -1,0 +1,16 @@
+General Cache Description:
+
+A simple, three-stage pipelined, 2-way set associative, single-port, instruction cache with a Wishbone interface to a memory (could be SDRAM, DDR2, etc).
+
+Theory of Operation:
+
+Keep accepting instruction requests until a stall. It takes three clocks from a request to outputting the data upon a cache-hit. For a miss, it is about six clocks plus the overhead of the memory. In this example, Wishbone to SDRAM interface running at 50 MHz, cache running at 150 MHz, data width of 32-bits, 16 words in a cacheline, it takes 18 clock cycles at 50 MHz, so 54 clock cycles in the 150 MHz domain, plus the six overhead for calculating the miss, setting up the transfer, and storing/retrieving the data, gives a penalty of 60 clock cycles in the 150 MHz domain for a cache-miss.
+
+Upon miss, the following tasks need to be performed:
+1/ Issue a fetch for the cacheline that the requested instruction belongs to.
+2/ Update the tags for the missed entry. A random replacement policy is used to determine which tag set to update. Store the location, of the entry within the cache, of the instruction requested.
+3/ Store the incoming cacheline in the correct cache-data set.
+4/ Once the fetch has finished, output the requested instruction.
+5/ Upto two stalled instruction requests can be within the cache's lookup pipeline. Since the tags have changed re-route these back through the cache.
+6/ For each of these that generate a miss, issue a fetch, update the tags and cache contents, and output the data, as outlined in steps 1-5.
+6/ Start accepting instruction requests from the CPU again.

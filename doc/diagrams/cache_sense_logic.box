@@ -1,0 +1,218 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+mywidth	= 0.5
+scale	= 0.2
+fwidth	= mywidth*0.2*scale
+
+
+include "g"
+//include "arrows"
+//include "components.box"
+include "logic.box"
+include "connect.box"
+
+
+// Draw a DFF.
+dff = Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t = .Poly[(-30, -45)*scale, (-30, 45)*scale, (30, 45)*scale, (30, -45)*scale]
+	\ .Hot[	"d", t.Get[1.75], "q", t.Get[3.25], "c", t.Get[1.2],
+		"ce", t.Get[1.5], "r", t.Get[4.5], "s", t.Get[2.5],
+		"top", t.Get[(2.5, 0.3)], "bot", t.Get[(4.5, 0.3)]
+		
+	]
+	Style[.Border[mywidth*0.5*scale, color.black]]
+	c = .Poly[t.Get[(1.125, -0.0025)], t.Get[(1.275, -0.0025)], t.Get[(1.2, -0.15)]]
+	
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 10*scale], color.black,
+		"D", t.Get[(1.75, -0.10)];
+		"Q", t.Get[(3.25, -0.10)];
+		"CE", t.Get[(1.5, -0.13)];
+		"R", t.Get[(4.5, -0.16)];
+		"S", t.Get[(2.5, -0.16)];
+	]
+]
+
+// Register File
+rf = Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t = .Poly[(-30, -45)*scale, (-30, 45)*scale, (30, 45)*scale, (30, -45)*scale]
+	Style[.Border[mywidth*0.25*scale, color.black]]
+	Color[color.black, .a=1.0]
+	w	= mywidth*0.25*scale
+	l0 = .Line[w, t.Get[(1.2, -0.05)], t.Get[(3.8, -0.05)]]
+	l1 = .Line[w, t.Get[(1.4, -0.05)], t.Get[(3.6, -0.05)]]
+	l2 = .Line[w, t.Get[(1.6, -0.05)], t.Get[(3.4, -0.05)]]
+	l3 = .Line[w, t.Get[(1.8, -0.05)], t.Get[(3.2, -0.05)]]
+	\ .Hot[	"a", t.Get[1.8], "we", t.Get[1.6], "din", t.Get[1.4], "clk", t.Get[1.2],
+		"r0", t.Get[3.2], "r1", t.Get[3.4],
+		"label", t.Get[(4.5, 0.3)], "top", t.Get[(2.5, 0.3)], "bot", t.Get[(4.5, 0.3)]
+	]
+]
+
+// Comparator
+comparator = Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t = .Poly[(-40, -40)*scale, (-40, 40)*scale, (40, 0)*scale]
+	Style[.Border[mywidth*0.5*scale, color.black]]
+	Color[color.white, .a=0.0]
+	
+	\ .Hot[	"out", t.Get[3], "a", t.Get[1.3], "b", t.Get[1.7], "label", t.Get[(1, 0.5)]]
+	
+	Style[.Border[fwidth, color.black]]
+	.Text[.Font["Helvetica", 12*scale], color.black
+        "==", t.Get[(1.5, -0.3)];
+	]
+]
+
+// Bitwise complement symbol (circle).
+negate	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	t	= .Circle[4*scale, (-4, 0)*scale]
+	\ .Hot["l", (-8, 0)*scale, "r", (0, 0)*scale]
+]
+
+// Junction
+junc = Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	t = .Circle[(0.0, 0.0), 4.0*scale]
+	\ .Hot["c", (0.0, 0.0)]
+]
+
+// Nodes
+sig_in	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	\ .Circle[(0.0, 0.0), 5.0*scale]
+	
+	\ .Hot["out", (5, 0)*scale, "label", (-20, 0)*scale]
+]
+
+sig_out	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	\ .Circle[(0.0, 0.0), 5.0*scale]
+	
+	\ .Hot["in", (-5, 0)*scale, "label", (20, 0)*scale]
+]
+
+
+cache_sense	= Window[][
+	px	= PointList[(-80,0),(80,0)]
+	py	= PointList[(0,-40),(0,60)]
+	
+	// Design elements:
+	cl	= 0.1
+	tb0	= .Put[rf, px.Get[(1.2, cl)]]
+	tb1	= .Put[rf, px.Get[(1.2, -cl)]]
+	pt0	= .Put[dff, px.Get[(1.32, cl)]]
+	pt1	= .Put[dff, px.Get[(1.32, -cl)]]
+	cmp0	= .Put[comparator, px.Get[(1.5, cl*1.5)]]
+	cmp1	= .Put[comparator, px.Get[(1.5, -cl*0.5)]]
+	
+	mr	= .Put[dff, px.Get[(1.85, cl)]]
+	hr	= .Put[dff, px.Get[(1.85, cl*2.5)]]
+	
+	// I/O
+	cyc	= .Put[sig_in, px.Get[1.05]+py.Get[1.95]]
+	stb	= .Put[sig_in, px.Get[1.05]+py.Get[1.85]]
+	we	= .Put[sig_in, px.Get[1.05]+py.Get[1.75]]
+	adr	= .Put[sig_in, px.Get[1.05]]
+	hit	= .Put[sig_out, (px.Get[1.93].x, hr.Get["q"].y)]
+	miss	= .Put[sig_out, (px.Get[1.93].x, mr.Get["q"].y)]
+	
+	// Gates:
+	and0	= .Put[and, (px.Get[1.2].x, py.Get[1.9].y)]	// Select
+	and1	= .Put[and, (px.Get[1.3].x, py.Get[1.8].y)]	// Write
+	neg0	= .Put[negate, and1.Get["b"]]			// On write-AND input
+	and2	= .Put[and, mr.Get["d"]+(-50*scale, 0)]		// Miss-AND
+	neg1	= .Put[negate, and2.Get["b"]]			// NEG input for Miss
+	and3	= .Put[and, hr.Get["d"]+(-50*scale, 0)]		// Hit-AND
+	or0	= .Put[or, px.Get[(1.65, cl*0.5)]]
+	
+	
+	// Connection points and wires:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 1*scale
+	
+	p2	= and0.Get["x"] + (20*scale, 0)
+	\ .ConHVH[w, PointList[cyc.Get["out"], and0.Get["a"]]]
+	\ .ConHVH[w, PointList[stb.Get["out"], and0.Get["b"]]]
+	\ .Line[w, and0.Get["x"], p2]
+	\ .ConVH[w, PointList[p2, and1.Get["a"]]]
+	\ .ConHVH[w, PointList[we.Get["out"], neg0.Get["l"]]]
+	
+	p3	= (p2.x, pt0.Get["ce"].y)
+	p4	= (p2.x, and1.Get["a"].y)
+	\ .Put[junc, p2]; \ .Put[junc, p3]; \ .Put[junc, p4]
+	\ .Line[w, pt0.Get["ce"], p3]
+	\ .Line[w, p4, p3]
+	\ .ConVH[w, PointList[p3, pt1.Get["ce"]]]
+	
+	p0	= px.Get[1.1]; \ .Put[junc, p0];
+	\ .Line[w, adr.Get["out"], p0]
+	\ .ConVH[w, PointList[p0, tb0.Get["a"]]]
+	\ .ConVH[w, PointList[p0, tb1.Get["a"]]]
+	
+	\ .ConHVH[w, PointList[tb0.Get["r0"], pt0.Get["d"]]]
+	\ .ConHVH[w, PointList[tb1.Get["r0"], pt1.Get["d"]]]
+	
+	p1	= (cmp0.Get["a"].x-20*scale, 0); \ .Put[junc, p1];
+	\ .ConHVH[w, PointList[pt0.Get["q"], cmp0.Get["b"]]]
+	\ .ConHVH[w, PointList[pt1.Get["q"], cmp1.Get["a"]]]
+	\ .Line[w, p0, p1]
+	\ .ConVH[w, PointList[p1, cmp0.Get["a"]]]
+	\ .ConVH[w, PointList[p1, cmp1.Get["b"]]]
+	
+	\ .Line[w, hr.Get["q"], hit.Get["in"]]
+	\ .Line[w, mr.Get["q"], miss.Get["in"]]
+	
+//	\ .ConHVH[w, PointList[and1.Get["x"], and2.Get["a"]]]
+	p6	= and2.Get["a"]-(60*scale, 0)
+	p7	= and3.Get["a"]-(20*scale, 0)
+ 	\ .ConHV[w, PointList[and1.Get["x"], p6]]
+ 	\ .ConHV[w, PointList[and0.Get["x"], p7]]
+	\ .Line[w, p7, and3.Get["a"]]
+	\ .Line[w, p6, and2.Get["a"]]
+	\ .Line[w, and2.Get["x"], mr.Get["d"]]
+	\ .Line[w, and3.Get["x"], hr.Get["d"]]
+	
+	p5	= and2.Get["b"]-(20*scale, 0)
+	\ .Put[junc, p5]
+	\ .ConVH[w, PointList[p5, and3.Get["b"]]]
+	\ .Line[w, p5, neg1.Get["l"]]
+	
+	\ .ConHVH[w, PointList[cmp0.Get["out"], or0.Get["a"]]]
+	\ .ConHVH[w, PointList[cmp1.Get["out"], or0.Get["b"]]]
+	\ .ConHV[w, PointList[or0.Get["x"], p5]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"CYC", cyc.Get["label"];
+		"STB", stb.Get["label"];
+		"WE", we.Get["label"];
+		"ADR", adr.Get["label"];
+		"Hit", hit.Get["label"];
+		"Miss", miss.Get["label"];
+		"Tag Bank 0", tb0.Get["top"];
+		"Tag Bank 1", tb1.Get["top"];
+		"Prev. Tag 0", pt0.Get["top"];
+		"Prev. Tag 1", pt1.Get["top"];
+	]
+	
+	\ .Show[px.Get[1]+py.Get[1]+(0, 13), px.Get[2]+py.Get[2]+(-3,-3)]
+	.Save["eps", "cache_sense_logic.eps"]
+]
+
+//GUI[cache_sense]

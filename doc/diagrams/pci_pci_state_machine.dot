@@ -1,0 +1,14 @@
+digraph PCI_PCI_State_Machine {
+//	rankdir	= LR;		// What does this do?
+	size	= "8,5";	// What does this do?
+	node [shape = doublecircle]; IDLE;
+	node [shape = circle]
+	STOP	-> IDLE;
+	IDLE	-> STOP	[label = "wb_busy"];
+	IDLE	-> READ	[label = "pci_read"];
+	READ	-> IDLE	[label = "pci_done"];
+	READ	-> READ	[label = "!pci_done"];
+	IDLE	-> WRITE[label = "pci_write"];
+	WRITE	-> IDLE	[label = "pci_done"];
+	WRITE	-> WRITE[label = "!pci_done"];
+}

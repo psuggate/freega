@@ -1,0 +1,25 @@
+A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+B
+C           FreeGA v0.1
+D          -------------
+E           Textmode demonstration screen:
+F           Each pixel is calculated by looking up each ASCII character in a
+G           font look-up table. A character is stored as an 8x16 bit array.
+H           For example, the letter `A' is stored as:
+I                ........
+J                ........
+K                ........
+L                ..###...
+M                .##.##..
+N                .##.##..
+O                ##...##.
+P                ##...##.
+Q                #######.
+R                ##...##.
+S                ##...##.
+T                ##...##.
+U                ##...##.
+V                ........
+W                ........
+X                ........
+Y                                      Copyright (c) Patrick Suggate 2009

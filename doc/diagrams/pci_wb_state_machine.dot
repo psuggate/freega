@@ -1,0 +1,13 @@
+digraph PCI_WB_State_Machine {
+	rankdir	= LR;		// What does this do?
+	size	= "8,5";	// What does this do?
+	node [shape = doublecircle]; IDLE;
+	node [shape = circle]
+	IDLE	-> ADDR	[label = "!empty"];
+	ADDR	-> READ	[label = "cmd_rd"];
+	ADDR	-> WRITE[label = "cmd_wr"];
+	READ	-> IDLE	[label = "wb_end"];
+	WRITE	-> IDLE	[label = "empty"];
+	READ	-> READ	[label = "!wb_end"];
+	WRITE	-> WRITE[label = "!empty"];
+}

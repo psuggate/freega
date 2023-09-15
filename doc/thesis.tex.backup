@@ -1,0 +1,57 @@
+\documentclass[a4paper,10pt]{book}
+
+
+% Title Page
+\title{FreeGA: A Free/Open PCI VGA Video Adapter}
+
+\author{Patrick Suggate}
+
+
+\begin{document}
+\maketitle
+
+
+% Design topics:
+% FPGA Overview
+% Clock domains:
+%	Asynchronous FIFOs
+%	DCMs
+% CPU:
+%	TTA
+
+\subsection{Branching}
+With a prefetch of two instructions, there will be two instructions in the pipeline to be dealt with after a branch has been triggered. The options are either: execute these anyway; or flush them. The Sun SPARC executes these instructions\cite{SPARC}, but most CPUs flush them \cite{x86, ARM, PowerPC}.
+
+\subsection{Cache}
+\cite{parhami2005cam}
+
+%	Cache
+% Memory controller:
+%	SDRAM
+%	X-Bar
+%	Sync. write FIFO
+% Video:
+%	Pre-fetch
+%	VGA
+%	DVI
+% PCI:
+%	CFG space
+%	Memory space/transfers
+%	I/O space/transfers
+
+
+
+% Timing summary:
+% ---------------
+% 
+% Timing errors: 0  Score: 0
+% 
+% Constraints cover 1708 paths, 0 nets, and 1507 connections
+% 
+% Design statistics:
+%    Minimum period:   3.874ns (Maximum frequency: 258.131MHz)
+%    Minimum input required time before clock:   7.232ns
+%    Maximum output delay after clock:  10.407ns
+
+
+\end{document}

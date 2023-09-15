@@ -1,0 +1,58 @@
+Welcome to FreeGA, the free/open source PCI VGA adapter. The goal is to
+eventually support enough of the VGA specification to allow OSs with GUIs to be
+supported. Possibly even hardware 3D acceleration using OpenGL.
+
+Currently only the Spartan II Starter Kit using the Xilinx Webpack, available
+from Xilinx (http://www.xilinx.com/), is supported. FreeGA only supports
+mirroring the primary VGA adapter at the moment in `PASSIVE' mode. This is set
+in the `vga.v' Verilog source file. Only `PASSIVE' support at the moment due to
+inconsistent synthesis causing the PCI timing to often synthesise incorrectly.
+Also, the emulation of the VGA I/O port registers is incomplete.
+
+This document covers synthesising the design, and uploading the `.bit' file to
+the Spartan III Starter Kit development board.
+
+Requirements:
+ - Xilinx WebPack (available from http://www.xilinx.com/)
+ - Spartan III Starter Kit (available for $100 US from Xilinx also)
+ - Eagle Layout Editor for creating the PCI stub connector (available from
+   http://www.cadsoft.de/)
+ - 1x PCI stub connector PCB
+ - 2x 16211 24-bit bus switches
+ - 1x 4N04 diode
+ - 1x  Ohm resistor
+ - 2x 40-pin 90 degree edge connectors
+ 
+Optional:
+ - The GNU make utility for synthesising without using Xilinx ISE GUI
+ - Python (plus wxWidgets for some of the scripts)
+ - Image editor like the GIMP for editing fonts.
+ - KDE's `kate' text editor, it is very good.
+ - Icarus Verilog is useful for simulating FreeGA
+ 
+Synthesising using GNU make:
+ - Change to the `FreeGA/src' directory.
+ - Type `make'.
+ - Run `impact' from the Xilinx WebPack to upload the design
+ 
+Using Xilinx ISE:
+(unimplemented at the moment, just needs a project created and all the relevant
+files added.)
+
+
+File/Directory Structure:
+ ./FreeGA			- The base directory of FreeGA
+ ./FreeGA/README	- This file
+ ./FreeGA/LICENSE	- Terms of use/modification/distribution of FreeGA
+ ./FreeGA/src		- The Verilog source files for FreeGA
+ ./FreeGA/src/vga.v	- The top Verilog module for FreeGA
+ ./FreeGA/src/pci		- Needed for the PCI part of FreeGA
+ ./FreeGA/src/text		- For the text-mode part of FreeGA
+ ./FreeGA/src/ram		- Needed for the framebuffer
+ ./FreeGA/src/vgabios	- Implements the VGA BIOS ROM
+ ./FreeGA/src/crt		- For driving a monitor
+ ./FreeGA/src/xilinx_sim- Simulates Xilinx primitives
+ ./FreeGA/tools		- Python scripts useful for developing FreeGA
+ ./FreeGA/data		- The data files for FreeGA
+ ./FreeGA/ucf		- The UCF file needed by Xilinx tools
+ 

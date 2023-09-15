@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1052.3622"
+   height="744.09448"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="pci_state_machines.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2679"
+       inkscape:persp3d-origin="291.875 : 90.833333 : 1"
+       inkscape:vp_z="583.75 : 136.25 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 136.25 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2973"
+       inkscape:persp3d-origin="250 : 107.5 : 1"
+       inkscape:vp_z="500 : 161.25 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 161.25 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="486.3255"
+     inkscape:cy="280.71068"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="845"
+     inkscape:window-height="726"
+     inkscape:window-x="409"
+     inkscape:window-y="62" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       transform="translate(33.357144,580.52305)"
+       class="graph"
+       id="graph0">
+      <title
+         id="title2570">PCI_PCI_State_Machine</title>
+      <polygon
+         id="polygon2572"
+         points="-4,4 -4,-214 463,-214 463,4 -4,4 "
+         style="fill:#ffffff;stroke:#ffffff" />
+<!-- IDLE -->      <g
+         class="node"
+         id="node1">
+        <title
+           id="title2575">IDLE</title>
+        <ellipse
+           id="ellipse2577"
+           ry="32.212101"
+           rx="32.212101"
+           cy="-174"
+           cx="168"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="168"
+           sodipodi:cy="-174"
+           sodipodi:rx="32.212101"
+           sodipodi:ry="32.212101" />
+        <ellipse
+           id="ellipse2579"
+           ry="36.157299"
+           rx="36.157299"
+           cy="-174"
+           cx="168"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="168"
+           sodipodi:cy="-174"
+           sodipodi:rx="36.157299"
+           sodipodi:ry="36.157299" />
+        <text
+           id="text2581"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-169.89999"
+           x="168">IDLE</text>
+      </g>
+<!-- STOP -->      <g
+         class="node"
+         id="node2">
+        <title
+           id="title2584">STOP</title>
+        <ellipse
+           id="ellipse2586"
+           ry="36.1339"
+           rx="36.1339"
+           cy="-42"
+           cx="36"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="36"
+           sodipodi:cy="-42"
+           sodipodi:rx="36.1339"
+           sodipodi:ry="36.1339" />
+        <text
+           id="text2588"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="36">STOP</text>
+      </g>
+<!-- IDLE&#45;&gt;STOP -->      <g
+         class="edge"
+         id="edge4">
+        <title
+           id="title2591">IDLE-&gt;STOP</title>
+        <path
+           id="path2593"
+           d="M 132,-169 C 103,-162 63,-149 42,-120 C 36,-111 33,-99 32,-88"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2595"
+           points="35.4778,-87.6021 31,-78 28.5125,-88.2987 35.4778,-87.6021 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2597"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-106.9"
+           x="71">wb_busy</text>
+      </g>
+<!-- READ -->      <g
+         class="node"
+         id="node6">
+        <title
+           id="title2600">READ</title>
+        <ellipse
+           id="ellipse2602"
+           ry="37.0233"
+           rx="37.0233"
+           cy="-42"
+           cx="145"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="145"
+           sodipodi:cy="-42"
+           sodipodi:rx="37.0233"
+           sodipodi:ry="37.0233" />
+        <text
+           id="text2604"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="145">READ</text>
+      </g>
+<!-- IDLE&#45;&gt;READ -->      <g
+         class="edge"
+         id="edge6">
+        <title
+           id="title2607">IDLE-&gt;READ</title>
+        <path
+           id="path2609"
+           d="M 145,-146 C 140,-138 136,-129 133,-120 C 130,-109 130,-98 131,-87"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2611"
+           points="134.471,-87.4922 133,-77 127.607,-86.1194 134.471,-87.4922 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2613"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-106.9"
+           x="157">pci_read</text>
+      </g>
+<!-- WRITE -->      <g
+         class="node"
+         id="node10">
+        <title
+           id="title2616">WRITE</title>
+        <ellipse
+           id="ellipse2618"
+           ry="41.889099"
+           rx="41.889099"
+           cy="-42"
+           cx="342"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="342"
+           sodipodi:cy="-42"
+           sodipodi:rx="41.889099"
+           sodipodi:ry="41.889099" />
+        <text
+           id="text2620"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="342">WRITE</text>
+      </g>
+<!-- IDLE&#45;&gt;WRITE -->      <g
+         class="edge"
+         id="edge12">
+        <title
+           id="title2623">IDLE-&gt;WRITE</title>
+        <path
+           id="path2625"
+           d="M 197,-152 C 210,-142 226,-131 240,-120 C 260,-104 281,-88 300,-74"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2627"
+           points="302.1,-76.8 308,-68 297.9,-71.2 302.1,-76.8 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2629"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-106.9"
+           x="287">pci_write</text>
+      </g>
+<!-- STOP&#45;&gt;IDLE -->      <g
+         class="edge"
+         id="edge2">
+        <title
+           id="title2632">STOP-&gt;IDLE</title>
+        <path
+           id="path2634"
+           d="M 62,-68 C 83,-89 112,-118 135,-141"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2636"
+           points="132.454,-143.404 142,-148 137.404,-138.454 132.454,-143.404 "
+           style="fill:#000000;stroke:#000000" />
+      </g>
+<!-- READ&#45;&gt;IDLE -->      <g
+         class="edge"
+         id="edge8">
+        <title
+           id="title2639">READ-&gt;IDLE</title>
+        <path
+           id="path2641"
+           d="M 168,-72 C 173,-81 179,-91 182,-102 C 184,-111 184,-121 183,-130"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2643"
+           points="179.529,-129.508 181,-140 186.393,-130.881 179.529,-129.508 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2645"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-106.9"
+           x="209">pci_done</text>
+      </g>
+<!-- READ&#45;&gt;READ -->      <g
+         class="edge"
+         id="edge10">
+        <title
+           id="title2648">READ-&gt;READ</title>
+        <path
+           id="path2650"
+           d="M 180,-55 C 191,-55 200,-50 200,-42 C 200,-37 196,-33 190,-31"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2652"
+           points="190.492,-27.5292 180,-29 189.119,-34.3933 190.492,-27.5292 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2654"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="228">!pci_done</text>
+      </g>
+<!-- WRITE&#45;&gt;IDLE -->      <g
+         class="edge"
+         id="edge14">
+        <title
+           id="title2657">WRITE-&gt;IDLE</title>
+        <path
+           id="path2659"
+           d="M 336,-84 C 332,-97 326,-110 317,-120 C 290,-148 247,-161 214,-168"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2661"
+           points="213.119,-164.607 204,-170 214.492,-171.471 213.119,-164.607 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2663"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-106.9"
+           x="353">pci_done</text>
+      </g>
+<!-- WRITE&#45;&gt;WRITE -->      <g
+         class="edge"
+         id="edge16">
+        <title
+           id="title2666">WRITE-&gt;WRITE</title>
+        <path
+           id="path2668"
+           d="M 382,-55 C 393,-54 402,-50 402,-42 C 402,-37 398,-33 392,-31"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2670"
+           points="392.492,-27.5292 382,-29 391.119,-34.3933 392.492,-27.5292 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2672"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="430">!pci_done</text>
+      </g>
+    </g>
+    <g
+       transform="translate(551.14285,589.09448)"
+       class="graph"
+       id="g2976">
+      <title
+         id="title2871">PCI_WB_State_Machine</title>
+      <polygon
+         id="polygon2873"
+         points="-4,4 -4,-254 396,-254 396,4 -4,4 "
+         style="fill:#ffffff;stroke:#ffffff" />
+<!-- IDLE -->      <g
+         class="node"
+         id="g2980">
+        <title
+           id="title2876">IDLE</title>
+        <ellipse
+           id="ellipse2878"
+           ry="32.212101"
+           rx="32.212101"
+           cy="-108"
+           cx="36"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="36"
+           sodipodi:cy="-108"
+           sodipodi:rx="32.212101"
+           sodipodi:ry="32.212101" />
+        <ellipse
+           id="ellipse2880"
+           ry="36.157299"
+           rx="36.157299"
+           cy="-108"
+           cx="36"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="36"
+           sodipodi:cy="-108"
+           sodipodi:rx="36.157299"
+           sodipodi:ry="36.157299" />
+        <text
+           id="text2882"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-103.9"
+           x="36">IDLE</text>
+      </g>
+<!-- ADDR -->      <g
+         class="node"
+         id="node3">
+        <title
+           id="title2885">ADDR</title>
+        <ellipse
+           id="ellipse2887"
+           ry="38.218498"
+           rx="38.218498"
+           cy="-108"
+           cx="186"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="186"
+           sodipodi:cy="-108"
+           sodipodi:rx="38.218498"
+           sodipodi:ry="38.218498" />
+        <text
+           id="text2889"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-103.9"
+           x="186">ADDR</text>
+      </g>
+<!-- IDLE&#45;&gt;ADDR -->      <g
+         class="edge"
+         id="g2990">
+        <title
+           id="title2892">IDLE-&gt;ADDR</title>
+        <path
+           id="path2894"
+           d="M 72,-108 C 92,-108 117,-108 138,-108"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2896"
+           points="138,-111.5 148,-108 138,-104.5 138,-111.5 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2898"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-111.9"
+           x="110">!empty</text>
+      </g>
+<!-- READ -->      <g
+         class="node"
+         id="node5">
+        <title
+           id="title2901">READ</title>
+        <ellipse
+           id="ellipse2903"
+           ry="37.0233"
+           rx="37.0233"
+           cy="-178"
+           cx="350"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="350"
+           sodipodi:cy="-178"
+           sodipodi:rx="37.0233"
+           sodipodi:ry="37.0233" />
+        <text
+           id="text2905"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-173.89999"
+           x="350">READ</text>
+      </g>
+<!-- ADDR&#45;&gt;READ -->      <g
+         class="edge"
+         id="g3000">
+        <title
+           id="title2908">ADDR-&gt;READ</title>
+        <path
+           id="path2910"
+           d="M 222,-122 C 242,-130 268,-141 290,-151 C 296,-153 301,-155 307,-158"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2912"
+           points="305.44,-161.137 316,-162 308.283,-154.74 305.44,-161.137 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2914"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-154.89999"
+           x="266">cmd_rd</text>
+      </g>
+<!-- WRITE -->      <g
+         class="node"
+         id="node7">
+        <title
+           id="title2917">WRITE</title>
+        <ellipse
+           id="ellipse2919"
+           ry="41.889099"
+           rx="41.889099"
+           cy="-42"
+           cx="350"
+           style="fill:none;stroke:#000000"
+           sodipodi:cx="350"
+           sodipodi:cy="-42"
+           sodipodi:rx="41.889099"
+           sodipodi:ry="41.889099" />
+        <text
+           id="text2921"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-37.900002"
+           x="350">WRITE</text>
+      </g>
+<!-- ADDR&#45;&gt;WRITE -->      <g
+         class="edge"
+         id="g3010">
+        <title
+           id="title2924">ADDR-&gt;WRITE</title>
+        <path
+           id="path2926"
+           d="M 222,-94 C 245,-84 276,-72 302,-62"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2928"
+           points="303.283,-65.2598 311,-58 300.44,-58.8631 303.283,-65.2598 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2930"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-87.900002"
+           x="266">cmd_wr</text>
+      </g>
+<!-- READ&#45;&gt;IDLE -->      <g
+         class="edge"
+         id="g3016">
+        <title
+           id="title2933">READ-&gt;IDLE</title>
+        <path
+           id="path2935"
+           d="M 313,-177 C 272,-175 205,-170 148,-155 C 124,-148 98,-137 78,-128"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2937"
+           points="79.5596,-124.863 69,-124 76.7166,-131.26 79.5596,-124.863 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2939"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-171.89999"
+           x="186">wb_end</text>
+      </g>
+<!-- READ&#45;&gt;READ -->      <g
+         class="edge"
+         id="g3022">
+        <title
+           id="title2942">READ-&gt;READ</title>
+        <path
+           id="path2944"
+           d="M 334,-212 C 334,-223 339,-233 350,-233 C 357,-233 362,-228 364,-222"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2946"
+           points="367.471,-222.492 366,-212 360.607,-221.119 367.471,-222.492 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2948"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-236.89999"
+           x="350">!wb_end</text>
+      </g>
+<!-- WRITE&#45;&gt;IDLE -->      <g
+         class="edge"
+         id="g3028">
+        <title
+           id="title2951">WRITE-&gt;IDLE</title>
+        <path
+           id="path2953"
+           d="M 308,-36 C 267,-32 202,-30 148,-44 C 121,-51 94,-66 73,-80"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2955"
+           points="70.9,-77.2 65,-86 75.1,-82.8 70.9,-77.2 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2957"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-47.900002"
+           x="186">empty</text>
+      </g>
+<!-- WRITE&#45;&gt;WRITE -->      <g
+         class="edge"
+         id="g3034">
+        <title
+           id="title2960">WRITE-&gt;WRITE</title>
+        <path
+           id="path2962"
+           d="M 334,-81 C 335,-93 340,-102 350,-102 C 357,-102 361,-98 364,-91"
+           style="fill:none;stroke:#000000" />
+        <polygon
+           id="polygon2964"
+           points="367.471,-91.4922 366,-81 360.607,-90.1194 367.471,-91.4922 "
+           style="fill:#000000;stroke:#000000" />
+        <text
+           id="text2966"
+           style="font-size:14px;text-anchor:middle;font-family:Times New Roman"
+           y="-105.9"
+           x="350">!empty</text>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="217.14285"
+       y="618.8396"
+       id="text3040"><tspan
+         sodipodi:role="line"
+         id="tspan3042"
+         x="217.14285"
+         y="618.8396">PCI-Domain State Machine</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="744.28571"
+       y="618.8396"
+       id="text3044"><tspan
+         sodipodi:role="line"
+         id="tspan3046"
+         x="744.28571"
+         y="618.8396">Wishbone-Domain State Machine</tspan></text>
+  </g>
+</svg>

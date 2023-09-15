@@ -1,0 +1,701 @@
+\chapter{TTA16 Assembly Language Programming Guide}
+\label{TTA_Programming}
+% OpenVGA is designed to emulate VGA functionality using a reasonably
+% general-purpose processor, either TTA16 or RISC16 .
+
+Programming for the TTA16 architecture, and accessing the available OpenVGA
+hardware using the processor, requires significant documentation. This is
+because many modules have been created specifically for OpenVGA, so no
+documentation exists elsewhere, and the TTA16 architecture is unusual. This
+appendix does not attempt to provide exhaustive information, but hopefully
+enough to understand the source-code in the examples, and the firmware routines
+if necessary.
+
+
+\section{TTA16 Overview}
+Programming for the TTA16 architecture is unlike programming for more
+traditional architectures since a TTA with multiple transports has explicit-ILP
+(Instruction Level Parallelism). TTA16 instruction consists of multiple
+micro-instructions, and each being simple data moves between registers. A
+traditional CPU instruction typically specifies just a single operation to be
+performed -- the \textit{opcode} -- and the arguments: registers, immediate
+constants and memory data.
+
+A TTA processor contains three directly accessible register types: trigger
+registers, operand registers, and results registers. A write to a trigger
+register initiates an operation within its associated FU. A write to an operand
+register has no side-effect, that value is simply changed. Operand registers
+are used when multiple inputs to a FU are required. Subtract, for example, has
+two inputs, the minuend and the subtrahend. With TTA16, the minuend is the
+trigger register and the subtrahend input is an operand register.
+
+The output of the subtract unit is a result register. These registers are
+modified by its associated FU a certain number of cycles, depending on the FU,
+after the trigger register is written to. These results can then put back onto
+a data transport to be used for subsequent operations.
+
+Here is an example subtract operation for a TTA processor with one transport:
+\begin{center}
+\texttt{
+\begin{tabular}{l l l}
+\{r0	& ->add		& \}	\\
+\{r1	& ->add$_\mathtt{t}$	& \}	\\
+\{diff	& ->r2		& \}
+\end{tabular}
+}
+\end{center}
+As part of the TTA assembler's syntax, curly braces (\{\}) surround an
+instruction. The reason for syntax is to make obvious the explicit-ILP of the
+processor when the processor has multiple transports (see the \texttt{memcpy}
+programming example in Figure~\ref{TTAPROG_TTA16_memcpy} at the end of this
+appendix for assembly code written for TTA16 which has multiple transports).
+
+On the first line, the argument \texttt{r0} is a general purpose register
+from the RF (Register File), one of 16 (\texttt{r0-r15}). The arrow \texttt{->}
+indicates the data direction, from \texttt{r0} to \texttt{add} in this case.
+The last argument is the destination register, which is the operand register
+for the addition FU. Since \texttt{add} is an operand register, this is a
+simple data move, there is no side-effect, so the start of an addition will not
+be triggered.
+
+The second line moves another register to the addition FU, but this time to the
+trigger register. This instruction will cause an addition operation to begin.
+The sum of the two input registers will be stored back to the RF by the third
+instruction.
+
+The programming tasks with TTA16, especially with high-performance
+code, are more explicitly concerned with scheduling the flow of data to and from
+FUs (Functional Units) via `transports'. TTA16 is not fully connected either,
+each transport can only read certain registers, and direct data to just a subset
+of total FUs, which increases programming complexity. 
+
+
+\subsection{TTA16 Datatypes}
+The only native data types supported by TTA16 are 16-bit, signed and unsigned
+words. There is a little hardware support for larger word sizes though. This
+is achieved using the borrow flag for long subtractions, and the multiplier
+calculates a 32-bit product from two 16-bit inputs. Either half of the product
+can be read, just as any other 16-bit register.
+
+Immediate constants are either 8-bits, sign-extended to 16-bits, or 11-bits
+sign-extended (which is only available to transport 0 as it is needed for
+branching). Producing longer immediate values requires multiple operations, for
+example using the multiplier as a shifter.
+
+
+\subsection{Instruction Format}
+
+Like RISC processors, TTAs tend to have fixed width instruction words
+\cite{corporaal1993maa}. Typically within an instruction word, all fields are
+predefined, whereas RISC tends to have multiple instruction
+formats\cite{SPARC_Arch,smith1994paa,britton2004mal,ARM_Cortex_M3}. A
+disadvantage with TTAs is that instruction words are often wider, or loading
+large immediate data values is more complex\footnote{For example, MOVE32INT, a
+TTA CPU designed at TU Delft by H. Corporaal et. al. has only 6-bit immediates,
+but upto four can be used per instruction\cite{corporaal1993maa}.}.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=\linewidth]{diagrams/tta16_instr.eps}
+\caption[TTA16 instruction format]{TTA16 instruction format, see text for a
+complete explanation of the bit-fields.}
+\label{TTAPROG_Instruction_Format}
+\end{center}
+\end{figure}
+
+TTA instructions consist of a list of data moves to complete during the
+transport stage of the pipeline, and often some extra information like
+guards\cite{corporaal1993maa}, register file indices, and/or immediate data.
+
+The TTA16 instruction word format is shown in
+Figure~\ref{TTAPROG_Instruction_Format}. The fields labelled \textit{SRCx},
+where \textit{x} is 0, 1, or 2, are the bit-fields which select the
+source register for the data-transport. The \textit{DSTx} bit-fields specify
+the destination registers. The \textit{COM} register is a special source
+register that is visible to all other transports, and is an operand register
+for most FUs.
+
+The next fields select registers from the RF to read and/or write. The single
+\textit{B} bit selects the bank, i.e. registers 0-7 or 8-15 for the
+instruction. Since register write index bit-fields follow the current
+instruction, and read bit-fields precede it, a register read and write
+instruction involving different banks is still possible, like the following
+part-instruction (a valid move for transport 3):
+\begin{center}
+\texttt{r0	-> r15}
+\end{center}
+
+The final bit-field is the immediate data field. This is 8-bits wide, with the
+upper bit representing the sign for sign-extending the integer to 16-bits. Data
+transport 0 uses an 11-bit immediate, by using the value of \textit{REG1} as
+well, so that branches can reach all locations within the TTA16 instruction
+block RAMs.
+
+Only a subset of TTA16's registers are available to each data transport (see
+Table~\ref{TTAPROG_Registers}). This is so that the internal multiplexers can be
+smaller, and fewer logic layers, resulting in a more efficient implementation.
+Since the \textit{com} register can read most registers, and all transports can
+read \textit{com}, it is believed that this restricted set of registers,
+accessible to each transport, is a good trade-off between size and clock-speed,
+and code performance.
+
+An example move for transport 0 could be:
+\begin{center}
+\texttt{0x023	-> bra}
+\end{center}
+Which means move the hexadecimal value 0x023 (in base-10, 35) to the
+unconditional branch register, i.e. jump to address 0x023 and start executing
+instructions there. Since there is a latency of two cycles, the instruction
+follwing this branch instruction would be executed before the branch is
+completed too.
+
+From transport 0, it would not be possible to write 0x023 to the \textit{sub}
+register, for example, since this register is not visible to this transport. But
+it would be a valid move when performed in transport 1 .
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l l | l l | l l | l}
+SRC0	& DST0	&	SRC1	& DST1	&	SRC2	&	DST2	&	COM	\\
+\hline
+com		&	nop	&	com		&	nop	&	com		&	mem/nop	&	com/nop	\\
+IMM11	&	bra	&	IMM8	&	sbb	&	diff	&	RF0		&	IMM8\\
+RF1		&	rad	&	RF1		&	sub	&	RF0		&	mul		&	RF0	\\
+mem		&	wad	&	mem		&	cmp	&	pc		&	msr		&	mem	\\
+		&	jb	&	nand	&		&			&			&	bits\\
+		&	jnb	&	and		&		&			&			&	diff\\
+		&	jz	&	or		&		&			&			&	plo	\\
+		&	jnz	&	xor		&		&			&			&	phi	\\
+\end{tabular}
+\end{center}
+\caption[TTA16 registers and the transports to which they have access]{TTA16
+registers and the transports which they are accessible.}
+\label{TTAPROG_Registers}
+\end{table}
+
+
+\subsection{Data Transport Scheduling}
+All FUs, except the Wishbone interface FU, have a fixed latency, so a result is
+available a deterministic number of cycles following triggering, and will be
+over-written by subsequent FU triggering, after its fixed latency has elapsed.
+For example, the subtract FU has a latency of two cycles, as do all FUs except
+the register file (RF), this has a latency of three due to pipelining. Even the
+branch FU has a latency of two, causing the instruction following the branch to
+be executed. The instruction slot directly after a branch instruction is called
+a branch delay slot\cite{SPARC_Arch}.
+
+If a FU is read one cycle after it was triggered, triggering is by a write to a
+FUs trigger register (TR), it will still contain the previous value. Traditional
+architectures often stall the CPU until the result is available, or use data
+forwarding to get early access to the result. This approach was not taken with
+TTA16 for two reasons:
+\begin{enumerate}
+  \item The extra hardware required for hazard detection, CPU stalling,
+  and/or data forwarding would lead to a larger CPU, reducing one the key
+  benefits of TTA processors.
+  \item It is not always desirable, especially with RF bandwidth being
+  comparatively more scarce than other architectures. Taking advantage of this
+  latency allows `time-sharing' of a FU, like a subtractor, for the decrementing
+  of two variables without having to write either result back to the register
+  file.
+\end{enumerate}
+
+There is one exception though, TTA16 does stall when a Wishbone access is
+initiated, resuming upon completion of the transaction. Though the interlock
+logic required to implement this carries a performance penalty, it is less than
+a more general data hazard detection scheme, and Wishbone accesses are
+non-deterministic. A low silicon-cost solution would be to poll a machine
+status register until a Wishbone transaction completion signal is received, but
+this would lead to a large increase in code size.
+
+Traditional architectures use the RF extensively, as does RISC16 (see
+Appendix~\ref{RISCPROG}), typically two register reads and one write per
+instruction. While TTA16 has a RF, with a capacity of 16, 16-bit values, typical
+code only accesses the RF only about once per instruction (see
+Listing~\ref{TTAPROG_TTA16_memcpy} for some typical assembly code). This is
+because moving data between the RF and FUs uses up available processor data-move
+bandwidth. It is more efficient to move data from one FU straight to another.
+
+While not often used, TTA16 is still capable of up to two register reads, one
+write, and using one unique immediate data value within a single instruction,
+similar to more traditional architectures. There are additional restrictions
+though, both register reads have to be from the same bank, register field
+sharing, and register fields from the preceding and following instructions
+determine the registers read and written respectively (see
+Figure~\ref{TTAPROG_Used_Fields}).
+
+Examining the instruction word diagram in
+Figure~\ref{TTAPROG_Instruction_Format}, it may be noted that there are only two
+register fields within the instruction word. The first two transports (0 and 1)
+share \textit{REG1} and the last two transports (2 and \textit{COM}) share
+\textit{REG0}, with \textit{REG0} optionally specifying the write register.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=\linewidth]{diagrams/tta16_used_fields.eps}
+\caption[TTA16 instruction shared bit-fields]{TTA16 shared bit-fields between
+instructions. A TTA16 instruction uses the \textit{B, REG0} and \textit{REG1}
+fields from the previous instruction for register reads, the \textit{REG0}
+field from the next instruction for register writes, and there is overlap of
+the \textit{IMMED} and \textit{REG1} bit-fields when using immediates with
+transport 0. Long immediates are so branches can reach every address in block RAM.}
+\label{TTAPROG_Used_Fields}
+\end{center}
+\end{figure}
+
+Additionally, it is the register fields of the preceding instruction word
+that contain the indices of registers to be read for the current instruction,
+and the following instruction contains the index of the register to be written.
+Because of these architectural peculiarities, register operations can be
+difficult to schedule correctly. Often it is not until code assembly is
+attempted that conflicts are discovered.
+
+% TODO: This doesn't belong in a manual.
+Due to the explicit ILP, interleaved instruction bit-fields, and only partial
+data-transport connectivity, tightly-packed, well-scheduled code is very time
+consuming to construct by hand. No compiler or other tools for instruction
+scheduling were written or readily available to ease this task either. The
+main goal when implementing the OpenVGA firmware was to ensure that critical
+loops are highly optimised (like with the memory copy subroutine, see
+Listing~\ref{TTAPROG_TTA16_memcpy}).
+
+
+\subsection{Exceptions}
+TTA16 has no support for exceptions due to the complexity of saving and
+restoring the state of a TTA processor. For example, some registers of the TTA16
+processor are write only which means that these functional units would be
+difficult to use during an interrupt. The multiply FU, for example, uses a
+dedicated, write-only, triggering register as one input, the TTA16 COM register
+for the other, so it could be possible to work backwards to deduce the value
+within the triggering at the time of the interrupt, but the processor would
+need its own set of working registers while performing the calculations.
+
+Exception complexity was avoided by avoiding exceptions/interrupts altogether.
+The TTA16 within OpenVGA does not need to respond immediately to any I/O
+requests, PCI requests go straight to local memory, so exceptions are not needed
+
+
+\section{A Simple Example}
+The following is a piece of TTA16 assembly code which sets OpenVGA's LEDs.
+Braces surround a complete instruction, commas separate the different execution
+transports, which control the data transports, and there are four streams per
+instruction. Each stream has access to just a subset of TTA16's total register set.
+
+\footnotesize
+\verbatiminput{source/tta16_set_leds.tex}
+\normalsize
+
+% TODO: Step-by-step explanation.
+The first two lines are just comments, since the line begins with the `;'
+character, and any text after this -- until the end of the line -- is ignored.
+The assembler supports two types of comments, single-line and multi-line
+comments, which is any text between the comment opening sequence `/*' and the
+closing sequence `*/'.
+
+This is a line-by-line break-down of the above example, only lines with
+instructions (\{\ldots\}) are counted:
+
+\begin{enumerate}
+  \item This line begins with a label so that branches to this routine can use
+  a convenient moniker, rather than using the exact numerical value of the
+  address. It would be difficult to determine this address while writing code 
+  too, as its value is only generated during assembly (using a pseudo-random
+  count order calculated by the MFSR used).  \\
+  The purpose of this line is to load the number one into the \texttt{com}
+  register, to be used by the following line. Note that fields can be left blank and the
+  assembler automatically inserts no-operations (the \texttt{nop} opcode can
+  be explicitly used too) for that transport. The commas are required though.
+  \item The numerical value of one is now within \texttt{com}, placed there
+  by the previous instruction, and by moving the contents of \texttt{com} to the
+  \texttt{msr} register, the desired MSR (Machine Special Register) is
+  selected, in this case it is the write address segment register. This
+  register is used whenever a Wishbone write transaction is initiated, the
+  lower seven bits of this register form the upper seven bits of the 23-bit
+  Wishbone address. \\
+  The final field in the instruction is the segment address for the LEDs FU,
+  and this is the value that will be loaded into MSR \#1, the write address
+  segment register.
+  \item There are three used fields within this instruction, the left-most
+  operation is a data move to the write address register (\texttt{wad}), which
+  is a trigger register, to initiate a Wishbone write transaction. This value will
+  be ignored by the LEDs FU, as it does not use the lower 16-bits of the
+  Wishbone address field, so any value can be used. It isthe segment address value that is important. \\
+  The third field writes the argument passed to the \texttt{set\_leds} routine,
+  which is passed via \texttt{r0}, to the LEDs FU. The data value `3' would set
+  both LEDs, for example. \\
+  Notice that the registers are preceded by a `\textbackslash' character, this
+  is optional and is simply a mnemonic to remind the programmer that the RF
+  index bit-field is actually stored in the previous instruction, for RF reads.
+  This fact would prevent any RF reads in the preceding instruction (\#1) from
+  operating as expected.	\\
+  The final field performs the same function as the first line, sets
+  \texttt{com} to `1' for use with following instruction.
+  \item This instruction acheives two purposes, the first field causes the
+  program flow to branch back to the location after the instruction that called
+  this routine (which means that the instruction within the branch delay slot
+  after the instruction calling the \texttt{set\_leds} routine is executed
+  twice). By convention, this location is stored within register \texttt{r15}. \\
+  The last two fields of this instruction are used to restore the value of 
+ the stack segment address register. This was modified at the start of this
+ routine, and subsequent instructions executed after the completion of this
+ routine will likely use this register and expect it to have the correct
+ contents. This is another programming convention, as is using \texttt{r12} to
+ store the stack segment register value.
+  \item This is the branch delay slot instruction, but nothing is needed to be
+  done in this slot so this is a simple \texttt{nop} instruction.
+\end{enumerate}
+
+
+\subsection{Functional Units}
+Since TTA processors can typically execute multiple operations simultaneously,
+the FUs need to be able to operate in parallel. TTA16 has bitwise logic unit, a
+multiply unit, a subtractor, a branch unit, a Wishbone interface unit, and a
+Machine Special Register (MSR) unit. Upto three\footnote{A write to
+\textit{cmp} `register' causes both the bitwise and subtract FUs to be
+triggered. This is so the zero flag (\textit{ZF}) and borrow flag (\textit{BF})
+are modified simultaneously, which is useful for conditional branching.} of
+these can be triggered, and therefore execute in parallel, each clock cycle.
+This is because there are three data-transports that can write to trigger
+registers.
+
+Table~\ref{TTAPROG_Registers} shows the which data transports can
+access which registers (or aliases), and Table~\ref{TTAPROG_FU_Regs} shows
+which FUs each register (and its aliases) maps to. For example, the branch unit
+can only be accessed from transport-0, and the \textit{COM} transport is also
+connected to the operand register port of most of the FUs, as well as all the
+other transports. In practice, this tends to be the most heavily used transport.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l | l | l | l}
+Name			& Inputs		& Outputs	& Aliases/Modes	\\
+\hline
+Multiply		& com, mul$_t$	& plo, phi	& mul	\\
+Branch			& bra$_t$		& pc		& bra, jz, jnz, jb, jnb	\\
+Subtract		& com, sub$_t$	& diff		& sub, sbb, cmp$^+$	\\
+Bitwise Ops		& com, bits$_t$	& bits		& and, or, xor, cmp$^+$	\\
+Wishbone		& mem, ad$_t$	& mem		& rad, wad	\\
+MSR				& com, msr$_t$	& N/A		& msr	\\
+\end{tabular}	\\
+\footnotesize
+$^+$See the ALU section and its associated footnote.
+\normalsize
+\end{center}
+\caption[Functional unit summary]{Functional unit summary.}
+\label{TTAPROG_FU_Regs}
+\end{table}
+
+
+\subsubsection{Arithmetic Logic Unit}
+Traditional RISC processors have an ALU (Arithmetic Logic Unit) that perform
+arithmetic and logical operations on integers, but TTAs use a multiple FUs
+attached to data transports to achieve the same functionality. This is so
+multiple integer operations can occur simultaneously without requiring multiple
+ALUs.
+
+The ALU functionality of TTA16 is obtained from just two FUs, the bitwise
+operation FU, and the subtract FU. The missing logical operators from these two
+FUs are the common left and right shift operators. Explicit shift FUs are not
+provided but the same functionality can be obtained using the
+multiplier\footnote{Multiplying by two is the same as a left shift. Multiplying
+by 32,768 and discarding the low 16 bit word of the 32 bit product is the same
+as a right shift of one place.}.
+
+
+\subsubsection{Memory Segment Registers}
+\label{TTAPROG_MSR}
+% TODO: Actually Machine Special Registers
+TTA16 has two parameterisable MSRs (Memory Segment Registers), each up to
+16-bits in width, to allow memory addresses greater than 16-bits wide to be
+supported. The memory segment value is concatenated with the memory pointer
+value to give a total width of up to 32-bits, and with two bytes per address,
+this means up to 8 GB is addressable with this architecture.
+
+The two MSRs are called the Data Segment (DS) and the Stack Segment (SS)
+registers which indicates their possible uses, though no such limit upon
+such use is incorporated within the hardware. When performing large block
+copies, for example, they both could be used as data registers.
+
+By default, though this is set by the assembler/convention, not by the
+hardware, the DS is used with load and store instructions. To use SS, instead
+of DS, the suffix `.sf' is appended to the load/store instruction.
+
+
+\section{OpenVGA Memory-Mapped I/O Peripherals}
+OpenVGA memory space is divided into two regions, Memory-Mapped I/O (MMIO) or
+SDRAM. Table~\ref{TTAPROG_MMIO} lists the MMIO devices implemented within
+OpenVGA, and the associated segment to access the device.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l | c}
+I/O Device	&	Address Segment	\\
+\hline
+CRTC		&	0x0040	\\
+SPROM		&	0x0044	\\
+LEDS		&	0x0048	\\
+DMA			&	0x0050	\\
+Cache Flush	&	0x0058	\\
+\end{tabular}
+\end{center}
+\caption[TTA16 memory-mapped I/O modules and segments]{TTA16 memory-mapped I/O
+modules and there corresponding address segments.}
+\label{TTAPROG_MMIO}
+\end{table}
+
+
+\subsection{Cache Flush Peripheral}
+\label{TTAPROG_Cache_Flush}
+
+\mmodule{Patrick Suggate}{wb\_cache\_flush}%
+{Flushes all data from the data cache.}%
+{/rtl/cache/wb\_cache\_flush.v}%
+{/sim/cache/wb\_cache\_flush\_tb.v}{GPL}
+
+It is possible for the contents of the cache and the contents of OpenVGA's main
+memory to become incoherent. For example, if OpenVGA's processor is performing a data
+conversion, reading from an arbitrary block `A', and writing to block `B', and a
+PCI write transaction modifies the contents of block `A' in main memory, but data from
+this location has already been cached, the contents of main memory and the data
+cache are now incoherent.
+
+The solution used within OpenVGA is for the processor to manually flush the data
+cache, so that fresh data is retrieved from main memory. This peripheral allows
+the manual flushing of each of the 16 cache-lines.
+
+Writing to this device 16 times, to each of the 16 cache-line addresses,
+completely flushes the cache. Any value for the write data will do since it is
+not used by this peripheral. The 16 addresses which invalidate the cache-lines
+are: \{0x0000, 0x0020, \ldots, 0x01e0\}
+
+
+\subsection{CRT Controller}
+\label{TTAPROG_CRTC}
+
+\mmodule{Patrick Suggate}{wb\_crtc}%
+{Generates the timing signals for a CRT or LCD display.}%
+{/rtl/video/wb\_crtc.v /rtl/video/crtc.v}%
+{/sim/video/crtc\_tb.v}{GPL}
+
+% \begin{tabular}{l l}
+% \textbf{Modules:}		& wb\_crtc	\\
+% \textbf{Related Files:}	& /rtl/video/wb\_crtc.v, /rtl/video/crtc.v	\\
+% \textbf{Testing Files:}	& /sim/video/crtc\_tb.v	\\
+% \end{tabular}
+
+The CRTC generates the display timing signals using the character clock, which
+runs at one eighth of the dot-clock frequency. This means that the horizontal
+timing signals (the first four within Table~\ref{TTAPROG_CRTC_Ports}) need to
+be multiplied by eight to obtain the values in dot-clocks/pixels.
+
+The default values correspond to the 640x480, with a refresh rate of 60Hz, video
+mode, and the dot-clock is 25 MHz. These values are a running total so each value
+in the table, for either the horizontal or vertical totals, is the previous value
+plus the value of the current parameter. For example, the width in characters of
+the horizontal back porch is six, or 48 pixels, and this is added to the 11
+character clock ticks of the horizontal sync signal, to give the running total of
+17 ticks. Other modes are listed in Table~\ref{VIDEO_Modes_Table}.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{c r l}
+CRTC Port	& \multicolumn{1}{c}{Default}	&	Register Function	\\
+			& \multicolumn{1}{c}{Value}	&						\\
+\hline
+0			&	11			&	Hsync duration		\\
+1			&	17			&	Hroiz. back porch	\\
+2			&	97			&	Horiz. active		\\
+3			&	99			&	Hroiz. front porch	\\
+4			&	1			&	Vsync duration		\\
+5			&	34			&	Vert. back porch	\\
+6			&	514			&	Vert. active		\\
+7			&	524			&	Vert. front porch	\\
+\end{tabular}
+\caption[CRTC ports and their defaults values]{CRTC ports and their defaults
+values.}
+\label{TTAPROG_CRTC_Ports}
+\end{center}
+\end{table}
+
+
+\subsection{DMA Unit}
+\label{TTAPROG_DMA}
+
+\mmodule{Patrick Suggate}{wb\_dma}%
+{Writes buffered data to main memory in burst-mode.}%
+{/rtl/wb\_dma.v /rtl/util/pre\_read.v}%
+{/sim/wb\_dma\_tb.v /sim/xilinx/RAMB16\_S18\_S36.v}{GPL}
+
+Since all direct memory writes performed by the CPU pass through the cache,
+which is a write-through design, they have a high latency penalty. Since the
+memory bus is shared by the PCI and display redraw units too, numerous CPU
+memory writes will significantly increase memory congestion. This is because a
+CPU to memory write is 16-bits wide and atomic, whereas the memory controller
+is designed for 32-bit wide burst transfers.
+
+To increase CPU write performance, and reduce memory bus contention, the CPU
+can write data to a buffer, which later can have its contents written, as
+32-bit wide bursts, to main memory. This buffer, a DMA, stores up to 2 kB of
+data which can be wrtten, as a sequential burst, to any location in main memory.
+
+To use the DMA, the destination segment and pointer registers are set, bit
+masks in the control register allow byte enables to be set/cleared, and data is
+written to the write data register. Once all desired data has been written to
+the DMA, setting the start transfer bit in the control register initiates the
+direct memory access.
+
+The DMA does not modify the data in the buffer, and the buffer is implemented
+as a circular queue, so the same 2 kB of data can be written multiple times,
+like to clear the frame-buffer. Listing~\ref{TTAPROG_TTA16_memcpy} demonstrates
+using the DMA to achieve functionality similar to the C programming
+laguage library function \textit{memcpy}.
+
+\begin{center}
+\begin{tabular}{c c l}
+DMA Port	& \multicolumn{1}{c}{Default}	&	Register Function	\\
+			& \multicolumn{1}{c}{Value}	&						\\
+\hline
+0	& 0	&	Write data			\\
+1	& 0	&	Address pointer		\\
+2	& 0	&	Address segment		\\
+3	& 0	&	Control register	\\
+\end{tabular}
+\end{center}
+
+
+\section{Assembly Coding Conventions}
+
+% \subsection{Register Use Guidelines}
+All 16 of the TTA16, and RISC16, registers that are within the RF are general
+purpose, but several programming conventions were used when writing routines.
+These are guidelines concerning register usage and are listed in
+Table~\ref{TTAPROG_Register_Conventions}. Registers zero through three are
+for argument passing, and returning, and if more than four arguments are
+required, they should be passed on the stack. These registers can be modified
+without backing up first, but all other should be saved if modified. This is
+not strictly enforced but obeying them will ensure routines work as expected.
+
+Stack operations are somewhat clumsy\footnote{A future version of TTA16 would
+probably have a stack FU implemented using a BRAM, and with MFSRs as the
+incrementers and decrementers. This would be fast while using very few
+general-purpose FPGA logic resources.}, requiring the stack segment to be set,
+and explicit stack-pointer incrementing and decrementing. Passing arguments as
+pointers to arrays would probably be more efficient if possible.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{c | c l}
+Name& Free to	& Usage \\
+	& \multicolumn{1}{c}{Use?}	&		\\
+\hline
+r0	& Y	& Parameter 0 for function calls \\
+r1	& Y	& Parameter 1 for function calls \\
+r2	& Y	& Parameter 1 for function calls \\
+r3	& Y	& Parameter 3 for function calls \\
+% \hline
+r4-r11	& B	& Backup before modifying, restore afterwards \\
+% \hline
+r12	& N	& Stack Segment \\
+r13	& N	& Zero Register \\
+r14 & N & Stack Pointer \\
+r15	& N	& Link Register	\\
+\end{tabular}
+\caption[Register usage conventions]{Register usage conventions.}
+\label{TTAPROG_Register_Conventions}
+\end{center}
+\end{table}
+
+
+\section{Executing the Generated Object Code}
+
+The TTA16 assembler reads in an assembly file (`.s') and produces an ASCII text
+output file (`.out'). The format of the output file contains many lines of
+the form:
+\begin{center}
+$<address>:<instruction>$
+\end{center}
+Each field is ASCII encoded hexadecimal, without a prefix or suffix. An
+additional processing step is required to get this object code to the processor
+so it can be executed. There are three available options:
+\begin{enumerate}
+  \item Include the object code in the synthesis step so that it is placed into
+  a BRAM.
+  \item Append the object code to the ROM file so that it can be retrieved after
+  FPGA initialisation, and transferred to main memory.
+  \item The host PC can transfer a binary image to the main memory, via the PCI
+  bus.
+\end{enumerate}
+The last two options require that the processor explicitly fetch instructions
+from main memory and then store them in the local instruction BRAM. The code
+can then be executed.
+
+For the first option, placing code within the BRAMs at synthesis, a
+post-processor tool \texttt{out2v.py} was written that converts a \texttt{`.out'}
+file into a file that is included into a Verilog source file containing a BRAM.
+This sets the contents of the BRAM at synthesis. This code is ready to be
+executed as soon as the FPGA has finished initialising and clocks stabilised.
+Because TTA16 has two BRAMs, one containing the upper 16-bits of each
+instruction, the other the lower 16-bits. The post-processor can generate two
+files to satisfy this. For the generated file \texttt{test.out} the following two
+commands are issued:
+\begin{center}
+\tt
+out2v.py -n 2 -s 0 test.out tta\_asm0.v	\\
+out2v.py -n 2 -s 1 test.out tta\_asm1.v
+\rm
+\end{center}
+The two generated files can then be included, using the \texttt{`include}
+directive, in the initialisation field of a BRAM (see the source file
+\texttt{/rtl/cpu/tta16/tta16.v} for an example).
+
+
+\subsection{TTA16 Programming Example: `memcpy'}
+The data cache used with TTA16 is a write-through design, and since the SDRAM
+is shared with PCI and video redraw modules too, many write-through accesses
+will reduce memory throughput. This is because each write is a 16-bit atomic
+write, and the memory controller is most efficient with 32-bit burst reads and
+writes. To achieve high performance, the TTA16 can (and should) write blocks of
+data using the DMA controller.
+
+The DMA controller is connected to the TTA16 via the I/O bus, not the memory
+bus, so TTA16 can write data to the DMA controller without causing memory
+contention with the other modules. Once all desired data has been transferred
+to the DMA controller's local memory (2 kB), a write command can be issued
+which will cause all stored data to be written to the SDRAM. The write is a
+burst, and 32-bits wide, so the efficiency of this technique is good.
+
+The following is a programming example showing how to program OpenVGA's DMA
+controller to perform a memory copy. The data cache will perform data
+prefetches using 32-bit bursts as well, so all memory accesses are 32-bit wide,
+burst transfers.
+
+The following is a `memcpy' routine, written in the C programming language, of
+how a naive memory copy routine could be written:
+\begin{figure}[h!]
+\begin{lstlisting}[language=C]
+void* memcpy(void* dst, void* src, int n)
+{
+	while(n--)
+		(int*)*dst++	= (int*)*src++;
+	return	dst;
+}
+\end{lstlisting}
+\caption[C `memcpy' Example]{A memory copy routine that copies `n' integers
+from `src' to `dst'.}
+\label{TTAPROG_C_memcpy}
+\end{figure}
+
+
+Similar code written in TTA16 assembly language is shown in
+Figure~\ref{TTAPROG_TTA16_memcpy}
+
+\begin{figure}[h!]
+\begin{center}
+\footnotesize
+\verbatiminput{source/tta16_memcpy.tex}
+\normalsize
+\caption[TTA16 Assembly `memcpy' Example]{A memory copy routine, written in
+TTA16 assembly language, using the DMA module of OpenVGA.}
+\label{TTAPROG_TTA16_memcpy}
+\end{center}
+\end{figure}

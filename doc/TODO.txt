@@ -1,0 +1,4 @@
+ - Tidy up schematics + board files (they will be in the appendices)
+ - Prepare a toolkit of diagram elements (boxes, arrows, etc) and design
+   conventions so that all diagrams have a similar feel.
+ - Clock domain + async. FIFO sections first?

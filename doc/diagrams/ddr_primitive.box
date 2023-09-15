@@ -1,0 +1,73 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+mywidth	= 0.5
+scale	= 0.2
+
+include "g"
+include "components.box"
+include "connect.box"
+
+
+// DDR output driver with Spartan III IOB.
+ddr_prim = Window[][
+	// Primitives
+	d0	= .Put[dff, (-20, 20)]
+	d1	= .Put[dff, (-20, -20)]
+	neg	= .Put[negate, d1.Get["c"]]
+	m	= .Put[mux2to1, (0, 0)]
+	b	= .Put[buffer, (15, 0)]
+	
+	// Inputs
+	d0_in	= .Put[sig_in, (-35, d0.Get["d"].y)]
+	d1_in	= .Put[sig_in, (-35, d1.Get["d"].y)]
+	clk	= .Put[sig_in, (-35, d1.Get["c"].y)]
+	t	= .Put[sig_in, (-35, d0.Get["d"].y+10)]
+	
+	// Output
+	ddr_out	= .Put[sig_out, (30, 0)]
+	
+	// Junctions:
+	pl0	= PointList[clk.Get["out"], d1.Get["c"]]
+	p0	= pl0.Get[1.5]
+	pl1	= PointList[p0, (p0.x, d0.Get["c"].y)]
+	p1	= pl1.Get[1.6]
+	j0	= .Put[junc, p0]
+	j1	= .Put[junc, p1]
+	p2	= (d0.Get["q"].x + 3, d0.Get["r"].y + 3)
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 1*scale;
+	c_d0	= .Line[w, d0_in.Get["out"], d0.Get["d"]]
+	c_d1	= .Line[w, d1_in.Get["out"], d1.Get["d"]]
+	c_t	= .ConHV[w, PointList[t.Get["out"], b.Get["t"]]]
+	c_r0	= .ConHVH[w, PointList[d0.Get["q"], m.Get["a"]]]
+	c_r1	= .ConHVH[w, PointList[d1.Get["q"], m.Get["b"]]]
+	c_clk0	= .Line[w, clk.Get["out"], neg.Get["l"]]
+	c_clk1	= .ConVH[w, PointList[p0, d0.Get["c"]]]
+	c_clk2	= .ConHV[w, PointList[p1, p2]]
+	c_clk3	= .ConHV[w, PointList[p2, m.Get["s"]]]
+	c_mo	= .Line[w, m.Get["out"], b.Get["in"]]
+	c_bo	= .Line[w, b.Get["out"], ddr_out.Get["in"]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black
+		"T", t.Get["label"];
+		"D0", d0_in.Get["label"];
+		"D1", d1_in.Get["label"];
+		"CLK", clk.Get["label"];
+		"D_{OUT}", ddr_out.Get["label"];
+	]
+	
+	.Show[(-45, -35), (40, 40)]
+
+	.Save["eps", "ddr_primitive.eps"]
+]
+
+
+//GUI[ddr_prim]

@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Sun Jul 19 22:50:42 NZST 2009
+builderNum=0
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=dvi
+tempDir=tmp
+mainTexFile=paper.tex
+outputFile=paper.dvi
+langSpell=en
+markDer=true
+srcDir=

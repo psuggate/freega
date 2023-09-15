@@ -1,0 +1,78 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+mywidth	= 0.5
+scale	= 0.2
+
+include "g"
+include "components.box"
+include "connect.box"
+
+pc_unit	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= mywidth*scale
+	
+	dx	= 100;	dy	= 60;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
+	
+// 	Style[.Border[mywidth*scale, color.black]]
+// 	Color[color.white]
+// 	\ .Poly[bb]
+	
+	pc_reg	= .Put[dff, (bb.Get[2.75].x, bb.Get[1.4].y)]
+	pc_mux	= .Put[mux2to1_normal, (pc_reg.Get["q"].x - dx/3, pc_reg.Get["d"].y)]
+	pc_inc	= .Put[plain_box, (bb.Get[2.30].x, bb.Get[1.65].y)]
+	
+	// I/Os:
+	p0	= (bb.Get[(1.4, -0.25)].x, pc_mux.Get["b"].y)
+	in	= .Put[sig_in, p0]
+	load	= .Put[sig_in, p0 - (0.0, 8)]
+	enable	= .Put[sig_in, p0 - (0.0, 13)]
+	clock	= .Put[sig_in, p0 - (0.0, 18)]
+	reset	= .Put[sig_in, p0 - (0.0, 23)]
+// 	enable	= .Put[sig_in, bb.Get[(1.3, -0.25)]]
+// 	clock	= .Put[sig_in, bb.Get[(1.25, -0.25)]]
+// 	reset	= .Put[sig_in, bb.Get[(1.2, -0.25)]]
+	out	= .Put[sig_out, pc_reg.Get["q"] + (8, 0)]
+	
+	// Connections:
+	p1	= pc_reg.Get["q"]+(4,0)
+	p2	= pc_inc.Get["in"]+(-6,18)
+	p3	= (pc_mux.Get["s_bot"].x+8, enable.Get["out"].y)
+	
+	j0	= .Put[junc, p1]
+	
+ 	c0	= .Line[w, pc_mux.Get["out"], pc_reg.Get["d"]]	// connect mux to reg
+	c00	= .Line[w, pc_reg.Get["q"], out.Get["in"]]	// connect reg-q to out
+	c1	= .ConHVH[w, PointList[pc_inc.Get["out"], pc_mux.Get["a"]]]	// connect inc to mux
+ 	c2	= .Line[w, in.Get["out"], pc_mux.Get["b"]]	// connect data to mux
+	c3	= .ConVH[w, PointList[p1, p2]]			// Connect reg-q to inc
+	c4	= .ConVH[w, PointList[p2, pc_inc.Get["in"]]]
+	c5	= .ConHV[w, PointList[load.Get["out"], pc_mux.Get["s_bot"]]]	// connect load to mux-s
+	c6	= .Line[w, enable.Get["out"], p3]		// Connect enable to CE
+	c7	= .ConVH[w, PointList[p3, pc_reg.Get["ce"]]]
+	c8	= .Line[w, clock.Get["out"], p3+(8,-5)]		// Connect clock
+	c9	= .ConVH[w, PointList[p3+(8,-5), pc_reg.Get["c"]]]
+	c10	= .ConHV[w, PointList[reset.Get["out"], pc_reg.Get["r"]]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 14*scale], color.black,
+		"PC", pc_reg.Get["top"];
+		"COUNTER", pc_inc.Get["top"];
+		"MUX", pc_mux.Get["label_top"], .From[(1, 0.5)];
+		"LOAD", load.Get["label"],  .From[(0.8, 0.5)];
+		"DATA", in.Get["label"];
+		"ENABLE", enable.Get["label"];
+		"CLOCK", clock.Get["label"];
+		"RESET", reset.Get["label"];
+		"OUT", out.Get["label"], .From[(0.2, 0.5)];
+	]
+	\ .Show[bb.Get[1], bb.Get[3]]
+	.Save["eps", "pc_circuit.eps"]
+]

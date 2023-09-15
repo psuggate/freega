@@ -1,0 +1,7 @@
+#NET "clock_i" LOC = "P79";
+#NET "clock_i" LOC = "T9";
+NET "clock_i" TNM_NET = "clock_i";
+TIMESPEC "TS_clock" = PERIOD "clock_i" 2 ns HIGH 50 %;
+
+#NET "TTATOP0/flag_z" MAXDELAY = 3 ns ;
+#NET "wr_data" MAXDELAY = 3 ns ;

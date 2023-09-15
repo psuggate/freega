@@ -1,0 +1,135 @@
+// Use C++ highlighter.
+// Will this make KWrite use a sensible highlighter?
+// Yep, it does.
+// KWrite is freakin' smart!
+
+include "g"
+include "arrows"
+include "components.box"
+include "connect.box"
+
+
+afifo	= Window[][
+	dx	= 150;	dy	= 150;
+	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
+	by	= PointList[(0, -dy/2), (0, dy/2)]
+	
+	// Primitives:
+	//	Read/Write logic.
+	b0	= .Put[bram, (bx.Get[1.7].x, by.Get[1.75].y)]
+	wp	= .Put[dff, (bx.Get[1.20].x, by.Get[1.89].y)]
+	rp	= .Put[dff, (bx.Get[1.20].x, by.Get[1.55].y)]
+	wi	= .Put[unary_r, (bx.Get[1.20].x, by.Get[1.76].y)]
+	ri	= .Put[unary_r, (bx.Get[1.20].x, by.Get[1.42].y)]
+	
+	//	Compare logic.
+	wc0	= .Put[dff, (bx.Get[1.5].x, by.Get[1.42].y)]
+	wc1	= .Put[dff, (bx.Get[1.63].x, by.Get[1.42].y)]
+	rc0	= .Put[dff, (bx.Get[1.5].x, by.Get[1.18].y)]
+	rc1	= .Put[dff, (bx.Get[1.63].x, by.Get[1.18].y)]
+	ec	= .Put[comparator, (bx.Get[1.8].x, by.Get[1.4].y)]
+	fc	= .Put[comparator, (bx.Get[1.8].x, by.Get[1.12].y)]
+	
+	// I/O:
+	di	= .Put[sig_in, (bx.Get[1.05].x, b0.Get["dib"].y)]
+	rd	= .Put[sig_in, (bx.Get[1.05].x, rp.Get["ce"].y)]
+	wr	= .Put[sig_in, (bx.Get[1.05].x, wp.Get["ce"].y)]
+	rc	= .Put[sig_in, (bx.Get[1.05].x, rp.Get["c"].y)]
+	wc	= .Put[sig_in, (bx.Get[1.05].x, wp.Get["c"].y)]
+	do	= .Put[sig_out, (bx.Get[1.93].x, b0.Get["dob"].y)]
+	em	= .Put[sig_out, (bx.Get[1.93].x, ec.Get["out"].y)]
+	fl	= .Put[sig_out, (bx.Get[1.93].x, fc.Get["out"].y)]
+	
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+	
+	pl0	= PointList[wr.Get["out"], wp.Get["ce"]]// Connect inputs to BRAM
+	p4	= pl0.Get[1.5]
+	p5	= (bx.Get[1.57].x, by.Get[2].y)
+	\ .Put[junc, p4]
+	\ .Line[w, wr.Get["out"], p4]
+	\ .Line[w, p4, wp.Get["ce"]]
+	\ .ConVH[w, PointList[p4, p5]]
+	\ .ConVH[w, PointList[p5, b0.Get["wea"]]]
+	\ .Line[w, di.Get["out"], b0.Get["dib"]]
+	
+	p0	= (bx.Get[1.13].x, wi.Get["out"].y)	// Connect pointers to BRAM
+	p1	= (bx.Get[1.13].x, ri.Get["out"].y)
+	p2	= (bx.Get[1.27].x, b0.Get["addra"].y)
+	p3	= (bx.Get[1.27].x, rp.Get["q"].y)
+	\ .Put[junc, p2]
+	\ .Put[junc, p3]
+	\ .ConVH[w, PointList[p0, wp.Get["d"]]]
+	\ .ConVH[w, PointList[p1, rp.Get["d"]]]
+	\ .ConVH[w, PointList[p2, wp.Get["q"]]]
+	\ .ConVH[w, PointList[p2, wi.Get["in"]]]
+	\ .Line[w, p2, b0.Get["addra"]]
+	\ .Line[w, p3, rp.Get["q"]]
+	p9	= (bx.Get[1.27].x, ri.Get["in"].y)
+	\ .Put[junc, p9]
+	\ .Line[w, p3, p9]
+	\ .Line[w, p9, ri.Get["in"]]
+// 	\ .ConVH[w, PointList[p3, ri.Get["in"]]]
+	\ .ConVH[w, PointList[p3, b0.Get["addrb"]]]
+	\ .Line[w, wi.Get["out"], p0]
+	\ .Line[w, ri.Get["out"], p1]
+	\ .Line[w, rd.Get["out"], rp.Get["ce"]]
+	\ .Line[w, wc.Get["out"], wp.Get["c"]]
+	\ .Line[w, rc.Get["out"], rp.Get["c"]]
+	\ .Line[w, b0.Get["dob"], do.Get["in"]]
+	
+	\ .Line[w, wc0.Get["q"], wc1.Get["d"]]		// Comparison wires
+	\ .Line[w, rc0.Get["q"], rc1.Get["d"]]
+	\ .ConHVH[w, PointList[wc1.Get["q"], ec.Get["b"]]]
+	\ .ConHVH[w, PointList[rc1.Get["q"], fc.Get["b"]]]
+	\ .Line[w, ec.Get["out"], em.Get["in"]]
+	\ .Line[w, fc.Get["out"], fl.Get["in"]]
+
+	
+	p6	= (bx.Get[1.4].x, b0.Get["addra"].y)		// Connect pointers to comparisons
+	p7	= (bx.Get[1.4].x, wc0.Get["d"].y)
+	p8	= (bx.Get[1.71].x, by.Get[1.05].y)
+	\ .Put[junc, p6]
+	\ .Put[junc, p7]
+	\ .Line[w, p6, p7]
+	\ .Line[w, p7, wc0.Get["d"]]
+	p12	= (bx.Get[1.71].x, fc.Get["a"].y)
+	\ .ConVH[w, PointList[p7, p8]]
+ 	\ .Line[w, p8, p12]
+ 	\ .Line[w, p12, fc.Get["a"]]
+	p10	= (bx.Get[1.71].x, by.Get[1.29].y)
+	p11	= (bx.Get[1.71].x, ec.Get["a"].y)
+	p14	= (bx.Get[1.27].x, by.Get[1.29].y)
+	p15	= (bx.Get[1.27].x, rc0.Get["d"].y)
+	\ .Put[junc, p14]
+	\ .ConVH[w, PointList[p9, p10]]
+	\ .Line[w, p14, p15]
+	\ .Line[w, p15, rc0.Get["d"]]
+ 	\ .Line[w, p10, p11]
+ 	\ .Line[w, p11, ec.Get["a"]]
+	
+	p13	= (rc0.Get["q"].x, by.Get[1.31].y)
+
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"+1", wi.Get["fn"];
+		"+1", ri.Get["fn"];
+		"data_{IN}", di.Get["label"];
+		"full", fl.Get["label"];
+		"read", rd.Get["label"];
+		"write", wr.Get["label"];
+		"rclk", rc.Get["label"];
+		"wclk", wc.Get["label"];
+		"Dual-port RAM", b0.Get["bot"];
+		"wr__ptr", wp.Get["top"];
+		"rd__ptr", rp.Get["top"];
+		"data_{OUT}", do.Get["label"], .From[(0.3, 0.5)];
+		"empty", em.Get["label"], .From[(0.3, 0.5)];
+	]
+	.Show[(bx.Get[1].x, by.Get[1].y+10), (bx.Get[2].x, by.Get[2].y)]
+ 	.Save["eps", "afifo.eps"]
+]

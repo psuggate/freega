@@ -1,0 +1,104 @@
+// Use C++ highlighter.
+
+include "g"
+include "arrows"
+include "components.box"
+include "connect.box"
+
+risc16_pipe	= Window[][
+	pl	= PointList[(-90, 0), (90, 0)]
+	
+	ii	= 1.15
+	sp	= PointList[pl.Get[ii], For[(ii+=0.07)<1.8], pl.Get[ii]]
+	
+	fetch	= .Put[rf, sp.Get[1]]
+	f_reg	= .Put[column_reg, sp.Get[2]]
+	decode	= .Put[plain_box, sp.Get[3]]
+	d_reg	= .Put[column_reg, sp.Get[4]]
+	execute	= .Put[plain_box, sp.Get[5]]
+	x_reg	= .Put[column_reg, sp.Get[6]]
+	access	= .Put[plain_box, sp.Get[7]]
+	a_reg	= .Put[column_reg, sp.Get[8]]
+	write	= .Put[plain_box, sp.Get[9]]
+//	w_reg	= .Put[column_reg, sp.Get[10]]
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+//	p0	= w_reg.Get["bo"] + (5, -20)
+	p0	= write.Get["out"] + (5, -20)
+	c0	= .ConHV[w, PointList[write.Get["out"], p0]]
+// 	c0	= .ConHV[w, PointList[w_reg.Get["bo"], p0]]
+	c1	= .Line[w, p0, (decode.Get["bot"].x, p0.y)]
+	c2	= .Line[w, c1.Get[2], arrow_triangle, decode.Get["bot"]]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"Fetch", fetch.Get["top"];
+		"R_{Fetch}", f_reg.Get["bot"];
+		"Decode", decode.Get["top"];
+		"R_{Decode}", d_reg.Get["bot"];
+		"Execute", execute.Get["top"];
+		"R_{Execute}", x_reg.Get["bot"];
+		"Access", access.Get["top"];
+		"R_{Access}", a_reg.Get["bot"];
+		"Write", write.Get["top"];
+//		"R_{Write}", w_reg.Get["bot"];
+	]
+	.Save["eps", "risc16_pipeline.eps"]
+]
+
+
+risc16 = Window["fig"][
+	pl	= PointList[(-90, 0), (90, 0)]
+	
+	fetch	= .Put[rf, pl.Get[1.2]]
+	f_reg	= .Put[column_reg, pl.Get[1.3]]
+	trans	= .Put[plain_box, pl.Get[1.4]]
+	t_reg	= .Put[column_reg, pl.Get[1.5]]
+	execute	= .Put[plain_box, pl.Get[1.6]]
+	x_reg	= .Put[column_reg, pl.Get[1.7]]
+	
+	// Connections:
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.black]
+	w	= 2*scale;
+	c0	= .ConHV[w, PointList[pl.Get[1.72], pl.Get[(1.735, -0.11)]]]
+	c1	= .Line[w, c0.p2, (pl.Get[1.4].x, c0.p2.y)]
+	c2	= .Line[w, c1.Get[2], arrow_triangle, pl.Get[(1.4, -0.06)]]
+	
+	instr	= .Put[dff, (-105, 0)]
+	rf0	= .Put[rf, (-70, 0)]
+	// Decode
+	in_a	= .Put[dff, (-35, 20)]
+	in_b	= .Put[dff, (-35, -20)]
+	// Execute
+	mul	= .Put[mult, (0, 40)]
+	alu0	= .Put[alu, (0, 0)]
+	out	= .Put[dff, (35, 0)]
+	// Access
+	mu	= .Put[mem, (70, 0)]
+	acc0	= .Put[dff, (105, 0)]
+	
+	// Connections:
+// 	c0	= .Line[1*scale, in_a.Get["q"], arrow_triangle, alu0.Get["a"], line.sharp]
+// 	c1	= .Line[1*scale, in_b.Get["q"], arrow_triangle, alu0.Get["b"], line.sharp]
+// 	c2	= .Line[1*scale, alu0.Get["x"], arrow_triangle, out.Get["d"], line.sharp]
+	c3	= .Line[1*scale, out.Get["q"], arrow_triangle, mu.Get["in"], line.sharp]
+	c4	= .Line[1*scale, mu.Get["out"], arrow_triangle, acc0.Get["d"], line.sharp]
+	
+	// Labels:
+	Style[.Border[fwidth, color.black]]
+	\ .Text[.Font["Helvetica", 12*scale], color.black,
+		"Fetch", fetch.Get["top"];
+		"R_{Fetch}", f_reg.Get["bot"];
+		"Transport", trans.Get["top"];
+		"R_{Transport}", t_reg.Get["bot"];
+		"Execute", execute.Get["top"];
+		"R_{Execute}", x_reg.Get["bot"];
+	]
+	
+//	.Save["eps", "risc16_pipeline.eps"]
+]
