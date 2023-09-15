@@ -8,6 +8,7 @@ scale	= 0.2
 include "components_lib.box"
 include "connect_lib.box"
 
+
 pc_unit	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
@@ -50,7 +51,8 @@ pc_unit	= Window[][
 		"Addr_{PC}", addr.Get["label"];
 		"PC", pc.Get["label"], .From[(0.0, 0.5)];
 	]
+
 	\ .Show[(-51, -30), (32, 18)]
-	.Save["pdf", "pc_unit.pdf"]
-//	.Save["eps", "pc_unit.eps"]
+	\ .Save["pc_unit.pdf"]
+	\ .Save["pc_unit.eps"]
 ]

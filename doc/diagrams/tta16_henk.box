@@ -177,12 +177,9 @@ tta16_henk	= Window[][
 	]
 	
 	// Legend:
-	leg	= .Put[tta_legend, px.Get[1.77]]
+	\ .Put[tta_legend, px.Get[1.77]]
 	
 	\ .Show[(px.Get[1.05].x, py.Get[1.03].y), (px.Get[1.85].x, py.Get[1.96].y)]
-	.Save["pdf", "tta16_henk.pdf"]
-//	.Save["eps", "tta16_henk.eps"]
+	\ .Save["tta16_henk.pdf"]
+	\ .Save["tta16_henk.eps"]
 ]
-
-
-//GUI[tta16_henk]

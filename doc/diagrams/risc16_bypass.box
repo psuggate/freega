@@ -6,6 +6,7 @@ include "arrows"
 include "components_lib.box"
 include "connect_lib.box"
 
+
 bypass = Window["fig"][
 	// Place registers:
 	id_a	= .Put[dff, (-35, 20)]
@@ -89,8 +90,6 @@ bypass = Window["fig"][
 		"Memory", mu.Get["bot"];
 	]
 	
-	.Save["pdf", "risc16_bypass.pdf"]
-//	.Save["eps", "risc16_bypass.eps"]
+	\ .Save["risc16_bypass.pdf"]
+	\ .Save["risc16_bypass.eps"]
 ]
-
-//GUI[bypass]

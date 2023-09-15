@@ -2,8 +2,10 @@
 
 include "g"
 include "arrows"
+
 include "components_lib.box"
 include "connect_lib.box"
+
 
 risc16_pipe	= Window[][
 	pl	= PointList[(-90, 0), (90, 0)]
@@ -47,7 +49,9 @@ risc16_pipe	= Window[][
 		"Write", write.Get["top"];
 //		"R_{Write}", w_reg.Get["bot"];
 	]
-	.Save["eps", "risc16_pipeline.eps"]
+
+	\ .Save["risc16_pipeline.pdf"]
+	\ .Save["risc16_pipeline.eps"]
 ]
 
 
@@ -100,6 +104,6 @@ risc16 = Window["fig"][
 		"R_{Execute}", x_reg.Get["bot"];
 	]
 	
-	.Save["pdf", "risc16_pipeline.pdf"]
-//	.Save["eps", "risc16_pipeline.eps"]
+	\ .Save["risc16_pipeline.pdf"]
+	\ .Save["risc16_pipeline.eps"]
 ]

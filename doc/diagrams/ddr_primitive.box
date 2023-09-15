@@ -62,11 +62,7 @@ ddr_prim = Window[][
 		"D_{OUT}", ddr_out.Get["label"];
 	]
 	
-	.Show[(-45, -35), (40, 40)]
-
-	.Save["pdf", "ddr_primitive.pdf"]
-//	.Save["eps", "ddr_primitive.eps"]
+	\ .Show[(-45, -35), (40, 40)]
+	\ .Save["ddr_primitive.pdf"]
+	\ .Save["ddr_primitive.eps"]
 ]
-
-
-//GUI[ddr_prim]

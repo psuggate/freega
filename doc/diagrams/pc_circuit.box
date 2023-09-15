@@ -8,6 +8,7 @@ scale	= 0.2
 include "components_lib.box"
 include "connect_lib.box"
 
+
 pc_unit	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
@@ -72,7 +73,8 @@ pc_unit	= Window[][
 		"RESET", reset.Get["label"];
 		"OUT", out.Get["label"], .From[(0.2, 0.5)];
 	]
+
 	\ .Show[bb.Get[1], bb.Get[3]]
-	.Save["pdf", "pc_circuit.pdf"]
-//	.Save["eps", "pc_circuit.eps"]
+	\ .Save["pc_circuit.pdf"]
+	\ .Save["pc_circuit.eps"]
 ]

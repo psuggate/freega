@@ -207,8 +207,6 @@ cache_sense	= Window[][
 	]
 	
 	\ .Show[px.Get[1]+py.Get[1]+(0, 13), px.Get[2]+py.Get[2]+(-3,-3)]
-	.Save["pdf", "cache_sense_logic.pdf"]
-//	.Save["eps", "cache_sense_logic.eps"]
+	\ .Save["cache_sense_logic.pdf"]
+	\ .Save["cache_sense_logic.eps"]
 ]
-
-//GUI[cache_sense]

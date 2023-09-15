@@ -1,5 +1,6 @@
 include "g"
 include "arrows"
+
 include "components_lib.box"
 include "connect_lib.box"
 
@@ -81,11 +82,10 @@ bitwise	= Window[][
 		"bits#[1]", cyb1.Get["do"];
 		"bits#[0]", cyb0.Get["do"];
 	]
+
 	\ .Show[(cyb0.Get["l0"].x, one.Get["label"].y)-(3, 2),
 		(zf_o.Get["label"].x, d_zf.Get["s"].y)+(7, 0)
 	]
-	.Save["pdf", "bitwise_unit.pdf"]
-//	.Save["eps", "bitwise_unit.eps"]
+	\ .Save["bitwise_unit.pdf"]
+	\ .Save["bitwise_unit.eps"]
 ]
-
-// GUI[bitwise]

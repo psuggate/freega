@@ -1,10 +1,8 @@
 // Use C++ highlighter.
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
 
 include "g"
 include "arrows"
+
 include "components_lib.box"
 include "connect_lib.box"
 
@@ -59,7 +57,8 @@ bufgmux	= Window[][
 		"Pixel Clock", gck.Get["in"], .From[(-0.3, 0.5)];
 		"BUFGMUX", m.Get["label"], .From[(0.8, 2.5)];
 	]
-	.Show[bx.Get[1]+by.Get[1], bx.Get[2]+by.Get[2]]
- 	.Save["pdf", "bufgmux.pdf"]
-// 	.Save["eps", "bufgmux.eps"]
+
+	\ .Show[bx.Get[1]+by.Get[1], bx.Get[2]+by.Get[2]]
+ 	\ .Save["bufgmux.pdf"]
+	\ .Save["bufgmux.eps"]
 ]

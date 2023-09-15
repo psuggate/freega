@@ -7,6 +7,7 @@ mywidth	= 0.5
 scale	= 0.2
 fwidth	= mywidth*0.2*scale
 
+
 pipe	= Window[][
 	dx	= 60
 	dy	= 20
@@ -26,6 +27,7 @@ pipe	= Window[][
 		"X", (20, 0);
 	]
 ]
+
 
 tta16_pipeline	= Window[][
 	w	= 0.0
@@ -50,9 +52,6 @@ tta16_pipeline	= Window[][
 	]
 	
 	\ .Show[(-20, 0), (100, 75)]
-	\ .Save["pdf", "tta16_pipeline.pdf"]
-//	\ .Save["eps", "tta16_pipeline.eps"]
+	\ .Save["tta16_pipeline.pdf"]
+	\ .Save["tta16_pipeline.eps"]
 ]
-
-
-//  GUI[tta16_pipeline]

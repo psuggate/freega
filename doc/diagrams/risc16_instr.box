@@ -6,6 +6,7 @@ mywidth	= 0.5
 scale	= 0.2
 fwidth	= mywidth*0.2*scale
 
+
 instr_box	= Window[][
 	dx	= 160
         dy	= 12
@@ -19,6 +20,7 @@ instr_box	= Window[][
 	i	= -dx/2.0+10.0
 	nicks	= .Line[w/2, (i, bb.Get[2].y), (i, bb.Get[2].y-1), (i, bb.Get[2].y), For[(i+=10.0) < bx.Get[2].x]]
 ]
+
 
 risc16_instr	= Window[][
 	w	= 2.0*scale
@@ -71,8 +73,6 @@ risc16_instr	= Window[][
 	]
 	
 	\ .Show[(-15, 0), (160, 60)]
-	\ .Save["pdf", "risc16_instr.pdf"]
-//	\ .Save["eps", "risc16_instr.eps"]
+	\ .Save["risc16_instr.pdf"]
+	\ .Save["risc16_instr.eps"]
 ]
-
-// GUI[risc16_instr]

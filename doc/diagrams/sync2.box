@@ -52,6 +52,6 @@ synch	= Window[][
 	]
 	
 	\ .Show[(bx.Get[1].x, by.Get[1].y+3), (bx.Get[2].x, by.Get[2].y-12)]
- 	.Save["pdf", "sync2.pdf"]
-// 	.Save["eps", "sync2.eps"]
+ 	\ .Save["sync2.pdf"]
+	\ .Save["sync2.eps"]
 ]

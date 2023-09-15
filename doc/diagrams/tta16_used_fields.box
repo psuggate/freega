@@ -59,9 +59,9 @@ tta16_instr	= Window[][
 		"S", bb.Get[(4.234375, -0.025)];
 		"IMMED", bb.Get[(4.109375, -0.025)];
 	]
-	
 	\ .Hot[	"tc", (0, 0)]
 ]
+
 
 tta16_used_fields	= Window[][
 	// Shade the areas of used bits.
@@ -88,9 +88,6 @@ tta16_used_fields	= Window[][
 	]
 	
 	\ .Show[(-22, 0), (160, 24)]
-	\ .Save["pdf", "tta16_used_fields.pdf"]
-//	\ .Save["eps", "tta16_used_fields.eps"]
+	\ .Save["tta16_used_fields.pdf"]
+	\ .Save["tta16_used_fields.eps"]
 ]
-
-
-// GUI[tta16_used_fields]

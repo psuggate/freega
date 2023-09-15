@@ -6,6 +6,7 @@ include "arrows"
 include "components_lib.box"
 include "connect_lib.box"
 
+
 tta16	= Window[][
 	pl	= PointList[(-90, 0), (90, 0)]
 	
@@ -35,6 +36,6 @@ tta16	= Window[][
 		"R_{Execute}", x_reg.Get["bot"];
 	]
 
-	.Save["pdf", "tta16_overview.pdf"]
-//	.Save["eps", "tta16_overview.eps"]
+	\ .Save["tta16_overview.pdf"]
+	\ .Save["tta16_overview.eps"]
 ]

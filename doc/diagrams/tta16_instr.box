@@ -6,6 +6,7 @@ mywidth	= 0.5
 scale	= 0.2
 fwidth	= mywidth*0.2*scale
 
+
 tta16_instr	= Window[][
 	dx	= 160
         dy	= 16
@@ -68,8 +69,6 @@ tta16_instr	= Window[][
 	]
 	
 	\ .Show[bb.Get[1], bb.Get[3]]
-	\ .Save["pdf", "tta16_instr.pdf"]
-//	\ .Save["eps", "tta16_instr.eps"]
+	\ .Save["tta16_instr.eps"]
+	\ .Save["tta16_instr.pdf"]
 ]
-
-// GUI[tta16_instr]

@@ -5,11 +5,13 @@ include "g"
 mywidth	= 0.5
 scale	= 0.2
 
+
 fpga	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
 	t	= .Poly[(-20,0),(0,20),(20,0),(0,-20)]
 ]
+
 
 freega_simple	= Window[][
 	dx	= 120
@@ -37,8 +39,6 @@ freega_simple	= Window[][
 	
 	// Support ICs
 	
- 	.Save["pdf", "freega_simple.pdf"]
-// 	.Save["eps", "freega_simple.eps"]
+ 	\ .Save["freega_simple.pdf"]
+	\ .Save["freega_simple.eps"]
 ]
-
-// GUI[freega_simple]
