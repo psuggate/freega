@@ -1,16 +1,19 @@
+// C++ highlighter.
+
+include "g"
+
 mywidth	= 0.5
 scale	= 0.2
 fwidth	= mywidth*0.2*scale
 
-include "g"
-
 instr_box	= Window[][
-	dx	= 160;	dy	= 12;
+	dx	= 160
+        dy	= 12
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
 	
-	w	= 2*scale;
+	w	= 2*scale
 	
 	instr	= .Line[w, bb.Get[1], bb.Get[2], bb.Get[3], bb.Get[4], bb.Get[1]]
 	i	= -dx/2.0+10.0
@@ -18,10 +21,9 @@ instr_box	= Window[][
 ]
 
 risc16_instr	= Window[][
-	w	= 2.0*scale;
+	w	= 2.0*scale
 	Style[.Border[0, color.black]]
 	Color[color.black, .a=1.0]
-	
 	\ .Put[instr_box, (80, 6)]
 	\ .Put[instr_box, (80, 18)]
 	\ .Put[instr_box, (80, 30)]
@@ -37,15 +39,16 @@ risc16_instr	= Window[][
 	
 	// Nicks for minor instruction fields.
 	h	= 12
-	\ .Line[w/2, (30, h), (30, h+1), (30, h)]; h+= 12;
-	\ .Line[w/2, (30, h), (30, h+1), (30, h)]; h+= 12;
-	\ .Line[w/2, (30, h), (30, h+1), (30, h)]; h+= 12;
-	\ .Line[w/2, (30, h), (30, h+1), (30, h)]; h+= 12;
-	
+	\ .Line[w/2, (30, h), (30, h+1), (30, h)]
+        h+= 12
+	\ .Line[w/2, (30, h), (30, h+1), (30, h)]
+        h+= 12
+	\ .Line[w/2, (30, h), (30, h+1), (30, h)]
+        h+= 12
+	\ .Line[w/2, (30, h), (30, h+1), (30, h)]
+        h+= 12
 	\ .Line[w/2, (150, 36), (150, 37), (150, 36)]
 	\ .Line[w/2, (110, 24), (110, 25), (110, 24)]
-
-	
 	\ .Text[.Font["Helvetica", 28*scale], color.black,
 		"OP", (15, 54); "SF", (35, 54); "RD", (60, 54); "RS", (100, 54); "IMM4", (140, 54);
 		"0x0", (15, 42); "SF", (35, 42); "RD", (60, 42); "RS", (100, 42); "FN", (135, 42); "CR", (155, 42);
@@ -53,14 +56,13 @@ risc16_instr	= Window[][
 		"0x7", (15, 18); "X", (35, 18); "IMM12", (100, 18);
 		"0x6", (15, 6); "CND", (45, 6); "IMM10", (110, 6);
 	]
-	
 	\ .Text[.Font["Helvetica", 32*scale], color.black,
 		"15", (5, 66);
 		"12", (35, 66);
 		"8", (75, 66);
 		"4", (115, 66);
 		"0", (155, 66);
-		
+
 		"rri", (-10.5, 54);
 		"rr", (-11, 42);
 		"ri", (-11.5, 30);
@@ -69,7 +71,8 @@ risc16_instr	= Window[][
 	]
 	
 	\ .Show[(-15, 0), (160, 60)]
-	\ .Save["eps", "risc16_instr.eps"]
+	\ .Save["pdf", "risc16_instr.pdf"]
+//	\ .Save["eps", "risc16_instr.eps"]
 ]
 
 // GUI[risc16_instr]

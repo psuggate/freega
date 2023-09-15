@@ -3,12 +3,13 @@
 // Yep, it does.
 // KWrite is freakin' smart!
 
+include "g"
+
 mywidth	= 0.5
 scale	= 0.2
 
-include "g"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 pc_unit	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
@@ -56,5 +57,6 @@ pc_unit	= Window[][
 		"PC", pc.Get["label"], .From[(0.0, 0.5)];
 	]
 	\ .Show[(-51, -30), (32, 18)]
-	.Save["eps", "pc_circuit.eps"]
+	.Save["pdf", "pc_circuit.pdf"]
+//	.Save["eps", "pc_circuit.eps"]
 ]

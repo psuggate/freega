@@ -1,9 +1,4 @@
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
-
-//include "g"
-//include "arrows"
+// Use C++ highlighter.
 
 mywidth	= 0.5
 scale	= 0.2
@@ -21,7 +16,7 @@ dff = Window[][
 		
 	]
 	Style[.Border[mywidth*0.5*scale, color.black]]
-	c = .Poly[t.Get[(1.125, -0.0025)], t.Get[(1.275, -0.0025)], t.Get[(1.2, -0.15)]]
+	\ .Poly[t.Get[(1.125, -0.0025)], t.Get[(1.275, -0.0025)], t.Get[(1.2, -0.15)]]
 	
 	Style[.Border[fwidth, color.black]]
 	\ .Text[.Font["Helvetica", 10*scale], color.black,
@@ -44,7 +39,7 @@ column_reg	= Window[][
 		"top", t.Get[(2.5, 1)], "bot", t.Get[(4.5, 1)]
 	]
 	Style[.Border[mywidth*0.5*scale, color.black]]
-	c = .Poly[t.Get[(1.05, -0.0025)], t.Get[(1.1, -0.0025)], t.Get[(1.075, -0.05)]]
+	\ .Poly[t.Get[(1.05, -0.0025)], t.Get[(1.1, -0.0025)], t.Get[(1.075, -0.05)]]
 ]
 
 
@@ -74,7 +69,7 @@ lut4	= Window[][
 	a	= 1.2
 	w	= 1*scale
 	Color[color.black]
-	\ .Line[w, t.Get[a], t.Get[a]-(off, 0); For[a < 1.6; a+=0.2]]
+	\ .Line[w, t.Get[a], t.Get[a]-(off, 0); For[(a += 0.2) < 1.6]]
 	\ .Line[t.Get[3.5], t.Get[3.5]+(off, 0)]
 	Style[.Border[fwidth, color.black]]
 	\ .Text[.Font["Helvetica", 16*scale], color.black,
@@ -107,14 +102,14 @@ mem = Window[][
 	Color[color.white]
 	t = .Poly[(-30, -45)*scale, (-30, 45)*scale, (30, 45)*scale, (30, -45)*scale]
 	Color[color.black]
-	.Circle[5*scale, t.Get[1.1]; t.Get[1.3]; t.Get[1.5]; t.Get[1.7]; t.Get[1.9]]
-	.Circle[5*scale, t.Get[3.1]; t.Get[3.3]; t.Get[3.5]; t.Get[3.7]; t.Get[3.9]]
+	\ .Circle[5*scale, t.Get[1.1]; t.Get[1.3]; t.Get[1.5]; t.Get[1.7]; t.Get[1.9]]
+	\ .Circle[5*scale, t.Get[3.1]; t.Get[3.3]; t.Get[3.5]; t.Get[3.7]; t.Get[3.9]]
 	
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white, .a=1.0]
 	\ .Poly[t.Get[1], t.Get[2], t.Get[3], t.Get[4]]
 	Color[color.white, .a=0.0]
-	.Circle[t.Get[(1.85, -0.15)], 5*scale]
+	\ .Circle[t.Get[(1.85, -0.15)], 5*scale]
 	
 	\ .Hot[	"in", t.Get[(1.5, 0.1)], "out", t.Get[(3.5, 0.1)],
 		"top", t.Get[(2.5, 0.3)], "bot", t.Get[(4.5, 0.3)]
@@ -130,10 +125,10 @@ rf = Window[][
 	Style[.Border[mywidth*0.25*scale, color.black]]
 	Color[color.black, .a=1.0]
 	w	= mywidth*0.25*scale
-	l0 = .Line[w, t.Get[(1.2, -0.05)], t.Get[(3.8, -0.05)]]
-	l1 = .Line[w, t.Get[(1.4, -0.05)], t.Get[(3.6, -0.05)]]
-	l2 = .Line[w, t.Get[(1.6, -0.05)], t.Get[(3.4, -0.05)]]
-	l3 = .Line[w, t.Get[(1.8, -0.05)], t.Get[(3.2, -0.05)]]
+	\ .Line[w, t.Get[(1.2, -0.05)], t.Get[(3.8, -0.05)]]
+	\ .Line[w, t.Get[(1.4, -0.05)], t.Get[(3.6, -0.05)]]
+	\ .Line[w, t.Get[(1.6, -0.05)], t.Get[(3.4, -0.05)]]
+	\ .Line[w, t.Get[(1.8, -0.05)], t.Get[(3.2, -0.05)]]
 	\ .Hot[	"a", t.Get[1.8], "we", t.Get[1.6], "din", t.Get[1.4], "clk", t.Get[1.2],
 		"r0", t.Get[3.2], "r1", t.Get[3.4],
 		"label", t.Get[(4.5, 0.3)], "top", t.Get[(2.5, 0.3)], "bot", t.Get[(4.5, 0.3)]
@@ -164,7 +159,7 @@ mux2to1	= Window[][
 		"label_top", t.Get[(2.5, 1)], "s_bot", t.Get[4.5]
 	]
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font[	"Helvetica", 12*scale], color.black
+	\ .Text[.Font[	"Helvetica", 12*scale], color.black
 			"0", t.Get[(1.3, -0.12)];
 			"1", t.Get[(1.7, -0.12)];
 	]
@@ -181,7 +176,7 @@ mux2to1_normal	= Window[][
 		"label_top", t.Get[(2.5, 1)], "s_bot", t.Get[4.5]
 	]
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font[	"Helvetica", 12*scale], color.black
+	\ .Text[.Font[	"Helvetica", 12*scale], color.black
 			"0", t.Get[(1.7, -0.12)];
 			"1", t.Get[(1.3, -0.12)];
 	]
@@ -208,13 +203,10 @@ comparator = Window[][
 	t = .Poly[(-40, -40)*scale, (-40, 40)*scale, (40, 0)*scale]
 	Style[.Border[mywidth*0.5*scale, color.black]]
 	Color[color.white, .a=0.0]
-	
 	\ .Hot[	"out", t.Get[3], "a", t.Get[1.3], "b", t.Get[1.7], "label", t.Get[(1, 0.5)]]
 	
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font["Helvetica", 12*scale], color.black
-        "==", t.Get[(1.5, -0.3)];
-	]
+	\ .Text[.Font["Helvetica", 12*scale], color.black, "==", t.Get[(1.5, -0.3)];]
 ]
 
 
@@ -246,7 +238,6 @@ sig_in	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
 	\ .Circle[(0.0, 0.0), 5.0*scale]
-	
 	\ .Hot["out", (5, 0)*scale, "label", (-20, 0)*scale]
 ]
 
@@ -254,7 +245,6 @@ sig_out	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
 	\ .Circle[(0.0, 0.0), 5.0*scale]
-	
 	\ .Hot["in", (-5, 0)*scale, "label", (20, 0)*scale]
 ]
 
@@ -266,13 +256,10 @@ alu = Window[][
 	t = .Poly[(-50, -80)*scale, (-50, -20)*scale, (-20, -10)*scale, (-20, 10)*scale, (-50, 20)*scale, (-50, 80)*scale, (50, 40)*scale, (50, -40)*scale]
 	Style[.Border[mywidth*0.5*scale, color.black]]
 	Color[color.white, .a=0.0]
-	
 	\ .Hot["a", t.Get[5.5], "b", t.Get[1.5], "x", t.Get[7.5]]
 	
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font["Helvetica", 12*scale], color.black
-        "ALU", t.Get[(3.5, -1.3)];
-	]
+	\ .Text[.Font["Helvetica", 12*scale], color.black, "ALU", t.Get[(3.5, -1.3)];]
 ]
 
 
@@ -284,15 +271,12 @@ subtract = Window[][
 	t = .Poly[(-50, -80)*sc, (-50, -20)*sc, (-20, -10)*sc, (-20, 10)*sc, (-50, 20)*sc, (-50, 80)*sc, (50, 40)*sc, (50, -40)*sc]
 	Style[.Border[mywidth*0.5*scale, color.black]]
 	Color[color.white, .a=0.0]
-	
 	\ .Hot[	"a", t.Get[5.5], "b", t.Get[1.5], "x", t.Get[7.5],
 		"top", t.Get[(6.4, 0.3)], "bot", t.Get[(8.6, 0.3)]
 	]
 	
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font["Helvetica", 24*scale], color.black
-        "-", t.Get[(3.5, -1.3)];
-	]
+	\ .Text[.Font["Helvetica", 24*scale], color.black, "-", t.Get[(3.5, -1.3)];]
 ]
 
 
@@ -301,14 +285,11 @@ mult = Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
 	c = (0, 0)*scale
-	t = .Circle[c, 50.0*scale]
-	
+	\ .Circle[c, 50.0*scale]
 	\ .Hot["top", (0, 65)*scale, "bot", (0, -65)*scale]
 	
 	Style[.Border[fwidth, color.black]]
-	.Text[.Font["Helvetica", 16*scale], color.black
-        "X", c;
-	]
+	\ .Text[.Font["Helvetica", 16*scale], color.black, "X", c;]
 ]
 
 
@@ -317,8 +298,7 @@ binary = Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
 	c = (0, 0)*scale
-	t = .Circle[c, 50.0*scale]
-	
+	\ .Circle[c, 50.0*scale]
 	\ .Hot[	"top", (0, 65)*scale, "bot", (0, -65)*scale,
 		"label", (0, 0)
 	]
@@ -329,7 +309,7 @@ binary = Window[][
 junc = Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	t = .Circle[(0.0, 0.0), 4.0*scale]
+	\ .Circle[(0.0, 0.0), 4.0*scale]
 	\ .Hot["c", (0.0, 0.0)]
 ]
 
@@ -338,7 +318,7 @@ junc = Window[][
 negate	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
-	t	= .Circle[4*scale, (-4, 0)*scale]
+	\ .Circle[4*scale, (-4, 0)*scale]
 	\ .Hot["l", (-8, 0)*scale, "r", (0, 0)*scale]
 ]
 
@@ -346,16 +326,17 @@ negate	= Window[][
 // Xilinx dual-port block RAM.
 bram	= Window[][
 	// Border
-	dx	= 150*scale;	dy	= 250*scale;
+	dx	= 150*scale
+        dy	= 250*scale
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
-	cd	= 0.05;	// Corner depth
+	cd	= 0.05 // Corner depth
 	ch	= 0.05*(dy/dx)
 	
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
-	t	= .Poly[
+	\ .Poly[
 			bb.Get[1+cd], bb.Get[1.5-cd/2], bb.Get[(1.5-cd/2, -cd)],
 			bb.Get[(1.5+cd/2, -cd)], bb.Get[1.5+cd/2], bb.Get[2-cd],
 			bb.Get[(2-cd, -cd)], bb.Get[2+ch], bb.Get[3-ch],

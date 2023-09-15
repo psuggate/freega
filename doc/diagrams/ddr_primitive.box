@@ -1,14 +1,12 @@
 // Use C++ highlighter.
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
+
+include "g"
 
 mywidth	= 0.5
 scale	= 0.2
 
-include "g"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 
 // DDR output driver with Spartan III IOB.
@@ -41,7 +39,7 @@ ddr_prim = Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 1*scale;
+	w	= 1.0*scale
 	c_d0	= .Line[w, d0_in.Get["out"], d0.Get["d"]]
 	c_d1	= .Line[w, d1_in.Get["out"], d1.Get["d"]]
 	c_t	= .ConHV[w, PointList[t.Get["out"], b.Get["t"]]]
@@ -66,7 +64,8 @@ ddr_prim = Window[][
 	
 	.Show[(-45, -35), (40, 40)]
 
-	.Save["eps", "ddr_primitive.eps"]
+	.Save["pdf", "ddr_primitive.pdf"]
+//	.Save["eps", "ddr_primitive.eps"]
 ]
 
 

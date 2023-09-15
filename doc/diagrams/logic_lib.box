@@ -1,0 +1,88 @@
+// C++ highlighter.
+
+Cruve = Point
+(Real r, a)@Cruve[angle = 8.0*Atan[1]*$.a, $$ = $.r*Vec[angle]]
+
+and	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	a	= 0.25
+	af	= -0.25
+	w	= mywidth*scale
+	r	= 20.0*scale
+	t	= .Line[w, (0.0, -r), (-r, -r), (-r, r), (0.0, r)]
+	\ .Line[w, Cruve[(r, a)], For[(a -= 0.01) > af], Cruve[(r, af)], line.smooth]
+	\ .Hot[	"a", t.Get[2.75], "b", t.Get[2.25], "x", (r, 0.0),
+		"top", t.Get[(3.8, 0.4)], "bot", t.Get[(1.2, 0.4)]
+	]
+]
+
+or	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	
+	r	= 20.0*scale
+	a0	= Asin[0.5]/(2.0*const.pi)
+        af0	= -a0
+        o0	= (3.0*r,0.0)
+	a1	= 0.75
+        af1	= a1 + 1.0/6.0
+        o1	= (r,-r)
+	a2	= 0.25
+        af2	= a2 - 1.0/6.0
+        o2	= (r,r)
+	w	= mywidth*scale
+	a	= 0
+	t	= .Line[w, Cruve[(2*r, a0)]-o0, For[(a0-=0.01)>af0], Cruve[(2*r, af0)]-o0,
+			(-25.359*scale, -r), (-r, -r), line.smooth
+	]
+	t1	= .Line[w, Cruve[(2*r, a1)]-o1, For[(a1+=0.01)<af1], Cruve[(2*r, af1)]-o1,
+			line.smooth
+	]
+	t2	= .Line[w, Cruve[(2*r, a2)]-o2, For[(a2-=0.01)>af2], Cruve[(2*r, af2)]-o2,
+			line.smooth
+	]
+	t3	= .Line[w, t2.Get[1], t.Get[1], line.smooth]
+	
+	\ .Hot[	"a", t.Get[5], "b", t.Get[13], "x", t2.Get[0],
+		"top", t.Get[(3.8, 0.4)], "bot", t.Get[(1.2, 0.4)]
+	]
+]
+
+xor	= Window[][
+	Style[.Border[mywidth*scale, color.black]]
+	Color[color.white]
+	
+	r	= 20.0*scale
+	a0	= Asin[0.5]/(2.0*const.pi)
+        af0	= -a0
+        o0	= (3.0*r,0.0)
+	a1	= 0.75
+        af1	= a1 + 1.0/6.0
+        o1	= (r,-r)
+	a2	= 0.25
+        af2	= a2 - 1.0/6.0
+        o2	= (r,r)
+	a4	= a0
+        af4	= af0
+        o4	= (3.25*r, 0.0)
+	
+	w	= mywidth*scale
+	a	= 0
+	t	= .Line[w, Cruve[(2*r, a0)]-o0, For[(a0-=0.01)>af0], Cruve[(2*r, af0)]-o0,
+			(-25.359*scale, -r), (-r, -r), line.smooth
+	]
+	\ .Line[w, Cruve[(2*r, a1)]-o1, For[(a1+=0.01)<af1], Cruve[(2*r, af1)]-o1,
+			line.smooth
+	]
+	t2	= .Line[w, Cruve[(2*r, a2)]-o2, For[(a2-=0.01)>af2], Cruve[(2*r, af2)]-o2,
+			line.smooth
+	]
+	\ .Line[w, t2.Get[1], t.Get[1], line.smooth]
+	t4	= .Line[w, Cruve[(2*r, a4)]-o4, For[(a4-=0.01)>af4], Cruve[(2*r, af4)]-o4,
+			line.smooth
+	]
+	\ .Hot[	"a", t4.Get[5], "b", t4.Get[13], "x", t2.Get[0],
+		"top", t.Get[(3.8, 0.4)], "bot", t.Get[(1.2, 0.4)]
+	]
+]

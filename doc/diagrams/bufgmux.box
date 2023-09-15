@@ -5,12 +5,13 @@
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 
 dcm	= Window[][
-	dx	= 120*scale;	dy	= 160*scale;
+	dx	= 120*scale
+	dy	= 160*scale
 	
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
@@ -22,7 +23,8 @@ dcm	= Window[][
 
 
 bufgmux	= Window[][
-	dx	= 100;	dy	= 50;
+	dx	= 100
+        dy	= 50
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	
@@ -38,7 +40,7 @@ bufgmux	= Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 	\ .ConHVH[w, PointList[d.Get["a"], m.Get["a"]]]
 	\ .ConHVH[w, PointList[d.Get["b"], m.Get["b"]]]
 	\ .Line[w, m.Get["out"], gck.Get["in"]]
@@ -58,5 +60,6 @@ bufgmux	= Window[][
 		"BUFGMUX", m.Get["label"], .From[(0.8, 2.5)];
 	]
 	.Show[bx.Get[1]+by.Get[1], bx.Get[2]+by.Get[2]]
- 	.Save["eps", "bufgmux.eps"]
+ 	.Save["pdf", "bufgmux.pdf"]
+// 	.Save["eps", "bufgmux.eps"]
 ]

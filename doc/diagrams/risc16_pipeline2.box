@@ -1,18 +1,20 @@
 // C++ highlighter.
-mywidth	= 0.5
-scale	= 0.2
-fwidth	= mywidth*0.2*scale
 
 include "g"
 include "arrows"
 
+mywidth	= 0.5
+scale	= 0.2
+fwidth	= mywidth*0.2*scale
+
 pipe	= Window[][
-	dx	= 100;	dy	= 20;
+	dx	= 100
+        dy	= 20
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
 	
-	w	= 2*scale;
+	w	= 2*scale
 	
 	\ .Line[w, bb.Get[1], bb.Get[2], bb.Get[3], bb.Get[4], bb.Get[1]]
 	\ .Line[w, (-30, -10), (-30, 10)]
@@ -30,12 +32,12 @@ pipe	= Window[][
 ]
 
 risc16_pipeline2	= Window[][
-	w	= 0.0;
+	w	= 0.0
 	Style[.Border[w, color.black]]
 	Color[color.grey, .a=0.5]
 	\ .Poly[(100, 0), (100, 100), (80, 100), (80, 0)]
 	
-	w	= 2.0*scale;
+	w	= 2.0*scale
 	Color[color.black, .a=1.0]
 	\ .Put[pipe, (130, 10)]
 	\ .Put[pipe, (110, 30)]
@@ -55,7 +57,8 @@ risc16_pipeline2	= Window[][
 	]
 	
 	\ .Show[(-20, 0), (180, 115)]
-	\ .Save["eps", "risc16_pipeline2.eps"]
+	\ .Save["pdf", "risc16_pipeline2.pdf"]
+//	\ .Save["eps", "risc16_pipeline2.eps"]
 ]
 
 

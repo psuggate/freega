@@ -1,17 +1,21 @@
-mywidth	= 0.5
-scale	= 0.2
-fwidth	= mywidth*0.2*scale
+// C++ highlighter.
 
 include "g"
 include "arrows"
 
+mywidth	= 0.5
+scale	= 0.2
+fwidth	= mywidth*0.2*scale
+
+
 tta16_instr	= Window[][
-	dx	= 160;	dy	= 16;
+	dx	= 160
+        dy	= 16
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
 	
-	w	= 2*scale;
+	w	= 2*scale
 	
 	instr	= .Line[w, (-dx/2, -dy/2), (-dx/2, 0), (dx/2, 0), (dx/2, -dy/2), (-dx/2, -dy/2)]
 	i	= -dx/2.0+5.0
@@ -61,7 +65,7 @@ tta16_instr	= Window[][
 
 tta16_used_fields	= Window[][
 	// Shade the areas of used bits.
-	w	= 0.0;
+	w	= 0.0
 	Style[.Border[w, color.black]]
 	Color[color.grey, .a=0.5]
 	\ .Poly[(0, 8), (5*17, 8), (5*17, 16), (0, 16)]
@@ -69,15 +73,14 @@ tta16_used_fields	= Window[][
 	\ .Poly[(160, 8), (5*21, 8), (5*21, 16), (160, 16)]
 	\ .Poly[(5*17, 0), (5*21, 0), (5*21, 8), (5*17, 8)]
 	
-	w	= 2.0*scale;
+	w	= 2.0*scale
 	Color[color.black, .a=1.0]
 	\ .Put[tta16_instr, (80, 8)]
 	\ .Put[tta16_instr, (80, 16)]
 	\ .Put[tta16_instr, (80, 24)]
 	
-	w	= 4.0*scale;
+	w	= 4.0*scale
 	\ .Line[w, (-10, 12), arrow, (0, 12)]
-	
 	\ .Text[.Font["Helvetica", 20*scale], color.black,
 		"[pc-1]", (-16, 20);
 		"[pc]", (-16, 12);
@@ -85,7 +88,8 @@ tta16_used_fields	= Window[][
 	]
 	
 	\ .Show[(-22, 0), (160, 24)]
-	\ .Save["eps", "tta16_used_fields.eps"]
+	\ .Save["pdf", "tta16_used_fields.pdf"]
+//	\ .Save["eps", "tta16_used_fields.eps"]
 ]
 
 

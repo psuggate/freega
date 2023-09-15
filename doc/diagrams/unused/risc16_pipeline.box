@@ -2,8 +2,8 @@
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 risc16_pipe	= Window[][
 	pl	= PointList[(-90, 0), (90, 0)]
@@ -25,7 +25,7 @@ risc16_pipe	= Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 //	p0	= w_reg.Get["bo"] + (5, -20)
 	p0	= write.Get["out"] + (5, -20)
 	c0	= .ConHV[w, PointList[write.Get["out"], p0]]
@@ -64,7 +64,7 @@ risc16 = Window["fig"][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 	c0	= .ConHV[w, PointList[pl.Get[1.72], pl.Get[(1.735, -0.11)]]]
 	c1	= .Line[w, c0.p2, (pl.Get[1.4].x, c0.p2.y)]
 	c2	= .Line[w, c1.Get[2], arrow_triangle, pl.Get[(1.4, -0.06)]]
@@ -100,5 +100,6 @@ risc16 = Window["fig"][
 		"R_{Execute}", x_reg.Get["bot"];
 	]
 	
+	.Save["pdf", "risc16_pipeline.pdf"]
 //	.Save["eps", "risc16_pipeline.eps"]
 ]

@@ -12,7 +12,8 @@ fpga	= Window[][
 ]
 
 freega_simple	= Window[][
-	dx	= 120;	dy	= 100;
+	dx	= 120
+        dy	= 100
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
@@ -36,7 +37,8 @@ freega_simple	= Window[][
 	
 	// Support ICs
 	
- 	.Save["eps", "freega_simple.eps"]
+ 	.Save["pdf", "freega_simple.pdf"]
+// 	.Save["eps", "freega_simple.eps"]
 ]
 
 // GUI[freega_simple]

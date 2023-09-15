@@ -5,8 +5,8 @@
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 
 risc16_rf	= Window[][

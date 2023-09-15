@@ -1,17 +1,17 @@
 // Use C++ highlighter.
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+
+include "components_lib.box"
+include "connect_lib.box"
+
 
 tta_node	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.grey, .a=0.5]
-	wd	= 8;	ht	= 55;
+	wd	= 8
+        ht	= 55
 	t	= .Poly[	(-wd, -ht)*scale, (-wd, ht)*scale,
 				(wd, ht)*scale, (wd, -ht)*scale
 	]
@@ -22,7 +22,8 @@ tta_node	= Window[][
 tta_legend	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.white]
-	wd	= 30;	ht	= 75;
+	wd	= 30
+        ht	= 75
 	t	= .Poly[(-wd/2, -ht/2), (-wd/2, ht/2), (wd/2, ht/2), (wd/2, -ht/2)]
 	
 	w	= 2*scale
@@ -58,8 +59,9 @@ tta16_henk	= Window[][
 	// Transports:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
-	tr_st	= 1.05; tr_end	= 1.65;
+	w	= 2*scale
+	tr_st	= 1.05
+        tr_end	= 1.65
 	tr0	= .Line[w, (px.Get[tr_st].x, -9), (px.Get[tr_end].x, -9)]
 	tr1	= .Line[w, (px.Get[tr_st].x, -3), (px.Get[tr_end].x, -3)]
 	tr2	= .Line[w, (px.Get[tr_st].x, 3), (px.Get[tr_end].x, 3)]
@@ -133,7 +135,7 @@ tta16_henk	= Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 	
 	c_ma	= .Line[w, n_mul_a.Get["bot"], arrow_triangle, (n_mul_a.Get["bot"].x, mul.Get["top"].y)]
 	c_mb	= .Line[w, n_mul_b.Get["bot"], arrow_triangle, (n_mul_b.Get["bot"].x, mul.Get["top"].y)]
@@ -175,11 +177,11 @@ tta16_henk	= Window[][
 	]
 	
 	// Legend:
-	// Legend:
 	leg	= .Put[tta_legend, px.Get[1.77]]
 	
 	\ .Show[(px.Get[1.05].x, py.Get[1.03].y), (px.Get[1.85].x, py.Get[1.96].y)]
-	.Save["eps", "tta16_henk.eps"]
+	.Save["pdf", "tta16_henk.pdf"]
+//	.Save["eps", "tta16_henk.eps"]
 ]
 
 

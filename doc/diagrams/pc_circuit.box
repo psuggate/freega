@@ -1,21 +1,20 @@
-// Use C++ highlighter.
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
+// C++ highlighter.
+
+include "g"
 
 mywidth	= 0.5
 scale	= 0.2
 
-include "g"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 pc_unit	= Window[][
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
 	w	= mywidth*scale
 	
-	dx	= 100;	dy	= 60;
+	dx	= 100
+        dy	= 60
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	bb	= PointList[(-dx/2, -dy/2), (-dx/2, dy/2), (dx/2, dy/2), (dx/2, -dy/2)]
@@ -74,5 +73,6 @@ pc_unit	= Window[][
 		"OUT", out.Get["label"], .From[(0.2, 0.5)];
 	]
 	\ .Show[bb.Get[1], bb.Get[3]]
-	.Save["eps", "pc_circuit.eps"]
+	.Save["pdf", "pc_circuit.pdf"]
+//	.Save["eps", "pc_circuit.eps"]
 ]

@@ -1,17 +1,16 @@
-// Use C++ highlighter.
-// Will this make KWrite use a sensible highlighter?
-// Yep, it does.
-// KWrite is freakin' smart!
+// C++ highlighter.
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+
+include "components_lib.box"
+include "connect_lib.box"
 
 
 synch	= Window[][
 	// Boundaries:
-	dx	= 60;	dy	= 45;
+	dx	= 60
+        dy	= 45
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	
@@ -28,7 +27,7 @@ synch	= Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 	p0	= (bx.Get[1.45].x, c1.Get["out"].y)
 	\ .Line[w, in.Get["out"], d0.Get["d"]]
 	\ .Line[w, d0.Get["q"], d1.Get["d"]]
@@ -47,5 +46,6 @@ synch	= Window[][
 	]
 	
 	\ .Show[(bx.Get[1].x, by.Get[1].y+3), (bx.Get[2].x, by.Get[2].y-12)]
- 	.Save["eps", "synchroniser.eps"]
+ 	.Save["pdf", "synchroniser.pdf"]
+// 	.Save["eps", "synchroniser.eps"]
 ]

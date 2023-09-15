@@ -5,12 +5,13 @@
 
 include "g"
 include "arrows"
-include "components.box"
-include "connect.box"
+include "components_lib.box"
+include "connect_lib.box"
 
 
 afifo	= Window[][
-	dx	= 150;	dy	= 150;
+	dx	= 150
+	dy	= 150
 	bx	= PointList[(-dx/2, 0), (dx/2, 0)]
 	by	= PointList[(0, -dy/2), (0, dy/2)]
 	
@@ -44,9 +45,9 @@ afifo	= Window[][
 	// Connections:
 	Style[.Border[mywidth*scale, color.black]]
 	Color[color.black]
-	w	= 2*scale;
+	w	= 2*scale
 	
-	pl0	= PointList[wr.Get["out"], wp.Get["ce"]]// Connect inputs to BRAM
+	pl0	= PointList[wr.Get["out"], wp.Get["ce"]] // Connect inputs to BRAM
 	p4	= pl0.Get[1.5]
 	p5	= (bx.Get[1.57].x, by.Get[2].y)
 	\ .Put[junc, p4]
@@ -131,5 +132,6 @@ afifo	= Window[][
 		"empty", em.Get["label"], .From[(0.3, 0.5)];
 	]
 	.Show[(bx.Get[1].x, by.Get[1].y+10), (bx.Get[2].x, by.Get[2].y)]
- 	.Save["eps", "afifo.eps"]
+ 	.Save["pdf", "afifo.pdf"]
+// 	.Save["eps", "afifo.eps"]
 ]
