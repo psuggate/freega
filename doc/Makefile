@@ -1,20 +1,36 @@
-all:
+.PHONY:	all content doc clean gloss latex
+all:	doc
+
+LaTeX	:= pdflatex
+
+content:
 	cd source && make
 	cd diagrams && make
+
+doc:	content
+	+$(LaTeX) document
+	-bibtex document
+	makeindex -s document.ist -t document.glg -o document.gls document.glo
+	+$(LaTeX) document
+	+$(LaTeX) document
+
+#	dvips document.dvi
+#	ps2pdf14 document.ps thesis2.pdf
 
 clean:
 	-rm document.dvi
 
 gloss:
-	latex document.tex
+	+$(LaTeX) document.tex
 	makeindex -s document.ist -t document.glg -o document.gls document.glo
-	latex document.tex
+	+$(LaTeX) document.tex
 
-latex: clean all
-	latex document
+latex:	clean all
+	+$(LaTeX) document
 	-bibtex document
 	makeindex -s document.ist -t document.glg -o document.gls document.glo
-	latex document
-	latex document
-	dvips document.dvi
-	ps2pdf14 document.ps thesis2.pdf
+	+$(LaTeX) document
+	+$(LaTeX) document
+
+#	dvips document.dvi
+#	ps2pdf14 document.ps thesis2.pdf
