@@ -27,16 +27,14 @@ significant components identified.}
 
 
 \section{PC Graphics Adapter History}
-The original IBM PC featured a Monochrome Display Adapter\glossary{name={MDA},
-description={Monochrome Display Adapter}} (MDA)~\cite{VGA_Programmers}. The MDA
+The original IBM PC featured a Monochrome Display Adapter (\gls{mda})~\cite{VGA_Programmers}. The MDA
 only had a very small local memory due to the high cost of DRAMs. This memory
-only stored ASCII (American Standard Code for Information
-Interchange\glossary{name={ASCII}, description={American Standard Code for
-Information Interchange}}, see Figure~\ref{INTRO_ASCII}) and attribute data for
+only stored \gls{ascii} (American Standard Code for Information
+Interchange, see Figure~\ref{INTRO_ASCII}) and attribute data for
 several screenfuls of text (80 columns and 25 rows of ASCII characters). The MDA
 had dedicated hardware which converted ASCII characters from text-buffer into
 pixel values during display redraw periods. The pixel values were transmitted to
-a monochrome CRT\glossary{name={CRT}, description={Cathode Ray Tube}} monitor for
+a monochrome \gls{crt} monitor for
 display.
 
 The original IBM PC was produced from readily available parts and was reverse
@@ -55,7 +53,7 @@ use~\cite{VGA_Programmers}.
 VGA was extended by many manufacturers, increasing framebuffer sizes, numbers of
 colours, higher resolution modes, and hardware acceleration for 2D and 3D
 functions. The umbrella term for all of these adapters was Super
-VGA\glossary{name={SVGA}, description={Super VGA}}, or SVGA. Every time a
+VGA, or \gls{svga}. Every time a
 different manufacturer produced a VGA compatible display adapter, they
 essentially had to start from scratch, reimplementing VGA and adding their own
 extensions. Some of these companies were: Oak, Advance, Genoa, NCR, Integrated
@@ -93,15 +91,13 @@ into one ASIC were:
 \end{itemize}
 
 
-The CRT Controller\glossary{name={CRTC}, description={CRT Controller}} (CRTC)
+The CRT Controller (\gls{crtc})
 generates the timing signals necessary to display an image on a VGA or DVI
 connected monitor. Images are sent to a monitor as a stream of pixels, scanning
 from left to right, and from top to bottom. The CRTC generates the signals which
 synchronise the pixel-stream being sent. These are the horizontal
-synchronisation\glossary{name={hsync}, description={Horizontal synchronisation}}
-(hsync) signal that indicates the end of the current horizontal line, and the
-vertical synchronisation\glossary{name={vsync}, description={Vertical
-synchronisation}} signal that marks the end of the current screen (see
+synchronisation (\gls{hsync}) signal that indicates the end of the current horizontal line, and the
+vertical synchronisation (\gls{vsync}) signal that marks the end of the current screen (see
 Figure~\ref{INTRO_CRT_Redraw} for more detail).
 
 \begin{figure}[h!]
@@ -116,8 +112,7 @@ signals. (Image from~\cite{knutsson:fbg}.)}
 
 Early VGA adapters, like their predecessors, had a very limited quantity of
 framebuffer memory to store the image to be displayed, due to the price of DRAM
-ICs. Rather than store every colour as RGB\glossary{name={RGB}, description={Red
-Green Blue}} (Red Green Blue) components, the colours were stored as indices into
+ICs. Rather than store every colour as \gls{rgb} (Red Green Blue) components, the colours were stored as indices into
 a colour palette. The palette contained the corresponding colour for a given
 index, and the palette only contained indices for a subset of available colours.
 This technique allowed the use of smaller framebuffers.
@@ -189,10 +184,8 @@ operate continuously while in alphanumeric modes. ASCII text is retrieved from
 the framebuffer at the rate of the character clock, and converted to pixel data
 at the rate of the dot-clock, which is 25.175 MHz in the default VGA 80x25
 text-mode. The default VGA text-mode resolution is 640x400 pixels, with a redraw
-rate of 60 Hz, and for the system's x86 processor (the generic name for the Intel
-8086 CPU architecture and derivatives)\glossary{name={x86}, description={The
-general name for a computer architecture based upon the Intel 8086 architecture
-and derivatives}} to produce pixel values at this rate would have been difficult
+rate of 60 Hz, and for the system's \gls{x86} processor (the generic name for the Intel
+8086 CPU architecture and derivatives) to produce pixel values at this rate would have been difficult
 in 1987 .
 
 \begin{table}[h!]
@@ -248,8 +241,7 @@ component, and the DAC produces analogue values which range in magnitude between
 
 
 \subsection{VGA BIOS}
-Each VGA device requires a VGA Basic Input/Output System\glossary{name={BIOS},
-description={Basic Input/Output System}} (BIOS)) ROM. This is a collection of
+Each VGA device requires a VGA Basic Input/Output System (\gls{bios}) \gls{rom}. This is a collection of
 routines for performing video functions. These routines are accessed on an x86 PC
 architecture by using software interrupts (using the instruction `int 10h',
 register values are used as the arguments)~\cite{VGA_Programmers, SVGA_Book}, and
@@ -290,8 +282,7 @@ installed and used alongside a VGA adapter within a PC. Prominent examples are a
 couple of the 3D graphics accelerators produced in the 1990s, the PowerVR Series
 1, and 3DFX Voodoo Graphics (later referred to as Voodoo 1) and Voodoo 2. The
 primary graphics adapter, typically a SVGA, is used for all 2D modes, like those
-commonly used by OS Graphical User Interfaces\glossary{name={GUI},
-description={Graphical User Interface}} (GUIs). Once a 3D application is started,
+commonly used by OS Graphical User Interfaces (\gls{gui}s). Once a 3D application is started,
 like a computer game, the 3D graphics accelerator is activated and is used to
 redraw the display instead.
 
@@ -308,8 +299,7 @@ There exists several other graphics adapter projects, and a brief overview of
 these is given. The most extensive of these is the Open Graphics Project, with
 aims to produce both FPGA and ASIC graphics adapters, and including support for
 multiple operating systems. Also planned is 3D acceleration, including support
-for OpenGL~\cite{OpenGL}\glossary{name={OpenGL}, description={The Open Graphics
-Library}}, an open-specification 3D graphics library.
+for \gls{opengl}~\cite{OpenGL}, an open-specification 3D graphics library.
 
 
 \subsection{Open Graphics Project}

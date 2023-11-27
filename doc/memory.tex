@@ -40,7 +40,7 @@ The processor's memory accesses are all single-word (atomic) transfers. Without 
 cache the full memory access latency penalty would apply to each read or write,
 which due to congestion averages at about 45 processor clock cycles in 640x480,
 16-bit colour mode. By using a cache, and a Direct Memory
-Access\glossary{name={DMA}, description={Direct Memory Access}} (DMA) controller,
+Access (\gls{dma}) controller,
 the average memory access latency was reduced to about 5 processor cycles (see
 Section~\ref{MEM_Cache}).
 
@@ -53,7 +53,7 @@ Section~\ref{MEM_Cache}).
 and atomic reads and writes.} {/rtl/mem/wb\_sdram\_ctrl.v, /rtl/mem/ddr\_datapath.v}
 {/sim/mem/wb\_sdram\_ctrl\_tb.v}{GPL}
 
-Single Data Rate\glossary{name={SDR}, description={Single Data Rate}} (SDR) SDRAM
+Single Data Rate (\gls{sdr}) SDRAM
 was chosen over DDR1/2 SDRAM because it is less difficult to implement,
 especially when considering that OpenVGA uses a two-layer PCB (see
 Section~\ref{OPENVGA_Hardware}). OpenVGA uses a standard Micron SDRAM IC, part
@@ -308,14 +308,14 @@ cache miss rate is extremely low (0.7\%), the clock rate high ($\approx$150
 MHz), the average latency is only 5.1 clock cycles, and only about 80 Spartan-3
 logic slices\footnote{Slice is the term Xilinx uses for its general purpose logic
 resources, and within the Spartan-3 a slice contains a four-input Look-Up
-Table\glossary{name={LUT}, description={Look-Up Table}} (LUT) and two DFFs}, and
+Table (\gls{lut}) and two DFFs}, and
 a Block RAM, are used.
 
 
 \subsection{Cache Justification}
 \label{CACHE_Justification}
 How much of an improvement in average Clock cycles required Per
-Instruction\glossary{name={CPI}, description={Clocks Per Instruction}} (CPI) does
+Instruction (\gls{cpi}) does
 a data cache give? First, assuming OpenVGA is operating at screen resolution of
 640x480, in 16-bit colour mode (2 bytes/pixel), and with a 60 Hz redraw, the data
 rate ($r_\mathrm{RD}$) is given by

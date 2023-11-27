@@ -14,11 +14,9 @@ An aim for OpenVGA's processor was to be fast enough to emulate VGA text-mode.
 After evaluating existing FPGA-based, processor logic cores (see
 Table~\ref{SUMMARY_CPU_Table}), it was decided to develop a new processor to meet
 this speed and size criteria. Popular Instruction Set
-Architectures\glossary{name={ISA}, description={Instruction Set Architecture}}
-(ISAs) were considered for the OpenVGA processor. These included Complex
-Instruction Set Computer\glossary{name={CISC}, description={Complex Instruction
-Set Computer}} (CISC), RISC, and Very Long Instruction Word\glossary{name={VLIW},
-description={VHSIC (Very Long Instruction Word}} (VLIW) architectures.
+Architectures
+(\gls{isa}s) were considered for the OpenVGA processor. These included Complex
+Instruction Set Computer (\gls{cisc}), RISC, and Very Long Instruction Word (\gls{vliw}) architectures.
 
 Figure~\ref{CPU_Sched} gives a breakdown of the tasks that a compiler and
 processor must perform, and the division of these tasks for differing processor
@@ -27,8 +25,7 @@ for functionality other than transporting and processing data. This often
 includes hardware for instruction decoding, out-of-order execution, speculative
 execution, and branch prediction~\cite{parhami2005cam}. TTA processors typically
 do not have these features~\cite{corporaal:tta}, with most of the logic gates
-used for data transports and Functional Units\glossary{name={FU},
-description={Functional Unit}} (FUs), resulting in smaller processor designs.
+used for data transports and Functional Units (\gls{fu}s), resulting in smaller processor designs.
 
 \begin{figure}[h!]
 \begin{center}
@@ -79,9 +76,8 @@ feature a data word-size of 16-bits for two main reasons:
 
 \section{Shift Registers as Program Counters}
 Rather than use a standard, base-2 incrementer for each processor's Program
-Counter\glossary{name={PC}, description={Program Counter}} (PC), a Multiple
-Feedback Shift Register\glossary{name={MFSR}, description={Multiple Feedback
-Shift Register}} (MFSR)~\cite{MFSR_List} is used as the PC incrementer for both
+Counter (\gls{pc}), a Multiple
+Feedback Shift Register (\gls{mfsr})~\cite{MFSR_List} is used as the PC incrementer for both
 TTA16 and RISC16. The count order of an MFSR is very different to standard base-2
 incrementers. To illustrate this different increment sequence, an application of
 MFSRs is for use as pseudo-random sequence generators. For a maximal-cycle MFSR
@@ -90,7 +86,7 @@ maximum of just one layer of logic gates (see Figure~\ref{CPU_MFSR8}).
 
 The reason for using MFSRs as PCs is due to the extremely small combinatorial
 logic delay, just the propagation delay through one FPGA Look-Up
-Table\glossary{name={LUT}, description={Look-Up Table}} (LUT) and some routing
+Table (\gls{lut}) and some routing
 fabric. This allows the PC increment and branch logic to have very low latency,
 avoiding the requirement pipeline registers, or becoming the processor's critical
 path and limiting maximum frequency.
@@ -192,8 +188,7 @@ additional features were added by him to assist this project. This assembler
 reads in a processor definition file, which is stored as an XML file, and then
 assembles the assembly language source file in accordance to the definition in
 the XML file. This assembler was designed for TTA applications and it supports
-explicit Instruction Level Parallelism\glossary{name={ILP},
-description={Instruction Level Parallelism}} (ILP) (see the TTA16 programming
+explicit Instruction Level Parallelism (\gls{ilp}) (see the TTA16 programming
 guide in Appendix~\ref{TTAPROG_TTA16_memcpy} for an example of this).
 
 Below is an excerpt from \texttt{tta16.xml}, the file defining the TTA16
@@ -277,8 +272,7 @@ this assembler is:
 The \texttt{label:} field is used to label the destination of branches, and to
 label constants so they can be referenced within the code. The \texttt{mnemonic}
 field is a keyword identifying the desired instruction, which is translated into
-an opcode (condensed form of operation-code\glossary{name={opcode},
-description={Condensed form of operation-code}}) in the final phase of the
+an \gls{opcode} (condensed form of operation-code) in the final phase of the
 assembler. Fields surrounded by square braces indicate that the field can be
 optional. All constants are required to have a label, and most instruction
 require arguments.
@@ -320,11 +314,9 @@ Software) simulator Icarus Verilog\footnote{Icarus Verilog is available on the
 Internet from http://www.icarus.com/eda/verilog/}. Processors can be very
 difficult to debug, especially RISC16 with its many hazard detection flags and
 states, so it was important that the components were well tested first. Another
-FOSS Electronic Design Automation\glossary{name={EDA}, description={Electronic
-Design Automation}} (EDA) application, GtkWave\footnote{GtkWave is available on
+FOSS Electronic Design Automation (\gls{eda}) application, GtkWave\footnote{GtkWave is available on
 the Internet from http://gtkwave.sourceforge.net/} was used to display the timing
-diagrams of the simulated signals, which were saved to a VCD\glossary{name={VCD},
-description={Value Change Dump}} output file by Icarus.
+diagrams of the simulated signals, which were saved to a \gls{vcd} (Value Change Dump) output file by Icarus.
 
 When a processor had been developed to the point where it simulated as expected,
 larger quantities of test code were written, with a disassembler coded within
@@ -462,7 +454,7 @@ processor, even if it is assumed that a TTA can be made to operate at a 50\%
 higher clock rate (see Table~\ref{SUMMARY_CPU_Table}).
 
 Also note that the RISC instruction reads two values from the Register
-File\glossary{name={RF}, description={Register File}} (RF, \texttt{r0} and
+File (\gls{rf}, \texttt{r0} and
 \texttt{r1}), and writes back one (\texttt{r0}) This requires the RF to have a
 bandwidth of three operations per clock cycle, or else it will take longer than a
 single cycle to complete, or maybe affect/restrict other instructions.
@@ -776,7 +768,7 @@ using this primitive automatically.
 
 The carry chain within the Spartan-3 FPGA runs vertically so all elements of the
 bitwise FU are placed vertically adjacent, but the Xilinx Synthesis
-Tool\glossary{name={XST}, description={Xilinx Synthesis Tool}} (XST) handles this
+Tool (\gls{xst}) handles this
 automatically, explicit use of the MUXCY primitive ensures this.
 
 \subsubsection{Subtractor}
@@ -950,7 +942,7 @@ fetch bandwidth must be high, at 150 MHz, about 600 MB/s. Also, since branches
 need to have a penalty as small as possible, instruction fetch latency must be
 minimised too. Modern high-performance processors use instruction caches to
 solve these problems but there exist some additional issues which is why a Xilinx
-Block RAM\glossary{name={BRAM}, description={Xilinx Block RAM}} was used
+Block RAM (\gls{bram}) was used
 as instruction memory.
 
 Below is a list of arguments against a traditional instruction cache, and in
@@ -997,7 +989,7 @@ RISC16 has been designed to be easier to program in assembly language than TTA16
 It also has a similar instruction set to other RISC processors~\cite{FPGACPU,
 SuperH} which have C compiler ports available. It should therefore be possible to
 port the LCC~\cite{FPGACPU}, or maybe GNU Compiler
-Collection\glossary{name={GCC}, description={GNU Compiler Collection}} (GCC), C
+Collection (\gls{gcc}), C
 compiler to this processor, but this was beyond the scope of this work. The
 trade-off for this easier-to-program approach is a larger and slower processor
 than TTA16. It is still faster and smaller than other similar processors which
@@ -1052,7 +1044,7 @@ present~\cite{FPGACPU}.
 
 Another significant design choice with the RISC16 processor was the omission of
 an \texttt{ADD} instruction. This decision allows the Arithmetic Logic
-Unit\glossary{name={ALU}, description={Arithmetic Logic Unit}} (ALU) to be
+Unit (\gls{alu}) to be
 faster, resulting in shorter processor cycle times, but does not cause a
 significant programming penalty. This is because even in the worst cases, an
 addition operation can be completed by issuing two subtract instructions instead

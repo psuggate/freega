@@ -69,7 +69,7 @@ lut4	= Window[][
 	a	= 1.2
 	w	= 1*scale
 	Color[color.black]
-	\ .Line[w, t.Get[a], t.Get[a]-(off, 0); For[(a += 0.2) < 1.6]]
+	\ .Line[w, t.Get[a], t.Get[a]-(off, 0); For[(a += 0.2) < 1.8]]
 	\ .Line[t.Get[3.5], t.Get[3.5]+(off, 0)]
 	Style[.Border[fwidth, color.black]]
 	\ .Text[.Font["Helvetica", 16*scale], color.black,

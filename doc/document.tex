@@ -32,11 +32,13 @@
 \lstset{breaklines=true}
 \lstset{basicstyle=\ttfamily}
 
-\makeglossary
+
+\loadglsentries{gloss}
+\makeglossaries
+
 
 \begin{document}
 \maketitle
-
 	
 \abstract{This thesis describes the development of OpenVGA, an open-source
 graphics adapter. OpenVGA uses programmable logic for its core functionality, and
@@ -93,8 +95,8 @@ led by Tony Bybell.
 \listoffigures
 
 % Glossary. All definitions not located elsewhere are within `defs.tex'.
-\printglossary
-\include{defs}
+\printglossaries
+% \include{defs}
 
 
 \newcommand\mmodule[6] %

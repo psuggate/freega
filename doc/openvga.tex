@@ -29,8 +29,8 @@ these components will be further elaborated on in the following chapters.
 
 Most of the significant hardware components of OpenVGA are shown in
 Figure~\ref{OPENVGA_OpenVGA}. Components not shown in this image are the VGA
-video DAC\glossary{name={DAC}, description={Digital to Analogue Converter}} and
-the DVI TMDS encoder, as these components are soldered to the reverse side of the
+video \gls{dac} and
+the \gls{dvi} \gls{tmds} encoder, as these components are soldered to the reverse side of the
 PCB (see Figure~\ref{HARD_Bot}). The PCB only has two copper layers to meet two
 of the design goals of OpenVGA, simplicity and low-cost. A full list of all of
 OpenVGA's electronic components and where to obtain the PCB artwork is found in
@@ -82,7 +82,7 @@ SDRAM, DVI, and only eight colour VGA (via the DVI analogue outputs).}
 Following this, an initial prototype board for OpenVGA was milled in-house, on a
 LPKF\texttrademark~PCB milling machine, and is shown in
 Figure~\ref{OPENVGA_Version2}. This board was an attempt to use Double Data
-Rate\glossary{name={DDR}, description={Double Data Rate}} (DDR) SDRAM with
+Rate (\gls{ddr}) SDRAM with
 OpenVGA to provide greater memory bandwidth\footnote{The DDR SDRAM specification
 requires that signal traces be terminated, since DDR SDRAM was designed to
 operate at frequencies up to 200 MHz. The OpenVGA DDR version of the PCB did not
@@ -112,8 +112,7 @@ The design contains a processor core for data processing, initialisation, and
 mode-managing tasks. OpenVGA can be configured to be use either one of the two
 processors that were developed for this project, TTA16 or RISC16. Additional
 cores are a small data cache since memory latency is high, a SDRAM controller, a
-PCI-to-Wishbone bridge, logic to read the SPROM\glossary{name={SPROM},
-description={Serial Programmable Read Only Memory}} (Serial Programmable ROM),
+PCI-to-Wishbone bridge, logic to read the \gls{sprom} (Serial Programmable \gls{rom}),
 and numerous other support modules.
 
 \begin{figure}[h!]
@@ -130,8 +129,7 @@ The Wishbone interconnect standard\footnote{Wishbone is called an
 ``interconnect'', instead of a ``bus'', standard as it allows for numerous
 circuit topologies: buses, crossbar switches, point-to-point, and many others.}
 was used as the standard interface for communication between logic cores. This
-standard was designed for System-on-a-Chip\glossary{name={SoC},
-description={System-on-a-Chip}} (SoC) applications, is very flexible, is commonly
+standard was designed for System-on-a-Chip (\gls{soc}) applications, is very flexible, is commonly
 used with other open-source hardware projects, and requires very little logic to
 implement. Appendix~\ref{APP_Wishbone} gives a brief introduction to Wishbone,
 covering the core signals and providing a simple example implementation.
@@ -150,8 +148,8 @@ The first processor developed was a novel TTA processor. Significant research ha
 been done with this class of architecture~\cite{corporaal1993maa,
 jaaskelainen2007cta}, but there are very few commercial processors of this type.
 The second is a more traditional Reduced Instruction Set
-Computer\glossary{name={RISC}, description={Reduced Instruction Set Computer}}
-(RISC) architecture processor design. It was developed to compare with TTA16, the
+Computer
+(\gls{risc}) architecture processor design. It was developed to compare with TTA16, the
 first OpenVGA processor. Optimised for the same tasks, both processors used the
 similar functional units. This provides a good platform for the comparison of
 these two architectures.
@@ -210,14 +208,14 @@ solutions are covered in Section~\ref{CLOCK_Sync}.
 When logic cores have different clocks, data must be synchronised when passing
 from one core to the other. When the clocks are asynchronous this becomes even
 more difficult due to metastability issues. A D-type
-Flip-Flop\glossary{name={DFF}, description={D-type Flip-Flop}} (DFF) can enter a
+Flip-Flop (\gls{dff}) can enter a
 metastable state\footnote{This metastable state means that the output of the DFF
 is essentially random, but it oscillates for a significant time before it settles
 back into a stable state~\cite{Async_FIFO2}.} when setup and/or hold times are
 violated. Section~\ref{CLOCK} presents the OpenVGA clock architecture and
 domains, examines the problems with domain crossing, and presents the solutions
 used to solve these. Asynchronous First-In, First-Out
-queues\glossary{name={FIFO}, description={First-In, First-Out queue}} FIFOs allow
+queues (\gls{fifo}s) allow
 signals that are multiple bits wide to be synchronised across clock domains and
 are presented in Section~\ref{CLOCK_Async_FIFO}.
 
@@ -233,7 +231,7 @@ domain so that asynchronous FIFOs are not needed.
 The SDRAM data transfers occur at 100 MHz while the controller's state machine
 operates at 50 MHz, the Wishbone memory bus frequency. This was achieved by using
 the DDR input and output primitives within the Spartan-3 I/O
-Blocks\glossary{name={IOB}, description={Input/Output Block}} (IOBs).
+Blocks (\gls{iob}s).
 Section~\ref{MEM_SDRAM} provides more detail on the controller, including the
 design of the state machine and data path implementations.
 
@@ -242,8 +240,7 @@ design of the state machine and data path implementations.
 \label{OPENVGA_PCI}
 A small PCI-to-Wishbone-bridge logic core was developed so that the system host
 can communicate with OpenVGA. This bridge supports the ``Plug and Play'' standard
-and Memory-mapped I/O\glossary{name={MMIO}, description={Memory-Mapped
-Input/Output}} (MMIO), which maps the OpenVGA SDRAM into the host PC's memory
+and Memory-mapped I/O (\gls{mmio}), which maps the OpenVGA SDRAM into the host PC's memory
 address space. Only the PCI Local Bus features that were needed for OpenVGA are
 implemented and resulted in a design about one-tenth the size of another
 available open-source PCI bridge\footnote{There is a very capable, FPGA-tested,
